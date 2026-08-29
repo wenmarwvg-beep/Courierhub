@@ -817,9 +817,9 @@
                   <div class="form-group" style="margin-bottom: 14px;">
                     <label class="form-label" style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.76rem; letter-spacing: 0.06em; color: var(--text-secondary); margin-bottom: 6px;">
                       <span>${svgIcons.user}</span>
-                      <span>Username</span>
+                      <span>Username or Email</span>
                     </label>
-                    <input type="text" id="login-username" class="input-control" placeholder="Enter username" required style="padding: 11px 14px; font-size: 0.92rem;">
+                    <input type="text" id="login-username" class="input-control" placeholder="Enter username or email" required style="padding: 11px 14px; font-size: 0.92rem;">
                   </div>
 
                   <div class="form-group" style="margin-bottom: 18px;">
@@ -1369,11 +1369,20 @@
       }
 
       const sb = getSupabase();
-      if (sb) {
-        try {
-          let loginEmail = null;
+      if (!sb) {
+        Toast.error('Backend Unavailable', 'Could not connect to Supabase authentication server.');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>Sign In to CourierHub</span><span>${svgIcons.login}</span>`;
+        }
+        return;
+      }
 
-          // 1. Look up email by username from Supabase profiles
+      try {
+        let loginEmail = uName;
+
+        // If input does not contain '@', resolve registered email by username
+        if (!uName.includes('@')) {
           try {
             const { data: prof } = await sb.from('profiles').select('email, username').eq('username', uName).maybeSingle();
             if (prof?.email) {
@@ -1382,83 +1391,61 @@
           } catch (pErr) {
             console.warn('Profile username lookup notice:', pErr);
           }
+        }
 
-          // 2. Look up from local users
-          if (!loginEmail) {
-            const localU = Store.state.users.find(x => x.username.toLowerCase() === uName.toLowerCase() || x.email?.toLowerCase() === uName.toLowerCase());
-            if (localU?.email) loginEmail = localU.email;
-          }
+        const { data, error } = await sb.auth.signInWithPassword({
+          email: loginEmail,
+          password: pw
+        });
 
-          // 3. Fallback
-          if (!loginEmail) {
-            loginEmail = uName.includes('@') ? uName : `${uName.toLowerCase().replace(/[^a-z0-9]/g, '')}@courierhub.gg`;
-          }
-
-          const { data, error } = await sb.auth.signInWithPassword({
-            email: loginEmail,
-            password: pw
-          });
-
-          if (error) {
-            console.warn('Supabase auth error:', error);
-            if (error.message?.toLowerCase().includes('email not confirmed')) {
-              Toast.error('Email Not Confirmed', 'Please check your email and click the confirmation link before signing in.');
-            } else {
-              Toast.error('Login Failed', 'Incorrect username or password.');
-            }
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = `<span>Sign In to CourierHub</span><span>${svgIcons.login}</span>`;
-            }
-            return;
-          }
-
-          if (data?.user) {
-            let profileObj = null;
-            try {
-              const { data: prof } = await sb.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
-              profileObj = prof;
-            } catch (pErr) {
-              console.warn('Profile fetch notice:', pErr);
-            }
-
-            const activeUser = {
-              id: data.user.id,
-              username: profileObj?.username || uName,
-              displayName: profileObj?.display_name || uName,
-              email: profileObj?.email || data.user.email,
-              dotaId: profileObj?.dota_id || '109283742',
-              rank: profileObj?.rank || 'Legend I',
-              region: profileObj?.region || 'SEA',
-              avatar: profileObj?.avatar || '🔥',
-              avatarFrame: profileObj?.avatar_frame || 'avatar-frame-immortal',
-              bio: profileObj?.bio || 'Ready to party on CourierHub!'
-            };
-
-            Store.loginUser(activeUser);
-            Toast.success('Authenticated', `Welcome back, ${activeUser.displayName}!`);
-            AppRouter.navigate('home');
-            return;
+        if (error) {
+          console.warn('Supabase auth error:', error);
+          if (error.message?.toLowerCase().includes('email not confirmed')) {
+            Toast.error('Email Not Confirmed', 'Please check your email and click the confirmation link before signing in.');
           } else {
-            Toast.error('Login Failed', 'Account not found. Please create an account.');
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = `<span>Sign In to CourierHub</span><span>${svgIcons.login}</span>`;
-            }
-            return;
+            Toast.error('Login Failed', 'Incorrect username/email or password.');
           }
-        } catch (sbErr) {
-          console.warn('Supabase auth attempt:', sbErr);
-          Toast.error('Login Failed', 'Unable to authenticate. Please check your credentials.');
           if (submitBtn) {
             submitBtn.disabled = false;
             submitBtn.innerHTML = `<span>Sign In to CourierHub</span><span>${svgIcons.login}</span>`;
           }
           return;
         }
-      } else {
-        Toast.error('Backend Unavailable', 'Could not connect to Supabase authentication server.');
-        if (submitBtn) {
+
+        if (data?.user) {
+          let profileObj = null;
+          try {
+            const { data: prof } = await sb.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
+            profileObj = prof;
+          } catch (pErr) {
+            console.warn('Profile fetch notice:', pErr);
+          }
+
+          const activeUser = {
+            id: data.user.id,
+            username: profileObj?.username || uName.split('@')[0],
+            displayName: profileObj?.display_name || uName.split('@')[0],
+            email: profileObj?.email || data.user.email,
+            dotaId: profileObj?.dota_id || '109283742',
+            rank: profileObj?.rank || 'Legend I',
+            region: profileObj?.region || 'SEA',
+            avatar: profileObj?.avatar || '🔥',
+            avatarFrame: profileObj?.avatar_frame || 'avatar-frame-immortal',
+            bio: profileObj?.bio || 'Ready to party on CourierHub!'
+          };
+
+          Store.loginUser(activeUser);
+          Toast.success('Authenticated', `Welcome back, ${activeUser.displayName}!`);
+          AppRouter.navigate('home');
+          return;
+        } else {
+          Toast.error('Login Failed', 'Account not found. Please create an account.');
+        }
+      } catch (sbErr) {
+        console.warn('Supabase auth attempt error:', sbErr);
+        Toast.error('Login Failed', 'Unable to authenticate. Please check your credentials.');
+      } finally {
+        if (submitBtn && !Store.state.currentUser) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = `<span>Sign In to CourierHub</span><span>${svgIcons.login}</span>`;
         }
@@ -2540,26 +2527,23 @@
     AppRouter.register('hud-settings', () => renderHudSettings());
 
     // Supabase Live Session Validation & Auth State Listener
+    // Supabase Live Session Validation & Auth State Listener
     const sb = getSupabase();
     if (sb) {
-      // Validate current token with Supabase backend
-      sb.auth.getUser().then(async ({ data: { user }, error }) => {
-        if (error || !user) {
-          // Stale token or deleted user -> clear session completely
-          await sb.auth.signOut().catch(() => {});
-          Store.logout();
-          AppRouter.handle();
+      // Check if active session exists in storage
+      sb.auth.getSession().then(async ({ data: { session } }) => {
+        if (!session?.user) {
           return;
         }
 
         try {
-          const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
+          const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
           if (profile) {
             Store.loginUser({
               id: profile.id,
-              username: profile.username || user.email.split('@')[0],
-              displayName: profile.display_name || user.email.split('@')[0],
-              email: profile.email || user.email,
+              username: profile.username || session.user.email.split('@')[0],
+              displayName: profile.display_name || session.user.email.split('@')[0],
+              email: profile.email || session.user.email,
               dotaId: profile.dota_id || '109283742',
               rank: profile.rank || 'Legend I',
               region: profile.region || 'SEA',
@@ -2567,15 +2551,16 @@
               avatarFrame: profile.avatar_frame || 'avatar-frame-immortal',
               bio: profile.bio || 'Ready to party on CourierHub!'
             });
-            AppRouter.handle();
+            if (window.location.hash === '#login' || window.location.hash === '#signup' || !window.location.hash) {
+              AppRouter.navigate('home');
+            }
           } else {
-            // Profile not found -> user was deleted from database
+            // Profile not found in database -> clear session
             await sb.auth.signOut().catch(() => {});
             Store.logout();
-            AppRouter.handle();
           }
         } catch (e) {
-          console.warn('Profile fetch error:', e);
+          console.warn('Profile sync notice:', e);
         }
       });
 
