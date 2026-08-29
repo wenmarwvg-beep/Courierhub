@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CourierHub — Let's Party Guys!!</title>
+  
+  <!-- Meta & OpenGraph -->
+  <meta name="description" content="CourierHub — Let's Party Guys!! A modern, premium Dota 2 community web application designed for players to find teammates, create match lobbies, chat in real-time, and customize their gaming HUD.">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Core CSS Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/hud.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/chat.css">
+  <link rel="stylesheet" href="css/lobbies.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-theme="light">
+  <!-- Interactive Ambient Canvas Background -->
+  <canvas id="canvas-bg"></canvas>
+
+  <!-- Application Root Mount Point -->
+  <div id="app-root"></div>
+
+  <!-- Global Toast Notifications Container -->
+  <div id="toast-container"></div>
+
+  <!-- Supabase Cloud SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Universal High-Performance Engine Bundle -->
+  <script src="js/bundle.js?v=2.7"></script>
+</body>
+</html>

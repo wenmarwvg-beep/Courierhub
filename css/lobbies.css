@@ -1,0 +1,400 @@
+/* ==========================================================================
+   Ancient Nexus - Match Lobby Finder, Cards & 5-Slot Lobby Room Styles
+   ========================================================================== */
+
+/* Lobbies Header & Search/Filter Toolbar */
+.lobbies-header-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.lobbies-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.lobby-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+}
+
+.lobby-search-box input {
+  padding-left: 38px;
+}
+
+.lobby-search-box .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.lobby-filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.filter-chip {
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-chip:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.filter-chip.active {
+  background: rgba(217, 119, 6, 0.15);
+  border-color: var(--border-bright);
+  color: var(--accent-primary);
+}
+
+/* Lobby Cards Grid */
+.lobbies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.lobby-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow, 0 4px 20px -2px rgba(15, 23, 42, 0.08));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.lobby-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-medium);
+  box-shadow: var(--elevated-shadow, 0 12px 30px rgba(0, 0, 0, 0.12));
+}
+
+.lobby-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: linear-gradient(180deg, var(--bg-tertiary) 0%, var(--bg-card) 100%);
+}
+
+.lobby-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-header);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.lobby-card-id {
+  font-family: var(--font-stats);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.lobby-card-body {
+  padding: 16px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lobby-card-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.lobby-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lobby-meta-item .meta-lbl {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.lobby-meta-item .meta-val {
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Slots Dots Display ● ● ● ● ○ */
+.lobby-slots-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.slots-dots-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.slot-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transition: all var(--transition-fast);
+}
+
+.slot-dot.filled {
+  background: var(--accent-gold);
+  box-shadow: 0 0 8px var(--accent-gold-glow);
+}
+
+.slot-dot.empty {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px dashed var(--border-medium);
+}
+
+.lobby-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ==========================================================================
+   LOBBY ROOM / DETAILS SCREEN (5-Slots / 5v5 Room View)
+   ========================================================================== */
+.lobby-room-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.lobby-room-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(20, 28, 44, 0.95) 0%, rgba(10, 15, 26, 0.98) 100%);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), var(--border-glow);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.lobby-room-title-area {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lobby-room-title {
+  font-family: var(--font-header);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lobby-room-meta-tags {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lobby-room-invite-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px dashed var(--border-medium);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-stats);
+  font-size: 0.88rem;
+  color: var(--accent-gold);
+}
+
+/* Slots Grid / Roster */
+.lobby-slots-roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.lobby-slot-card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(20, 28, 44, 0.8) 0%, rgba(12, 17, 28, 0.9) 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all var(--transition-normal);
+}
+
+.lobby-slot-card.is-filled {
+  border-color: var(--border-medium);
+}
+
+.lobby-slot-card.is-host {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.2);
+}
+
+.lobby-slot-card.is-empty {
+  border: 2px dashed rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.lobby-slot-card.is-empty:hover {
+  border-color: var(--accent-primary);
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.slot-index-badge {
+  font-family: var(--font-stats);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  width: 24px;
+}
+
+.slot-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  border: 1px solid var(--border-subtle);
+}
+
+.slot-player-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.slot-player-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slot-player-meta {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.slot-ready-indicator {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.slot-ready-indicator.ready {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.slot-ready-indicator.not-ready {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+/* Host & Member Command Bar */
+.lobby-command-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.command-bar-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
