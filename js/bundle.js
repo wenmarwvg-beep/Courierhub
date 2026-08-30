@@ -838,6 +838,11 @@
                   <span>Edit Profile</span>
                 </button>
 
+                <button type="button" class="dropdown-item-btn" id="dropdown-edit-profile-card-btn">
+                  <span style="font-size: 1.05rem;">🎴</span>
+                  <span>Edit Profile Card</span>
+                </button>
+
                 <button type="button" class="dropdown-item-btn dropdown-item-danger" id="dropdown-logout-btn">
                   <span style="font-size: 1.05rem;">🚪</span>
                   <span>Sign Out</span>
@@ -886,6 +891,12 @@
       dropdown?.classList.remove('show');
       trigger?.classList.remove('active');
       openEditProfileModal();
+    });
+
+    document.getElementById('dropdown-edit-profile-card-btn')?.addEventListener('click', () => {
+      dropdown?.classList.remove('show');
+      trigger?.classList.remove('active');
+      openPlayerProfileCardModal(user, true);
     });
 
     document.getElementById('dropdown-logout-btn')?.addEventListener('click', async () => {
@@ -1126,9 +1137,9 @@
             background: linear-gradient(135deg, rgba(255, 34, 0, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
             border-bottom: 1px solid rgba(255, 34, 0, 0.3);
           ">
-            <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
-              <div style="position: relative; width: 38px; height: 38px; border-radius: 50%; background: #0f172a; border: 2px solid #ff2200; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
-                <span>${openFriend.avatar}</span>
+            <div class="chat-header-profile-trigger clickable-player-trigger" title="Click to view ${openFriend.name}'s Profile Card" style="display: flex; align-items: center; gap: 10px; min-width: 0; cursor: pointer;">
+              <div style="position: relative; width: 38px; height: 38px; border-radius: 50%; background: #0f172a; border: 2px solid #ff2200; padding: 2px; box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
+                ${renderAvatarHTML(openFriend.avatar)}
                 <div class="status-dot status-${openFriend.status || 'online'}" style="position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #0f172a; background: ${openFriend.status === 'in_match' ? '#f59e0b' : '#16a34a'};"></div>
               </div>
               <div style="min-width: 0;">
@@ -1561,6 +1572,13 @@
         if (window.Sound) window.Sound.playClick();
         renderFloatingChat();
       });
+    });
+
+    // Open Profile Card on chat header click
+    document.querySelector('.chat-header-profile-trigger')?.addEventListener('click', () => {
+      if (openFriend) {
+        openPlayerProfileCardModal(openFriend);
+      }
     });
 
     // Minimize & Close chat window buttons
@@ -2179,6 +2197,339 @@
       close();
       renderLayoutShell();
       renderHome();
+    });
+  }
+
+  /* --- MODAL: TWO-COLUMN PLAYER PROFILE CARD (Shadow Fiend Bundle Theme) --- */
+  function openPlayerProfileCardModal(targetUserOrName, isSelfView = false) {
+    const currentUser = Store.state.currentUser;
+    if (!currentUser) return;
+
+    document.getElementById('player-profile-card-modal')?.remove();
+
+    // Resolve target player object
+    let target = null;
+    if (typeof targetUserOrName === 'string') {
+      const nameQuery = targetUserOrName.trim();
+      target = (Store.state.users || []).find(u => 
+        (u.displayName && u.displayName.toLowerCase() === nameQuery.toLowerCase()) || 
+        (u.username && u.username.toLowerCase() === nameQuery.toLowerCase()) || 
+        u.id === nameQuery
+      );
+      if (!target) {
+        target = (Store.state.friends || []).find(f => 
+          (f.name && f.name.toLowerCase() === nameQuery.toLowerCase()) || 
+          f.id === nameQuery
+        );
+      }
+      if (!target && currentUser && (
+        (currentUser.displayName && currentUser.displayName.toLowerCase() === nameQuery.toLowerCase()) ||
+        (currentUser.username && currentUser.username.toLowerCase() === nameQuery.toLowerCase()) ||
+        currentUser.id === nameQuery
+      )) {
+        target = currentUser;
+      }
+      if (!target) {
+        // Find from posts author
+        const p = (Store.state.communityPosts || []).find(post => post.authorName && post.authorName.toLowerCase() === nameQuery.toLowerCase());
+        if (p) {
+          target = {
+            id: p.authorId || ('user_' + nameQuery),
+            displayName: p.authorName,
+            username: p.authorName,
+            avatar: p.authorAvatar || 'assets/avatar-shadow-fiend.jpg',
+            rank: p.authorRank || 'Divine',
+            region: 'SEA',
+            address: 'SEA Server',
+            dotaId: '782910432',
+            followersCount: '12.4k',
+            followingCount: '8',
+            quote: 'Mastering the lane with focus, precision, and relentless carry play.'
+          };
+        }
+      }
+      if (!target) {
+        target = {
+          id: 'user_' + nameQuery,
+          displayName: nameQuery,
+          username: nameQuery,
+          avatar: 'assets/avatar-shadow-fiend.jpg',
+          rank: 'Ancient V',
+          region: 'SEA',
+          address: 'Philippines, Metro Manila',
+          dotaId: '694208173',
+          followersCount: '8.5k',
+          followingCount: '14',
+          quote: 'Ready to battle on Ancient grounds!'
+        };
+      }
+    } else if (targetUserOrName && typeof targetUserOrName === 'object') {
+      target = targetUserOrName;
+    } else {
+      target = currentUser;
+    }
+
+    const targetDisplayName = target.displayName || target.name || target.username || 'Hero';
+    const isSelf = isSelfView || (currentUser && (target.id === currentUser.id || targetDisplayName.toLowerCase() === (currentUser.displayName || currentUser.username).toLowerCase()));
+
+    // Social relationships
+    if (!Store.state.followingList) {
+      Store.state.followingList = ['MiranaShadow', 'InvokerPro', 'DOTA2_Official'];
+    }
+    let isFollowing = (Store.state.followingList || []).includes(targetDisplayName);
+    let isFriend = (Store.state.friends || []).some(f => f.name && f.name.toLowerCase() === targetDisplayName.toLowerCase());
+
+    const targetFollowers = target.followersCount || (isSelf ? (currentUser.followersCount || '100k') : '24.8k');
+    const targetFollowing = target.followingCount || (isSelf ? (currentUser.followingCount || '10') : '15');
+
+    // Retrieve target player's personal feed posts
+    const targetPosts = (Store.state.communityPosts || []).filter(p => 
+      (p.authorName && p.authorName.toLowerCase() === targetDisplayName.toLowerCase()) || 
+      p.authorId === target.id ||
+      (isSelf && (p.badge === 'Founder' || p.authorName === currentUser.username))
+    );
+
+    const postsToRender = targetPosts.length > 0 ? targetPosts : [
+      {
+        id: 'post_card_demo_' + Date.now(),
+        authorName: targetDisplayName,
+        authorAvatar: target.avatar || 'assets/avatar-shadow-fiend.jpg',
+        authorRank: target.rank || 'Divine V',
+        timestamp: '2 hours ago',
+        tag: 'Ranked Highlight',
+        content: `⚔️ Dominating performance in SEA Ranked with Shadow Fiend! Secured a clean 16/1/12 KDA and locked in the win. GG WP team! 🔥`,
+        likes: 48,
+        likedByMe: true,
+        comments: [
+          { author: 'InvokerPro', avatar: 'assets/avatar-invoker.jpg', text: 'Clean Requiem positioning! That setup won the match.', timestamp: '1 hour ago' },
+          { author: 'JuggernautSlash', avatar: 'assets/avatar-juggernaut.jpg', text: 'Top tier shadow raze hits.', timestamp: '30 mins ago' }
+        ]
+      }
+    ];
+
+    const modalHtml = `
+      <div id="player-profile-card-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(8, 12, 22, 0.85); backdrop-filter: blur(16px); display: flex; align-items: center; justify-content: center; z-index: 2050; padding: 20px;">
+        <div class="player-profile-card-dialog">
+          <!-- Close Button -->
+          <button id="close-profile-card-btn" title="Close Profile Card" style="position: absolute; top: 16px; right: 18px; z-index: 50; background: rgba(10, 15, 26, 0.7); border: 1px solid rgba(255, 34, 0, 0.4); border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1.1rem; cursor: pointer; transition: all 0.2s ease;">✕</button>
+          
+          <!-- LEFT COLUMN (30% Width): Player Bio & Social Actions -->
+          <div class="profile-card-left-col">
+            <!-- Avatar with inner gap and status dot -->
+            <div class="profile-card-avatar-box">
+              ${renderAvatarHTML(target.avatar || 'assets/avatar-shadow-fiend.jpg')}
+              <div class="status-dot status-online" style="position: absolute; bottom: 4px; right: 4px; width: 12px; height: 12px; border: 2px solid #080204; border-radius: 50%; background: #16a34a; box-shadow: 0 0 8px #16a34a;"></div>
+            </div>
+
+            <div style="text-align: center;">
+              <div style="font-family: var(--font-header); font-size: 1.35rem; font-weight: 900; color: #ffffff; line-height: 1.2; text-shadow: 0 2px 8px rgba(0,0,0,0.8); text-transform: none !important;">
+                ${targetDisplayName}
+              </div>
+              <div style="margin-top: 6px;">
+                <span class="badge badge-gold" style="font-size: 0.75rem; padding: 2px 10px; font-weight: 800;">👑 ${target.rank || 'Divine V'}</span>
+              </div>
+            </div>
+
+            <!-- Followers / Following Pill -->
+            <div class="profile-card-followers-pill" title="👤 Followers: ${targetFollowers} | ➡️ Following: ${targetFollowing}">
+              <span style="font-weight: 800; color: #ffffff;">${targetFollowers} <span style="font-weight: 500; color: rgba(255,255,255,0.7);">followers</span></span>
+              <span style="color: #ff3311; font-weight: 900;">•</span>
+              <span style="font-weight: 800; color: #ffffff;">${targetFollowing} <span style="font-weight: 500; color: rgba(255,255,255,0.7);">Following</span></span>
+            </div>
+
+            <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 34, 0, 0.5), transparent); margin: 2px 0;"></div>
+
+            <!-- Detailed Info Items -->
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
+              <div style="display: flex; align-items: center; gap: 8px; color: #cbd5e1;">
+                <span style="color: var(--accent-gold);">${Icons.region}</span>
+                <span style="font-weight: 700; color: #94a3b8;">Region:</span>
+                <span style="color: #ffffff; margin-left: auto; font-weight: 700;">${target.region || 'SEA'}</span>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 8px; color: #cbd5e1;">
+                <span style="color: var(--accent-gold);">${Icons.location}</span>
+                <span style="font-weight: 700; color: #94a3b8;">Location:</span>
+                <span style="color: #ffffff; margin-left: auto; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px;" title="${target.address || 'Philippines, Metro Manila'}">${target.address || 'Philippines, Metro Manila'}</span>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 8px; color: #cbd5e1;">
+                <span style="color: var(--accent-gold);">🆔</span>
+                <span style="font-weight: 700; color: #94a3b8;">Dota ID:</span>
+                <span style="color: #ffffff; margin-left: auto; font-family: monospace; font-weight: 700;">${target.dotaId || '782910432'}</span>
+              </div>
+            </div>
+
+            <!-- Quote / Motto Box -->
+            <div style="background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255, 34, 0, 0.25); border-radius: 10px; padding: 9px 11px; font-size: 0.78rem; font-style: italic; color: #cbd5e1; line-height: 1.4; text-align: center;">
+              “${target.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}”
+            </div>
+
+            <!-- Social Action Buttons -->
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto; padding-top: 6px;">
+              ${isSelf ? `
+                <div style="text-align: center; font-size: 0.76rem; font-weight: 800; color: var(--accent-gold); padding: 5px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px;">
+                  🌟 Your Public Profile Card
+                </div>
+                <button type="button" id="card-self-edit-btn" class="btn btn-primary" style="padding: 9px; font-weight: 800; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 14px rgba(255, 34, 0, 0.4);">
+                  ✏️ Edit Profile Info
+                </button>
+              ` : `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                  <button type="button" id="card-follow-toggle-btn" class="${isFollowing ? 'btn-card-following' : 'btn-card-follow'}">
+                    ${isFollowing ? '✓ Following' : '➕ Follow'}
+                  </button>
+                  <button type="button" id="card-friend-toggle-btn" class="${isFriend ? 'btn-card-friends-active' : 'btn-card-friend'}">
+                    ${isFriend ? '🤝 Friends' : '➕ Add Friend'}
+                  </button>
+                </div>
+                <button type="button" id="card-direct-message-btn" class="btn btn-secondary" style="padding: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; border-color: rgba(255, 34, 0, 0.4); color: #ffffff;">
+                  💬 Send Message
+                </button>
+              `}
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN (70% Width): Personal Activity & Match Feed -->
+          <div class="profile-card-right-col">
+            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 12px;">
+              <div>
+                <h3 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 900; color: #ffffff; margin: 0; display: flex; align-items: center; gap: 8px;">
+                  <span>📜</span>
+                  <span>${targetDisplayName}'s Personal Feed</span>
+                </h3>
+                <p style="font-size: 0.78rem; color: #94a3b8; margin: 2px 0 0;">
+                  Public battle highlights, hero performance records, and status updates.
+                </p>
+              </div>
+            </div>
+
+            <!-- Feed Posts Stream inside Card -->
+            <div id="profile-card-feed-stream" style="display: flex; flex-direction: column; gap: 14px; overflow-y: auto;">
+              ${postsToRender.map(post => `
+                <div class="feed-post-card" style="padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; background: rgba(13, 19, 33, 0.85); border-radius: 12px; border: 1px solid rgba(255, 34, 0, 0.2);">
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 38px; height: 38px; border-radius: 50%; background: #0f172a; padding: 2px; box-sizing: border-box; overflow: hidden; border: 1.5px solid #ff2200; flex-shrink: 0;">
+                        ${renderAvatarHTML(post.authorAvatar || target.avatar)}
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; color: #ffffff; font-size: 0.92rem;">${post.authorName}</div>
+                        <div style="font-size: 0.72rem; color: #94a3b8;">${post.timestamp}</div>
+                      </div>
+                    </div>
+                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(255, 34, 0, 0.15); color: #ff5522; border: 1px solid rgba(255, 34, 0, 0.3);">
+                      ${post.tag || 'Activity Log'}
+                    </span>
+                  </div>
+
+                  <div style="color: #f8fafc; font-size: 0.92rem; line-height: 1.55; white-space: pre-wrap;">${post.content}</div>
+
+                  <!-- Post Comments & Reactions -->
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="display: flex; gap: 12px; font-size: 0.82rem; color: #cbd5e1; font-weight: 700;">
+                      <span>❤️ ${post.likes || 0} GG</span>
+                      <span>💬 ${(post.comments || []).length} Replies</span>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    const modal = document.getElementById('player-profile-card-modal');
+    const close = () => modal?.remove();
+
+    document.getElementById('close-profile-card-btn')?.addEventListener('click', close);
+    modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+    // Self Edit Profile Button Handler
+    document.getElementById('card-self-edit-btn')?.addEventListener('click', () => {
+      close();
+      openEditProfileModal();
+    });
+
+    // Follow Toggle Button Handler
+    const followBtn = document.getElementById('card-follow-toggle-btn');
+    followBtn?.addEventListener('click', () => {
+      if (!Store.state.followingList) Store.state.followingList = [];
+      const list = Store.state.followingList;
+      const idx = list.indexOf(targetDisplayName);
+
+      if (idx !== -1) {
+        list.splice(idx, 1);
+        isFollowing = false;
+        followBtn.className = 'btn-card-follow';
+        followBtn.innerText = '➕ Follow';
+        Toast.info('Unfollowed', `You unfollowed ${targetDisplayName}.`);
+      } else {
+        list.push(targetDisplayName);
+        isFollowing = true;
+        followBtn.className = 'btn-card-following';
+        followBtn.innerText = '✓ Following';
+        if (window.Sound) window.Sound.playVictory();
+        Toast.success('Following!', `You are now following ${targetDisplayName}'s public feed.`);
+      }
+      Store.save();
+    });
+
+    // Friend Toggle Button Handler
+    const friendBtn = document.getElementById('card-friend-toggle-btn');
+    friendBtn?.addEventListener('click', () => {
+      if (!Store.state.friends) Store.state.friends = [];
+      const existingIdx = Store.state.friends.findIndex(f => f.name && f.name.toLowerCase() === targetDisplayName.toLowerCase());
+
+      if (existingIdx !== -1) {
+        Store.state.friends.splice(existingIdx, 1);
+        isFriend = false;
+        friendBtn.className = 'btn-card-friend';
+        friendBtn.innerText = '➕ Add Friend';
+        Toast.info('Friend Removed', `${targetDisplayName} removed from your friends list.`);
+      } else {
+        Store.state.friends.push({
+          id: target.id || ('friend_' + Date.now()),
+          name: targetDisplayName,
+          avatar: target.avatar || 'assets/avatar-shadow-fiend.jpg',
+          rank: target.rank || 'Ancient V',
+          status: 'online',
+          statusText: 'In Main Menu'
+        });
+        isFriend = true;
+        friendBtn.className = 'btn-card-friends-active';
+        friendBtn.innerText = '🤝 Friends';
+        if (window.Sound) window.Sound.playVictory();
+        Toast.success('Friend Added!', `${targetDisplayName} is now in your Dota 2 friends list.`);
+      }
+      Store.save();
+      renderFloatingChat();
+    });
+
+    // Direct Message Button Handler
+    document.getElementById('card-direct-message-btn')?.addEventListener('click', () => {
+      close();
+      if (!Store.state.friends) Store.state.friends = [];
+      let friend = Store.state.friends.find(f => f.name && f.name.toLowerCase() === targetDisplayName.toLowerCase());
+      if (!friend) {
+        friend = {
+          id: target.id || ('friend_' + Date.now()),
+          name: targetDisplayName,
+          avatar: target.avatar || 'assets/avatar-shadow-fiend.jpg',
+          rank: target.rank || 'Ancient V',
+          status: 'online',
+          statusText: 'In Main Menu'
+        };
+        Store.state.friends.push(friend);
+        Store.save();
+      }
+      Store.state.openChatFriendId = friend.id;
+      Store.state.isFriendsListOpen = false;
+      renderFloatingChat();
+      if (window.Sound) window.Sound.playMessage();
     });
   }
 
@@ -3129,12 +3480,12 @@
           flex-wrap: wrap;
         ">
           <div style="display: flex; align-items: center; gap: 14px; min-width: 240px;">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
-              ${party.avatar || '👑'}
+            <div class="user-profile-card-trigger clickable-player-trigger" data-author-name="${party.leader}" title="Click to view ${party.leader}'s Profile Card" style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; padding: 2.5px; box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35); cursor: pointer;">
+              ${renderAvatarHTML(party.avatar || 'assets/avatar-shadow-fiend.jpg')}
             </div>
             <div>
               <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                <span style="font-weight: 800; color: #ffffff; font-size: 1rem;">${party.leader}'s Stack</span>
+                <span class="user-profile-card-trigger clickable-player-trigger" data-author-name="${party.leader}" title="Click to view ${party.leader}'s Profile Card" style="font-weight: 800; color: #ffffff; font-size: 1rem; cursor: pointer;">${party.leader}'s Stack</span>
                 <span class="badge badge-gold" style="font-size: 0.72rem; padding: 2px 7px;">${party.rank || 'Divine'}</span>
                 <span style="font-size: 0.74rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(14, 165, 233, 0.18); color: #38bdf8;">${party.region || 'SEA'}</span>
               </div>
@@ -3169,6 +3520,17 @@
           </div>
         </div>
       `).join('');
+
+      // Attach profile card triggers
+      partyContainer.querySelectorAll('.user-profile-card-trigger').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const authorName = el.getAttribute('data-author-name');
+          if (authorName) {
+            openPlayerProfileCardModal(authorName);
+          }
+        });
+      });
 
       // Attach join party handlers
       partyContainer.querySelectorAll('.join-party-action-btn').forEach(btn => {
@@ -3251,12 +3613,12 @@
           <!-- Post Author Header -->
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-              <div style="width: 42px; height: 42px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
-                ${post.authorAvatar || '👑'}
+              <div class="user-profile-card-trigger clickable-player-trigger" data-author-name="${post.authorName}" title="Click to view ${post.authorName}'s Profile Card" style="width: 42px; height: 42px; border-radius: 50%; background: #0f172a; padding: 2.5px; box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35); cursor: pointer;">
+                ${renderAvatarHTML(post.authorAvatar || 'assets/avatar-shadow-fiend.jpg')}
               </div>
               <div>
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                  <span style="font-weight: 800; color: #ffffff; font-size: 0.98rem;">${post.authorName}</span>
+                  <span class="user-profile-card-trigger clickable-player-trigger" data-author-name="${post.authorName}" title="Click to view ${post.authorName}'s Profile Card" style="font-weight: 800; color: #ffffff; font-size: 0.98rem; cursor: pointer;">${post.authorName}</span>
                   ${post.badge ? `<span style="font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: rgba(255, 34, 0, 0.18); color: #ff5522;">${post.badge}</span>` : ''}
                   <span class="badge badge-gold" style="font-size: 0.72rem; padding: 1px 6px;">${post.authorRank || 'Divine'}</span>
                 </div>
@@ -3343,10 +3705,12 @@
             <div class="comments-list" style="display: flex; flex-direction: column; gap: 8px;">
               ${(post.comments || []).map(c => `
                 <div style="display: flex; gap: 10px; background: rgba(10, 15, 26, 0.85); padding: 10px 12px; border-radius: 8px; font-size: 0.88rem; border: 1px solid rgba(255, 255, 255, 0.08);">
-                  <div style="font-size: 1.1rem; flex-shrink: 0;">${c.avatar || '⚔️'}</div>
+                  <div class="user-profile-card-trigger clickable-player-trigger" data-author-name="${c.author}" title="Click to view ${c.author}'s Profile Card" style="width: 28px; height: 28px; border-radius: 50%; background: #0f172a; padding: 1.5px; box-sizing: border-box; overflow: hidden; border: 1px solid #ff2200; flex-shrink: 0; cursor: pointer;">
+                    ${renderAvatarHTML(c.avatar || 'assets/avatar-shadow-fiend.jpg')}
+                  </div>
                   <div style="flex: 1;">
                     <div style="display: flex; align-items: center; justify-content: space-between;">
-                      <span style="font-weight: 700; color: #ffffff;">${c.author}</span>
+                      <span class="user-profile-card-trigger clickable-player-trigger" data-author-name="${c.author}" title="Click to view ${c.author}'s Profile Card" style="font-weight: 700; color: #ffffff; cursor: pointer;">${c.author}</span>
                       <span style="font-size: 0.72rem; color: #94a3b8;">${c.timestamp || 'Just now'}</span>
                     </div>
                     <p style="margin: 2px 0 0; color: #cbd5e1; line-height: 1.4;">${c.text}</p>
@@ -3377,9 +3741,20 @@
       `;
     };
 
-    // Helper: Attach Post Card Listeners (Like, Toggle comments, Submit comment, Share, Delete)
+    // Helper: Attach Post Card Listeners (Like, Toggle comments, Submit comment, Share, Delete, Profile Card Click)
     const attachPostCardListeners = (container, refreshFn) => {
       if (!container) return;
+
+      // Profile Card Triggers (Author Avatar & Author Name)
+      container.querySelectorAll('.user-profile-card-trigger').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const authorName = el.getAttribute('data-author-name');
+          if (authorName) {
+            openPlayerProfileCardModal(authorName);
+          }
+        });
+      });
 
       container.querySelectorAll('.feed-like-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -3417,7 +3792,7 @@
             if (!post.comments) post.comments = [];
             post.comments.push({
               author: user.displayName || user.username,
-              avatar: user.avatar || '👑',
+              avatar: user.avatar || 'assets/avatar-shadow-fiend.jpg',
               text: text,
               timestamp: 'Just now'
             });
