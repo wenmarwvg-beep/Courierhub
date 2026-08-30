@@ -314,17 +314,19 @@
   width: 340px;
   height: 460px;
   max-height: 80vh;
-  background: #ffffff;
+  background: rgba(13, 19, 33, 0.96);
+  backdrop-filter: blur(20px);
   border-radius: 20px;
-  border: 1px solid rgba(245, 158, 11, 0.35);
+  border: 1px solid rgba(255, 34, 0, 0.35);
   box-shadow: 
-    0 25px 60px rgba(15, 23, 42, 0.2),
-    0 0 0 1px rgba(15, 23, 42, 0.04);
+    0 25px 60px rgba(0, 0, 0, 0.65),
+    0 0 25px rgba(255, 34, 0, 0.15);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   animation: chatPopIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1505;
+  color: #f8fafc;
 }
 
 #active-chat-window {
@@ -334,17 +336,19 @@
   width: 360px;
   height: 500px;
   max-height: 82vh;
-  background: #ffffff;
+  background: rgba(13, 19, 33, 0.96);
+  backdrop-filter: blur(20px);
   border-radius: 20px;
-  border: 1px solid rgba(245, 158, 11, 0.35);
+  border: 1px solid rgba(255, 34, 0, 0.35);
   box-shadow: 
-    0 28px 65px rgba(15, 23, 42, 0.22),
-    0 0 0 1px rgba(15, 23, 42, 0.04);
+    0 28px 65px rgba(0, 0, 0, 0.7),
+    0 0 25px rgba(255, 34, 0, 0.15);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   animation: chatPopIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1510;
+  color: #f8fafc;
 }
 
 @keyframes chatPopIn {
@@ -352,17 +356,21 @@
   100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
-/* Dark Theme Support */
-[data-theme="dark"] #friends-list-window,
-[data-theme="dark"] #active-chat-window {
-  background: #0f172a;
-  border-color: rgba(245, 158, 11, 0.3);
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+.friend-chat-head-btn {
+  background: radial-gradient(circle at 35% 30%, #1e293b 0%, #0f172a 70%, #060913 100%);
+  border: 2px solid rgba(255, 34, 0, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
-[data-theme="dark"] .friend-chat-head-btn {
-  background: radial-gradient(circle at 35% 30%, #334155 0%, #1e293b 70%, #0f172a 100%);
-  border-color: #475569;
+.friend-chat-head-btn:hover {
+  transform: translateY(-3px) scale(1.08);
+  border-color: #ff2200;
+  box-shadow: 0 0 16px rgba(255, 34, 0, 0.5), 0 14px 30px rgba(0, 0, 0, 0.5);
+}
+
+.friend-chat-head-btn.active {
+  border-color: #ff2200;
+  box-shadow: 0 0 0 3px rgba(255, 34, 0, 0.4), 0 0 20px rgba(255, 34, 0, 0.4);
 }
 
 /* Responsive Overrides */

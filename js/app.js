@@ -1022,14 +1022,15 @@
         <div id="active-chat-window" class="hud-panel animate-fade-in" style="
           position: absolute;
           bottom: 0;
-          right: 72px;
-          width: 350px;
-          height: 480px;
+          right: 76px;
+          width: 360px;
+          height: 500px;
           max-height: 82vh;
-          background: #ffffff;
-          border-radius: 18px;
-          border: 1px solid rgba(245, 158, 11, 0.35);
-          box-shadow: 0 25px 60px rgba(15, 23, 42, 0.2);
+          background: rgba(13, 19, 33, 0.96);
+          backdrop-filter: blur(20px);
+          border-radius: 20px;
+          border: 1.5px solid rgba(255, 34, 0, 0.4);
+          box-shadow: 0 28px 65px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 34, 0, 0.15);
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -1041,28 +1042,28 @@
             align-items: center;
             justify-content: space-between;
             padding: 12px 16px;
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+            background: linear-gradient(135deg, rgba(255, 34, 0, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border-bottom: 1px solid rgba(255, 34, 0, 0.3);
           ">
             <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
-              <div style="position: relative; width: 40px; height: 40px; border-radius: 50%; background: #ffffff; border: 2px solid var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+              <div style="position: relative; width: 38px; height: 38px; border-radius: 50%; background: #0f172a; border: 2px solid #ff2200; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
                 <span>${openFriend.avatar}</span>
-                <div class="status-dot status-${openFriend.status || 'online'}" style="position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #ffffff; background: ${openFriend.status === 'in_match' ? '#f59e0b' : '#16a34a'};"></div>
+                <div class="status-dot status-${openFriend.status || 'online'}" style="position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #0f172a; background: ${openFriend.status === 'in_match' ? '#f59e0b' : '#16a34a'};"></div>
               </div>
               <div style="min-width: 0;">
-                <div style="font-weight: 800; font-size: 0.95rem; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px;">
+                <div style="font-weight: 800; font-size: 0.95rem; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px;">
                   <span>${openFriend.name}</span>
                   <span class="badge badge-gold" style="font-size: 0.68rem; padding: 1px 6px;">${openFriend.rank}</span>
                 </div>
-                <div style="font-size: 0.72rem; color: #64748b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <div style="font-size: 0.72rem; color: #94a3b8; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                   ${openFriend.statusText || 'Online'}
                 </div>
               </div>
             </div>
 
             <div style="display: flex; align-items: center; gap: 4px;">
-              <button type="button" id="chat-window-minimize-btn" title="Minimize" style="background: transparent; border: none; font-size: 1.2rem; color: #64748b; cursor: pointer; padding: 2px 6px; border-radius: 4px; line-height: 1;">–</button>
-              <button type="button" id="chat-window-close-btn" title="Close" style="background: transparent; border: none; font-size: 1rem; color: #64748b; cursor: pointer; padding: 2px 6px; border-radius: 4px; line-height: 1;">✕</button>
+              <button type="button" id="chat-window-minimize-btn" title="Minimize" style="background: transparent; border: none; font-size: 1.2rem; color: #94a3b8; cursor: pointer; padding: 2px 6px; border-radius: 4px; line-height: 1;">–</button>
+              <button type="button" id="chat-window-close-btn" title="Close" style="background: transparent; border: none; font-size: 1rem; color: #94a3b8; cursor: pointer; padding: 2px 6px; border-radius: 4px; line-height: 1;">✕</button>
             </div>
           </div>
 
@@ -1071,8 +1072,8 @@
             display: flex;
             gap: 6px;
             padding: 8px 12px;
-            background: #f8fafc;
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            background: rgba(10, 16, 28, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             overflow-x: auto;
             scrollbar-width: none;
           ">
@@ -1080,15 +1081,15 @@
               <button type="button" class="chat-quick-pill" data-msg="${qc}" style="
                 font-size: 0.72rem;
                 font-weight: 700;
-                color: #b45309;
-                background: rgba(245, 158, 11, 0.12);
-                border: 1px solid rgba(245, 158, 11, 0.25);
+                color: #ff5522;
+                background: rgba(255, 34, 0, 0.15);
+                border: 1px solid rgba(255, 34, 0, 0.35);
                 border-radius: 12px;
                 padding: 3px 9px;
                 white-space: nowrap;
                 cursor: pointer;
                 transition: all 0.15s ease;
-              " onmouseover="this.style.background='rgba(245, 158, 11, 0.25)';" onmouseout="this.style.background='rgba(245, 158, 11, 0.12)';">
+              " onmouseover="this.style.background='rgba(255, 34, 0, 0.28)';" onmouseout="this.style.background='rgba(255, 34, 0, 0.15)';">
                 ${qc}
               </button>
             `).join('')}
@@ -1102,16 +1103,16 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            background: #ffffff;
+            background: rgba(8, 12, 22, 0.92);
           ">
             <div style="text-align: center; margin: 2px 0 8px;">
-              <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 600; background: #f1f5f9; padding: 2px 10px; border-radius: 10px;">Today</span>
+              <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 600; background: rgba(30, 41, 59, 0.8); padding: 2px 10px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">Today</span>
             </div>
 
             ${messages.length === 0 ? `
               <div style="text-align: center; padding: 40px 10px; color: #94a3b8;">
                 <div style="font-size: 2rem; margin-bottom: 6px;">💬</div>
-                <div style="font-size: 0.84rem; font-weight: 600;">No messages yet with ${openFriend.name}</div>
+                <div style="font-size: 0.84rem; font-weight: 600; color: #f8fafc;">No messages yet with ${openFriend.name}</div>
                 <div style="font-size: 0.76rem; margin-top: 2px;">Say hello or invite them to party up!</div>
               </div>
             ` : messages.map(msg => {
@@ -1125,14 +1126,14 @@
                   align-self: ${isMe ? 'flex-end' : 'flex-start'};
                 ">
                   <div style="
-                    background: ${isMe ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : '#f1f5f9'};
-                    color: ${isMe ? '#ffffff' : '#0f172a'};
+                    background: ${isMe ? 'linear-gradient(135deg, #ff2200 0%, #d97706 100%)' : 'rgba(30, 41, 59, 0.95)'};
+                    color: #ffffff;
                     border-radius: ${isMe ? '16px 16px 4px 16px' : '16px 16px 16px 4px'};
                     padding: 9px 13px;
                     font-size: 0.88rem;
                     line-height: 1.4;
-                    box-shadow: ${isMe ? '0 3px 10px rgba(217, 119, 6, 0.2)' : '0 1px 3px rgba(15, 23, 42, 0.04)'};
-                    border: ${isMe ? 'none' : '1px solid rgba(226, 232, 240, 0.9)'};
+                    box-shadow: ${isMe ? '0 3px 12px rgba(255, 34, 0, 0.35)' : '0 2px 6px rgba(0, 0, 0, 0.4)'};
+                    border: ${isMe ? 'none' : '1px solid rgba(255, 255, 255, 0.12)'};
                     word-break: break-word;
                   ">
                     ${msg.text}
@@ -1148,20 +1149,20 @@
           <!-- Chat Input Footer -->
           <div style="
             padding: 10px 14px;
-            background: #f8fafc;
-            border-top: 1px solid rgba(226, 232, 240, 0.95);
+            background: rgba(13, 19, 33, 0.98);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             gap: 8px;
             align-items: center;
           ">
             <input type="text" id="chat-direct-input" placeholder="Message ${openFriend.name}..." style="
               flex: 1;
-              border: 1px solid rgba(226, 232, 240, 0.95);
+              border: 1px solid rgba(255, 255, 255, 0.18);
               border-radius: 20px;
               padding: 9px 14px;
               font-size: 0.88rem;
-              color: var(--text-primary);
-              background: #ffffff;
+              color: #ffffff;
+              background: rgba(8, 12, 22, 0.9);
               outline: none;
               font-family: inherit;
               box-sizing: border-box;
@@ -1171,7 +1172,7 @@
               width: 36px;
               height: 36px;
               border-radius: 50%;
-              background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+              background: linear-gradient(135deg, #ff2200 0%, #d97706 100%);
               color: #ffffff;
               border: none;
               display: flex;
@@ -1179,7 +1180,7 @@
               justify-content: center;
               font-size: 1rem;
               cursor: pointer;
-              box-shadow: 0 3px 8px rgba(217, 119, 6, 0.3);
+              box-shadow: 0 3px 10px rgba(255, 34, 0, 0.4);
               flex-shrink: 0;
             ">
               🚀
@@ -1199,10 +1200,11 @@
           width: 330px;
           height: 450px;
           max-height: 80vh;
-          background: #ffffff;
+          background: rgba(13, 19, 33, 0.96);
+          backdrop-filter: blur(20px);
           border-radius: 18px;
-          border: 1px solid rgba(245, 158, 11, 0.35);
-          box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+          border: 1.5px solid rgba(255, 34, 0, 0.4);
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 34, 0, 0.15);
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -1214,16 +1216,16 @@
             align-items: center;
             justify-content: space-between;
             padding: 14px 16px;
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+            background: linear-gradient(135deg, rgba(255, 34, 0, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border-bottom: 1px solid rgba(255, 34, 0, 0.3);
           ">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span style="font-size: 1.2rem;">⚔️</span>
               <div>
-                <h3 style="font-family: var(--font-header); font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">
+                <h3 style="font-family: var(--font-header); font-size: 1.05rem; font-weight: 800; color: #ffffff; margin: 0;">
                   Dota 2 Friends
                 </h3>
-                <div style="font-size: 0.72rem; color: #16a34a; font-weight: 700;">
+                <div style="font-size: 0.72rem; color: #34d399; font-weight: 700;">
                   🟢 ${onlineCount} Online
                 </div>
               </div>
@@ -1233,22 +1235,22 @@
               background: transparent;
               border: none;
               font-size: 1.1rem;
-              color: #64748b;
+              color: #94a3b8;
               cursor: pointer;
               padding: 4px 6px;
             ">✕</button>
           </div>
 
           <!-- Search Input -->
-          <div style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid rgba(226, 232, 240, 0.8);">
+          <div style="padding: 10px 14px; background: rgba(10, 16, 28, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
             <input type="text" id="friends-search-input" placeholder="🔍 Search friend or rank..." style="
               width: 100%;
-              border: 1px solid rgba(226, 232, 240, 0.95);
+              border: 1px solid rgba(255, 255, 255, 0.18);
               border-radius: 8px;
               padding: 7px 12px;
               font-size: 0.84rem;
-              color: var(--text-primary);
-              background: #ffffff;
+              color: #ffffff;
+              background: rgba(8, 12, 22, 0.9);
               outline: none;
               font-family: inherit;
               box-sizing: border-box;
@@ -1263,9 +1265,10 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
+            background: rgba(8, 12, 22, 0.92);
           ">
             ${friends.map(f => {
-              const statusColor = f.status === 'in_match' ? '#f59e0b' : (f.status === 'away' ? '#94a3b8' : '#16a34a');
+              const statusColor = f.status === 'in_match' ? '#f59e0b' : (f.status === 'away' ? '#94a3b8' : '#10b981');
               return `
                 <div class="friend-list-row" data-friend-id="${f.id}" style="
                   display: flex;
@@ -1273,24 +1276,24 @@
                   justify-content: space-between;
                   padding: 8px 10px;
                   border-radius: 12px;
-                  background: #ffffff;
-                  border: 1px solid rgba(226, 232, 240, 0.8);
+                  background: rgba(15, 23, 42, 0.75);
+                  border: 1px solid rgba(255, 255, 255, 0.1);
                   cursor: pointer;
                   transition: all 0.15s ease;
-                " onmouseover="this.style.background='rgba(245, 158, 11, 0.08)'; this.style.borderColor='rgba(245, 158, 11, 0.35)';" onmouseout="this.style.background='#ffffff'; this.style.borderColor='rgba(226, 232, 240, 0.8)';">
+                " onmouseover="this.style.background='rgba(255, 34, 0, 0.18)'; this.style.borderColor='rgba(255, 34, 0, 0.45)';" onmouseout="this.style.background='rgba(15, 23, 42, 0.75)'; this.style.borderColor='rgba(255, 255, 255, 0.1)';">
                   <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
                     <!-- Friend Avatar Circle -->
-                    <div style="position: relative; width: 42px; height: 42px; border-radius: 50%; background: #fef3c7; border: 2px solid var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0;">
+                    <div style="position: relative; width: 42px; height: 42px; border-radius: 50%; background: #0f172a; border: 2px solid #ff2200; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0;">
                       <span>${f.avatar}</span>
-                      <div style="position: absolute; bottom: -1px; right: -1px; width: 11px; height: 11px; border-radius: 50%; background: ${statusColor}; border: 2px solid #ffffff;"></div>
+                      <div style="position: absolute; bottom: -1px; right: -1px; width: 11px; height: 11px; border-radius: 50%; background: ${statusColor}; border: 2px solid #0f172a;"></div>
                     </div>
 
                     <div style="min-width: 0;">
                       <div style="display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;">
-                        <span style="font-weight: 800; font-size: 0.92rem; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${f.name}</span>
+                        <span style="font-weight: 800; font-size: 0.92rem; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${f.name}</span>
                         <span class="badge badge-gold" style="font-size: 0.65rem; padding: 1px 5px;">${f.rank}</span>
                       </div>
-                      <div style="font-size: 0.74rem; color: #64748b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">
+                      <div style="font-size: 0.74rem; color: #94a3b8; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">
                         ${f.statusText || f.role || 'Online'}
                       </div>
                     </div>
@@ -1301,9 +1304,9 @@
                     width: 32px;
                     height: 32px;
                     border-radius: 8px;
-                    background: rgba(245, 158, 11, 0.12);
-                    color: #b45309;
-                    border: 1px solid rgba(245, 158, 11, 0.25);
+                    background: rgba(255, 34, 0, 0.15);
+                    color: #ff5522;
+                    border: 1px solid rgba(255, 34, 0, 0.35);
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -1656,7 +1659,7 @@
 
     const modalHtml = `
       <div id="change-skin-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.75); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
-        <div class="hud-panel" style="width: 100%; max-width: 680px; max-height: 92vh; overflow-y: auto; padding: 26px 30px; border-radius: var(--radius-lg); background: #ffffff; border: 1.5px solid rgba(255, 34, 0, 0.4); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 34, 0, 0.2); position: relative; animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+        <div class="hud-panel" style="width: 100%; max-width: 680px; max-height: 92vh; overflow-y: auto; padding: 26px 30px; border-radius: var(--radius-lg); background: rgba(13, 19, 33, 0.96); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 34, 0, 0.4); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 34, 0, 0.2); position: relative; animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
           
           <!-- Modal Header -->
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px;">
@@ -1665,22 +1668,22 @@
                 🎭
               </div>
               <div>
-                <h3 style="font-family: var(--font-header); font-size: 1.35rem; font-weight: 900; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 8px;">
+                <h3 style="font-family: var(--font-header); font-size: 1.35rem; font-weight: 900; color: #ffffff; margin: 0; display: flex; align-items: center; gap: 8px;">
                   <span>Hero Skin: Abyssal Soulfire</span>
                   <span class="badge" style="font-size: 0.7rem; padding: 2px 7px; background: #ff2200; color: #ffffff; font-weight: 800;">SIGNATURE</span>
                 </h3>
-                <p style="font-size: 0.82rem; color: var(--text-muted); margin: 2px 0 0;">
+                <p style="font-size: 0.82rem; color: #94a3b8; margin: 2px 0 0;">
                   Synchronizes Cover Banner, Neon Border Laser, Ambient Background & Chat Icon.
                 </p>
               </div>
             </div>
-            <button id="close-change-skin-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s ease;">✕</button>
+            <button id="close-change-skin-btn" style="background: transparent; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s ease;">✕</button>
           </div>
 
           <!-- 1. LIVE MULTI-ELEMENT PREVIEW -->
           <div style="margin-bottom: 22px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Active Skin Preview</span>
+              <span style="font-size: 0.82rem; font-weight: 800; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em;">Active Skin Preview</span>
               <span style="font-size: 0.8rem; font-weight: 800; color: ${skin.accent};">
                 ${skin.tag}
               </span>
@@ -1722,47 +1725,47 @@
               </div>
             </div>
 
-            <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 10px; font-style: italic;">
+            <div style="font-size: 0.82rem; color: #cbd5e1; margin-top: 10px; font-style: italic;">
               ${skin.desc}
             </div>
           </div>
 
           <!-- 2. SYNCHRONIZED THEME BUNDLE BREAKDOWN -->
           <div style="margin-bottom: 24px;">
-            <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+            <div style="font-size: 0.82rem; font-weight: 800; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
               Included Theme Components
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.05); border: 1px solid rgba(255, 34, 0, 0.2); display: flex; align-items: flex-start; gap: 10px;">
+              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.08); border: 1px solid rgba(255, 34, 0, 0.25); display: flex; align-items: flex-start; gap: 10px;">
                 <span style="font-size: 1.25rem;">🖼️</span>
                 <div>
-                  <strong style="display: block; font-size: 0.85rem; color: var(--text-primary); font-weight: 800;">Requiem Cover Banner</strong>
-                  <span style="font-size: 0.74rem; color: var(--text-muted);">1920×340 demonic artwork</span>
+                  <strong style="display: block; font-size: 0.85rem; color: #ffffff; font-weight: 800;">Requiem Cover Banner</strong>
+                  <span style="font-size: 0.74rem; color: #94a3b8;">1920×340 demonic artwork</span>
                 </div>
               </div>
 
-              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.05); border: 1px solid rgba(255, 34, 0, 0.2); display: flex; align-items: flex-start; gap: 10px;">
+              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.08); border: 1px solid rgba(255, 34, 0, 0.25); display: flex; align-items: flex-start; gap: 10px;">
                 <span style="font-size: 1.25rem;">⚡</span>
                 <div>
-                  <strong style="display: block; font-size: 0.85rem; color: var(--text-primary); font-weight: 800;">Netherflame Border Laser</strong>
-                  <span style="font-size: 0.74rem; color: var(--text-muted);">Continuous perimeter orbit</span>
+                  <strong style="display: block; font-size: 0.85rem; color: #ffffff; font-weight: 800;">Netherflame Border Laser</strong>
+                  <span style="font-size: 0.74rem; color: #94a3b8;">Continuous perimeter orbit</span>
                 </div>
               </div>
 
-              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.05); border: 1px solid rgba(255, 34, 0, 0.2); display: flex; align-items: flex-start; gap: 10px;">
+              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.08); border: 1px solid rgba(255, 34, 0, 0.25); display: flex; align-items: flex-start; gap: 10px;">
                 <span style="font-size: 1.25rem;">🌌</span>
                 <div>
-                  <strong style="display: block; font-size: 0.85rem; color: var(--text-primary); font-weight: 800;">Atmospheric Background</strong>
-                  <span style="font-size: 0.74rem; color: var(--text-muted);">Abyssal battlefield & rising embers</span>
+                  <strong style="display: block; font-size: 0.85rem; color: #ffffff; font-weight: 800;">Atmospheric Background</strong>
+                  <span style="font-size: 0.74rem; color: #94a3b8;">Abyssal battlefield & rising embers</span>
                 </div>
               </div>
 
-              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.05); border: 1px solid rgba(255, 34, 0, 0.2); display: flex; align-items: flex-start; gap: 10px;">
+              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.08); border: 1px solid rgba(255, 34, 0, 0.25); display: flex; align-items: flex-start; gap: 10px;">
                 <span style="font-size: 1.25rem;">🔥</span>
                 <div>
-                  <strong style="display: block; font-size: 0.85rem; color: var(--text-primary); font-weight: 800;">Demonic Soul Chat Crest</strong>
-                  <span style="font-size: 0.74rem; color: var(--text-muted);">Custom chat trigger & halo</span>
+                  <strong style="display: block; font-size: 0.85rem; color: #ffffff; font-weight: 800;">Demonic Soul Chat Crest</strong>
+                  <span style="font-size: 0.74rem; color: #94a3b8;">Custom chat trigger & halo</span>
                 </div>
               </div>
             </div>
@@ -1770,7 +1773,7 @@
 
           <!-- Actions Footer -->
           <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
-            <button type="button" id="cancel-change-skin-btn" class="btn btn-secondary" style="padding: 8px 18px;">
+            <button type="button" id="cancel-change-skin-btn" class="btn btn-secondary" style="padding: 8px 18px; color: #cbd5e1;">
               Close
             </button>
             <button type="button" id="save-change-skin-btn" class="btn btn-primary" style="padding: 9px 24px; font-weight: 800; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.4);">
@@ -1813,13 +1816,13 @@
     document.getElementById('edit-profile-modal')?.remove();
 
     const modalHtml = `
-      <div id="edit-profile-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;">
-        <div class="hud-panel" style="width: 100%; max-width: 500px; padding: 26px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
+      <div id="edit-profile-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.75); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 500px; padding: 26px; border-radius: var(--radius-lg); background: rgba(13, 19, 33, 0.96); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 34, 0, 0.4); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 34, 0, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
-            <div style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: var(--accent-gold);">
+            <div style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: #ff2200;">
               ✏️ Edit Profile
             </div>
-            <button id="close-edit-profile-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+            <button id="close-edit-profile-btn" style="background: transparent; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer;">✕</button>
           </div>
 
           <!-- Quick Skin Vault Link inside Edit Profile -->
@@ -1827,24 +1830,24 @@
             <div style="display: flex; align-items: center; gap: 10px;">
               <div style="font-size: 1.25rem;">🎭</div>
               <div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Hero & Aesthetic Skin</div>
-                <div style="font-size: 0.74rem; color: var(--text-muted);">Banner, Neon Laser, Background & Chat Icon</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #ffffff;">Hero & Aesthetic Skin</div>
+                <div style="font-size: 0.74rem; color: #94a3b8;">Banner, Neon Laser, Background & Chat Icon</div>
               </div>
             </div>
-            <button type="button" id="edit-profile-change-banner-btn" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px; font-weight: 700; border-color: #ff2200; color: #ff2200; background: #ffffff;">
+            <button type="button" id="edit-profile-change-banner-btn" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px; font-weight: 700; border-color: #ff2200; color: #ff5522; background: rgba(15, 23, 42, 0.8);">
               Change Skin
             </button>
           </div>
 
           <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 14px;">
             <div>
-              <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Display Name</label>
+              <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Display Name</label>
               <input type="text" id="edit-profile-name" class="input-control" value="${user.displayName || user.username}" required style="width: 100%;">
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
               <div>
-                <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Gender</label>
+                <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Gender</label>
                 <select id="edit-profile-gender" class="input-control" style="width: 100%;">
                   <option value="Male" ${(user.gender || 'Male') === 'Male' ? 'selected' : ''}>Male</option>
                   <option value="Female" ${(user.gender || '') === 'Female' ? 'selected' : ''}>Female</option>
@@ -1853,7 +1856,7 @@
               </div>
 
               <div>
-                <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Rank Tier</label>
+                <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Rank Tier</label>
                 <select id="edit-profile-rank" class="input-control" style="width: 100%;">
                   ${['Herald', 'Guardian', 'Crusader', 'Archon', 'Legend', 'Ancient', 'Divine V', 'Immortal'].map(r => `
                     <option value="${r}" ${(user.rank || 'Divine V') === r ? 'selected' : ''}>${r}</option>
@@ -1863,13 +1866,13 @@
             </div>
 
             <div>
-              <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Address</label>
+              <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Address</label>
               <input type="text" id="edit-profile-address" class="input-control" value="${user.address || 'Philippines, Metro Manila'}" style="width: 100%;">
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
               <div>
-                <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Region</label>
+                <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Region</label>
                 <select id="edit-profile-region" class="input-control" style="width: 100%;">
                   ${['SEA', 'US East', 'US West', 'Europe West', 'Europe East', 'China', 'South America'].map(reg => `
                     <option value="${reg}" ${(user.region || 'SEA') === reg ? 'selected' : ''}>${reg}</option>
@@ -1878,24 +1881,24 @@
               </div>
 
               <div>
-                <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Dota Friend ID</label>
+                <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Dota Friend ID</label>
                 <input type="text" id="edit-profile-dotaid" class="input-control" value="${user.dotaId || '782910432'}" style="width: 100%;">
               </div>
             </div>
 
             <div>
-              <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Custom Quote / Motto</label>
+              <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Custom Quote / Motto</label>
               <input type="text" id="edit-profile-quote" class="input-control" value="${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}" style="width: 100%;">
             </div>
 
             <div>
-              <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Bio / Biography</label>
+              <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Bio / Biography</label>
               <textarea id="edit-profile-bio" class="input-control" rows="2" style="width: 100%; resize: vertical;">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</textarea>
             </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;">
               <button type="button" class="btn btn-secondary" id="cancel-edit-profile-btn">Cancel</button>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
+              <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.4);">Save Changes</button>
             </div>
           </form>
         </div>
@@ -1961,38 +1964,38 @@
     if (window.Sound) window.Sound.playClick();
 
     const modalHtml = `
-      <div id="legal-info-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
-        <div class="hud-panel" style="width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; padding: 28px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid rgba(226, 232, 240, 0.95); padding-bottom: 12px;">
+      <div id="legal-info-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.75); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; padding: 28px; border-radius: var(--radius-lg); background: rgba(13, 19, 33, 0.96); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 34, 0, 0.4); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 34, 0, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 1.4rem;">🔒</span>
-              <h2 style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: var(--accent-gold); margin: 0;">Privacy Policy</h2>
+              <h2 style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: #ff2200; margin: 0;">Privacy Policy</h2>
             </div>
-            <button id="close-legal-modal-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+            <button id="close-legal-modal-btn" style="background: transparent; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer;">✕</button>
           </div>
 
-          <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; display: flex; flex-direction: column; gap: 14px;">
-            <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Last Updated: August 2026</p>
+          <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; display: flex; flex-direction: column; gap: 14px;">
+            <p style="margin: 0; font-size: 0.85rem; color: #94a3b8;">Last Updated: August 2026</p>
             <div>
-              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">1. Information We Collect</h3>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: #ffffff; margin: 0 0 4px;">1. Information We Collect</h3>
               <p style="margin: 0;">CourierHub collects your account credentials (display name, username, email), region preference, rank tier, in-game roles, bio, and community posts to deliver our matchmaking and team formation services.</p>
             </div>
             <div>
-              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">2. How Your Data is Used</h3>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: #ffffff; margin: 0 0 4px;">2. How Your Data is Used</h3>
               <p style="margin: 0;">Your data is used strictly for lobby organization, party finder coordination, community discussions, and real-time multiplayer notification services.</p>
             </div>
             <div>
-              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">3. Security & Data Protection</h3>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: #ffffff; margin: 0 0 4px;">3. Security & Data Protection</h3>
               <p style="margin: 0;">We protect player records using high-grade encrypted authentication pipelines. We will never sell or distribute your personal gaming information to third-party advertisers.</p>
             </div>
             <div>
-              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">4. Account Control</h3>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: #ffffff; margin: 0 0 4px;">4. Account Control</h3>
               <p style="margin: 0;">You can update your personal information or request account deletion at any time by accessing your profile settings.</p>
             </div>
           </div>
 
-          <div style="margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(226, 232, 240, 0.95); display: flex; justify-content: flex-end;">
-            <button type="button" id="confirm-legal-modal-btn" class="btn btn-primary" style="padding: 9px 24px; font-weight: 700;">Acknowledge & Close</button>
+          <div style="margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: flex-end;">
+            <button type="button" id="confirm-legal-modal-btn" class="btn btn-primary" style="padding: 9px 24px; font-weight: 700; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.4);">Acknowledge & Close</button>
           </div>
         </div>
       </div>
@@ -2011,38 +2014,38 @@
     if (window.Sound) window.Sound.playClick();
 
     const modalHtml = `
-      <div id="legal-info-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
-        <div class="hud-panel" style="width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; padding: 28px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid rgba(226, 232, 240, 0.95); padding-bottom: 12px;">
+      <div id="legal-info-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.75); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; padding: 28px; border-radius: var(--radius-lg); background: rgba(13, 19, 33, 0.96); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 34, 0, 0.4); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 34, 0, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 1.4rem;">📜</span>
-              <h2 style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: var(--accent-gold); margin: 0;">Terms & Conditions</h2>
+              <h2 style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: #ff2200; margin: 0;">Terms & Conditions</h2>
             </div>
-            <button id="close-legal-modal-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+            <button id="close-legal-modal-btn" style="background: transparent; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer;">✕</button>
           </div>
 
-          <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; display: flex; flex-direction: column; gap: 14px;">
-            <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Last Updated: August 2026</p>
+          <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; display: flex; flex-direction: column; gap: 14px;">
+            <p style="margin: 0; font-size: 0.85rem; color: #94a3b8;">Last Updated: August 2026</p>
             <div>
-              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">1. Acceptance of Community Terms</h3>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: #ffffff; margin: 0 0 4px;">1. Acceptance of Community Terms</h3>
               <p style="margin: 0;">By creating a CourierHub account or participating in lobbies and party matches, you agree to uphold our sportsmanship standards and terms of service.</p>
             </div>
             <div>
-              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">2. Fair Play & Competitive Integrity</h3>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: #ffffff; margin: 0 0 4px;">2. Fair Play & Competitive Integrity</h3>
               <p style="margin: 0;">CourierHub strictly prohibits griefing, abusive communications, smurfing, win-trading, and cheating. Violators will face immediate lobby suspensions or permanent account bans.</p>
             </div>
             <div>
-              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">3. Party Finder & Match Participation</h3>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: #ffffff; margin: 0 0 4px;">3. Party Finder & Match Participation</h3>
               <p style="margin: 0;">Players who join competitive parties or Battle Cup stacks agree to show up on schedule and treat fellow party members with respect.</p>
             </div>
             <div>
-              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">4. Valve & Dota 2 Trademarks</h3>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: #ffffff; margin: 0 0 4px;">4. Valve & Dota 2 Trademarks</h3>
               <p style="margin: 0;">Dota 2, Valve Corporation, hero icons, and related game assets are registered trademarks of Valve Corporation. CourierHub is an independent esports community hub.</p>
             </div>
           </div>
 
-          <div style="margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(226, 232, 240, 0.95); display: flex; justify-content: flex-end;">
-            <button type="button" id="confirm-legal-modal-btn" class="btn btn-primary" style="padding: 9px 24px; font-weight: 700;">I Agree & Close</button>
+          <div style="margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: flex-end;">
+            <button type="button" id="confirm-legal-modal-btn" class="btn btn-primary" style="padding: 9px 24px; font-weight: 700; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.4);">I Agree & Close</button>
           </div>
         </div>
       </div>
@@ -2516,16 +2519,7 @@
                   <span style="font-size: 0.95rem; font-weight: 700; color: var(--accent-gold);">${user.rank || 'Divine V'}</span>
                 </div>
 
-                <!-- Divider line above navigation tabs -->
-                <div class="profile-section-divider" style="
-                  width: 100%;
-                  height: 1px;
-                  background: rgba(217, 119, 6, 0.25);
-                  margin: 14px 0 10px;
-                  border: none;
-                "></div>
-
-                <!-- Navigation Tabs below the divider: Your Feed Tab, Community Tab & Party Tab -->
+                <!-- Divider line above navigation tabs -->                <!-- Navigation Tabs below the divider: Your Feed Tab, Community Tab & Party Tab -->
                 <div class="profile-nav-tabs" style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 4px;">
                   <!-- Your Feed Tab (Above Community Tab) -->
                   <button type="button" id="profile-tab-your-feed-btn" class="side-tab-btn active" style="
@@ -2535,22 +2529,22 @@
                     width: 100%;
                     padding: 12px 14px;
                     border-radius: 12px;
-                    background: rgba(245, 158, 11, 0.12);
-                    border: 1px solid rgba(245, 158, 11, 0.35);
-                    color: #b45309;
+                    background: rgba(255, 34, 0, 0.18);
+                    border: 1px solid rgba(255, 34, 0, 0.45);
+                    color: #ff5522;
                     font-size: 0.92rem;
                     font-weight: 700;
                     cursor: pointer;
-                    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08);
+                    box-shadow: 0 4px 14px rgba(255, 34, 0, 0.2);
                     transition: all 0.2s ease;
                   ">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(245, 158, 11, 0.2); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(255, 34, 0, 0.25); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                         📰
                       </div>
                       <span>Your Feed</span>
                     </div>
-                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(245, 158, 11, 0.2); color: #b45309;">Personal</span>
+                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(255, 34, 0, 0.25); color: #ffffff;">Personal</span>
                   </button>
 
                   <!-- Community Tab -->
@@ -2561,22 +2555,22 @@
                     width: 100%;
                     padding: 12px 14px;
                     border-radius: 12px;
-                    background: #ffffff;
-                    border: 1px solid rgba(226, 232, 240, 0.95);
-                    color: var(--text-secondary);
+                    background: rgba(15, 23, 42, 0.85);
+                    border: 1px solid rgba(255, 255, 255, 0.12);
+                    color: #cbd5e1;
                     font-size: 0.92rem;
                     font-weight: 700;
                     cursor: pointer;
-                    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
                     transition: all 0.2s ease;
                   ">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(2, 132, 199, 0.12); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(14, 165, 233, 0.18); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                         💬
                       </div>
                       <span>Community</span>
                     </div>
-                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(2, 132, 199, 0.12); color: var(--mana-blue);">Feed</span>
+                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(14, 165, 233, 0.18); color: #38bdf8;">Feed</span>
                   </button>
 
                   <!-- Party Tab -->
@@ -2587,22 +2581,22 @@
                     width: 100%;
                     padding: 12px 14px;
                     border-radius: 12px;
-                    background: #ffffff;
-                    border: 1px solid rgba(226, 232, 240, 0.95);
-                    color: var(--text-secondary);
+                    background: rgba(15, 23, 42, 0.85);
+                    border: 1px solid rgba(255, 255, 255, 0.12);
+                    color: #cbd5e1;
                     font-size: 0.92rem;
                     font-weight: 700;
                     cursor: pointer;
-                    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
                     transition: all 0.2s ease;
                   ">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(34, 197, 94, 0.12); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(16, 185, 129, 0.18); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                         ⚔️
                       </div>
                       <span>Party</span>
                     </div>
-                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(34, 197, 94, 0.12); color: #16a34a;">Live</span>
+                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(16, 185, 129, 0.18); color: #34d399;">Live</span>
                   </button>
                 </div>
 
@@ -2610,7 +2604,7 @@
                 <div class="profile-section-divider" style="
                   width: 100%;
                   height: 1px;
-                  background: rgba(217, 119, 6, 0.25);
+                  background: rgba(255, 34, 0, 0.3);
                   margin: 14px 0 10px;
                   border: none;
                 "></div>
@@ -2622,32 +2616,32 @@
                     border: none;
                     font-size: 0.76rem;
                     font-weight: 600;
-                    color: var(--text-secondary);
+                    color: #94a3b8;
                     padding: 2px 4px;
                     cursor: pointer;
                     transition: color 0.15s ease;
                     white-space: nowrap;
                     text-decoration: underline;
                     text-underline-offset: 2px;
-                  " onmouseover="this.style.color='var(--accent-gold)';" onmouseout="this.style.color='var(--text-secondary)';">
+                  " onmouseover="this.style.color='#ff5522';" onmouseout="this.style.color='#94a3b8';">
                     Privacy Policy
                   </button>
 
-                  <span style="color: rgba(148, 163, 184, 0.6); font-size: 0.72rem; user-select: none;">•</span>
+                  <span style="color: rgba(148, 163, 184, 0.4); font-size: 0.72rem; user-select: none;">•</span>
 
                   <button type="button" id="profile-terms-conditions-btn" style="
                     background: transparent;
                     border: none;
                     font-size: 0.76rem;
                     font-weight: 600;
-                    color: var(--text-secondary);
+                    color: #94a3b8;
                     padding: 2px 4px;
                     cursor: pointer;
                     transition: color 0.15s ease;
                     white-space: nowrap;
                     text-decoration: underline;
                     text-underline-offset: 2px;
-                  " onmouseover="this.style.color='var(--accent-gold)';" onmouseout="this.style.color='var(--text-secondary)';">
+                  " onmouseover="this.style.color='#ff5522';" onmouseout="this.style.color='#94a3b8';">
                     Terms & Conditions
                   </button>
                 </div>
@@ -2675,7 +2669,7 @@
                   <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.6rem; font-weight: 900; color: #ffffff; margin: 0; letter-spacing: 0.01em; line-height: 1.15; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 24px rgba(0, 0, 0, 0.65);">
                     ${user.displayName || user.username}
                   </h1>
-                  <span class="badge badge-gold" style="font-size: 0.88rem; padding: 5px 14px; font-weight: 800; box-shadow: 0 2px 10px rgba(217, 119, 6, 0.25);">👑 ${user.rank || 'Divine V'}</span>
+                  <span class="badge badge-gold" style="font-size: 0.88rem; padding: 5px 14px; font-weight: 800; box-shadow: 0 2px 10px rgba(255, 34, 0, 0.35);">👑 ${user.rank || 'Divine V'}</span>
                 </div>
 
                 <!-- Customizable Quote on Banner with Transparent Background -->
@@ -2690,11 +2684,11 @@
                   box-shadow: none;
                   position: relative;
                 ">
-                  <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">“</span>
+                  <span style="font-size: 2rem; line-height: 1; color: #ff2200; font-family: Georgia, serif; user-select: none; opacity: 0.95;">“</span>
                   <p id="profile-quote-display" style="font-size: 1.08rem; font-style: italic; color: #f8fafc; line-height: 1.5; margin: 0; font-weight: 600; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);">
                     ${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}
                   </p>
-                  <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">”</span>
+                  <span style="font-size: 2rem; line-height: 1; color: #ff2200; font-family: Georgia, serif; user-select: none; opacity: 0.95;">”</span>
                 </div>
               </div>
 
@@ -2708,16 +2702,16 @@
                 z-index: 10;
               ">
                 <!-- Feed Header -->
-                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
                   <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(245, 158, 11, 0.3);">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 34, 0, 0.18); color: #ff5522; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(255, 34, 0, 0.35);">
                       📰
                     </div>
                     <div>
-                      <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.2;">
+                      <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: #ffffff; margin: 0; line-height: 1.2;">
                         Your Personal Feed
                       </h2>
-                      <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+                      <p style="font-size: 0.82rem; color: #94a3b8; margin: 0;">
                         Personal battle logs, match highlights & shared achievements
                       </p>
                     </div>
@@ -2727,43 +2721,44 @@
 
                 <!-- Your Feed Post Composer Card -->
                 <div class="feed-composer-card" style="
-                  background: #ffffff;
-                  border: 1px solid rgba(226, 232, 240, 0.95);
+                  background: rgba(13, 19, 33, 0.88);
+                  backdrop-filter: blur(16px);
+                  border: 1px solid rgba(255, 255, 255, 0.12);
                   border-radius: var(--radius-lg);
                   padding: 18px 20px;
-                  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+                  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
                 ">
                   <div style="display: flex; gap: 12px; align-items: flex-start;">
-                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid var(--accent-gold); flex-shrink: 0; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);">
+                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
                       ${user.avatar || '👑'}
                     </div>
                     <div style="flex: 1;">
                       <textarea id="your-feed-post-input" placeholder="Share your latest match victory, build strategy, or status update..." rows="2" style="
                         width: 100%;
-                        border: 1px solid rgba(226, 232, 240, 0.95);
+                        border: 1px solid rgba(255, 255, 255, 0.16);
                         border-radius: 10px;
                         padding: 12px 14px;
                         font-size: 0.92rem;
-                        color: var(--text-primary);
-                        background: #f8fafc;
+                        color: #ffffff;
+                        background: rgba(8, 12, 22, 0.85);
                         resize: none;
                         outline: none;
                         font-family: inherit;
                         box-sizing: border-box;
                         transition: all 0.2s ease;
-                      " onfocus="this.style.background='#ffffff'; this.style.borderColor='var(--accent-gold)';" onblur="this.style.background='#f8fafc'; this.style.borderColor='rgba(226, 232, 240, 0.95)';"></textarea>
+                      " onfocus="this.style.background='rgba(15, 23, 42, 0.95)'; this.style.borderColor='#ff2200';" onblur="this.style.background='rgba(8, 12, 22, 0.85)'; this.style.borderColor='rgba(255, 255, 255, 0.16)';"></textarea>
 
                       <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 10px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
-                          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);">Tag:</span>
+                          <span style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1;">Tag:</span>
                           <select id="your-feed-post-tag" style="
                             padding: 6px 12px;
                             border-radius: 8px;
-                            border: 1px solid rgba(226, 232, 240, 0.95);
+                            border: 1px solid rgba(255, 255, 255, 0.18);
                             font-size: 0.82rem;
                             font-weight: 600;
-                            color: var(--text-primary);
-                            background: #ffffff;
+                            color: #ffffff;
+                            background: rgba(8, 12, 22, 0.95);
                             outline: none;
                             cursor: pointer;
                           ">
@@ -2775,7 +2770,7 @@
                           </select>
                         </div>
 
-                        <button type="button" id="your-feed-post-submit-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 6px;">
+                        <button type="button" id="your-feed-post-submit-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 14px rgba(255, 34, 0, 0.35);">
                           🚀 Post to Your Feed
                         </button>
                       </div>
@@ -2800,16 +2795,16 @@
               ">
                 
                 <!-- Feed Header -->
-                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
                   <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(2, 132, 199, 0.12); color: var(--mana-blue); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(2, 132, 199, 0.25);">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(14, 165, 233, 0.18); color: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(14, 165, 233, 0.35);">
                       💬
                     </div>
                     <div>
-                      <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.2;">
+                      <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: #ffffff; margin: 0; line-height: 1.2;">
                         Community News Feed
                       </h2>
-                      <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+                      <p style="font-size: 0.82rem; color: #94a3b8; margin: 0;">
                         Tournament updates, match highlights & player discussions
                       </p>
                     </div>
@@ -2819,43 +2814,44 @@
 
                 <!-- Feed Post Composer Card -->
                 <div class="feed-composer-card" style="
-                  background: #ffffff;
-                  border: 1px solid rgba(226, 232, 240, 0.95);
+                  background: rgba(13, 19, 33, 0.88);
+                  backdrop-filter: blur(16px);
+                  border: 1px solid rgba(255, 255, 255, 0.12);
                   border-radius: var(--radius-lg);
                   padding: 18px 20px;
-                  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+                  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
                 ">
                   <div style="display: flex; gap: 12px; align-items: flex-start;">
-                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid var(--accent-gold); flex-shrink: 0; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);">
+                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
                       ${user.avatar || '👑'}
                     </div>
                     <div style="flex: 1;">
                       <textarea id="feed-post-input" placeholder="What's happening on your Dota 2 journey, ${user.displayName || user.username}? Share match highlights, meta strategies, or party up..." rows="2" style="
                         width: 100%;
-                        border: 1px solid rgba(226, 232, 240, 0.95);
+                        border: 1px solid rgba(255, 255, 255, 0.16);
                         border-radius: 10px;
                         padding: 12px 14px;
                         font-size: 0.92rem;
-                        color: var(--text-primary);
-                        background: #f8fafc;
+                        color: #ffffff;
+                        background: rgba(8, 12, 22, 0.85);
                         resize: none;
                         outline: none;
                         font-family: inherit;
                         box-sizing: border-box;
                         transition: all 0.2s ease;
-                      " onfocus="this.style.background='#ffffff'; this.style.borderColor='var(--accent-gold)';" onblur="this.style.background='#f8fafc'; this.style.borderColor='rgba(226, 232, 240, 0.95)';"></textarea>
+                      " onfocus="this.style.background='rgba(15, 23, 42, 0.95)'; this.style.borderColor='#ff2200';" onblur="this.style.background='rgba(8, 12, 22, 0.85)'; this.style.borderColor='rgba(255, 255, 255, 0.16)';"></textarea>
 
                       <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 10px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
-                          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);">Tag:</span>
+                          <span style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1;">Tag:</span>
                           <select id="feed-post-tag" style="
                             padding: 6px 12px;
                             border-radius: 8px;
-                            border: 1px solid rgba(226, 232, 240, 0.95);
+                            border: 1px solid rgba(255, 255, 255, 0.18);
                             font-size: 0.82rem;
                             font-weight: 600;
-                            color: var(--text-primary);
-                            background: #ffffff;
+                            color: #ffffff;
+                            background: rgba(8, 12, 22, 0.95);
                             outline: none;
                             cursor: pointer;
                           ">
@@ -2867,7 +2863,7 @@
                           </select>
                         </div>
 
-                        <button type="button" id="feed-post-submit-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 6px;">
+                        <button type="button" id="feed-post-submit-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 14px rgba(255, 34, 0, 0.35);">
                           🚀 Publish Post
                         </button>
                       </div>
@@ -2886,21 +2882,21 @@
               <div id="home-party-tab-view" style="margin-top: 32px; display: none; flex-direction: column; gap: 20px; position: relative; z-index: 10;">
                 
                 <!-- Party Finder Header -->
-                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
                   <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(34, 197, 94, 0.12); color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(34, 197, 94, 0.25);">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(16, 185, 129, 0.18); color: #34d399; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(16, 185, 129, 0.35);">
                       ⚔️
                     </div>
                     <div>
-                      <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.2;">
+                      <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: #ffffff; margin: 0; line-height: 1.2;">
                         Party Finder & Squad Lobby
                       </h2>
-                      <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+                      <p style="font-size: 0.82rem; color: #94a3b8; margin: 0;">
                         Find competitive teammates, Battle Cup stacks & casual parties
                       </p>
                     </div>
                   </div>
-                  <button type="button" id="create-party-request-btn" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.84rem; font-weight: 700;">
+                  <button type="button" id="create-party-request-btn" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.84rem; font-weight: 700; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 14px rgba(255, 34, 0, 0.35);">
                     + Create Party
                   </button>
                 </div>
@@ -2927,10 +2923,10 @@
       const parties = Store.state.partyFinder || [];
       if (parties.length === 0) {
         partyContainer.innerHTML = `
-          <div style="text-align: center; padding: 40px 20px; background: #ffffff; border-radius: var(--radius-lg); border: 1px solid rgba(226, 232, 240, 0.95);">
+          <div style="text-align: center; padding: 40px 20px; background: rgba(13, 19, 33, 0.88); backdrop-filter: blur(16px); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.12);">
             <div style="font-size: 2.5rem; margin-bottom: 8px;">⚔️</div>
-            <div style="font-weight: 700; color: var(--text-primary);">No active parties right now</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Click "+ Create Party" to recruit players for your stack!</div>
+            <div style="font-weight: 700; color: #ffffff;">No active parties right now</div>
+            <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">Click "+ Create Party" to recruit players for your stack!</div>
           </div>
         `;
         return;
@@ -2938,11 +2934,12 @@
 
       partyContainer.innerHTML = parties.map(party => `
         <div class="party-card" style="
-          background: #ffffff;
-          border: 1px solid rgba(226, 232, 240, 0.95);
+          background: rgba(13, 19, 33, 0.88);
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: var(--radius-lg);
           padding: 18px 20px;
-          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -2950,26 +2947,26 @@
           flex-wrap: wrap;
         ">
           <div style="display: flex; align-items: center; gap: 14px; min-width: 240px;">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid var(--accent-gold); flex-shrink: 0;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
               ${party.avatar || '👑'}
             </div>
             <div>
               <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                <span style="font-weight: 800; color: var(--text-primary); font-size: 1rem;">${party.leader}'s Stack</span>
+                <span style="font-weight: 800; color: #ffffff; font-size: 1rem;">${party.leader}'s Stack</span>
                 <span class="badge badge-gold" style="font-size: 0.72rem; padding: 2px 7px;">${party.rank || 'Divine'}</span>
-                <span style="font-size: 0.74rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(2, 132, 199, 0.1); color: var(--mana-blue);">${party.region || 'SEA'}</span>
+                <span style="font-size: 0.74rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(14, 165, 233, 0.18); color: #38bdf8;">${party.region || 'SEA'}</span>
               </div>
-              <div style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 2px; font-weight: 600;">
-                Mode: <span style="color: var(--text-primary);">${party.mode}</span>
+              <div style="font-size: 0.84rem; color: #cbd5e1; margin-top: 2px; font-weight: 600;">
+                Mode: <span style="color: #ffffff;">${party.mode}</span>
               </div>
             </div>
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 200px;">
-            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Roles Needed:</div>
+            <div style="font-size: 0.78rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;">Roles Needed:</div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap;">
               ${(party.rolesNeeded || ['Any Role']).map(r => `
-                <span style="font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #f1f5f9; color: var(--text-primary); border: 1px solid rgba(226, 232, 240, 0.9);">
+                <span style="font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgba(30, 41, 59, 0.8); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.12);">
                   ${r}
                 </span>
               `).join('')}
@@ -2978,20 +2975,20 @@
 
           <div style="display: flex; align-items: center; gap: 14px;">
             <div style="text-align: right;">
-              <div style="font-size: 0.95rem; font-weight: 800; color: ${party.currentMembers >= party.maxMembers ? '#ef4444' : '#16a34a'};">
+              <div style="font-size: 0.95rem; font-weight: 800; color: ${party.currentMembers >= party.maxMembers ? '#ef4444' : '#34d399'};">
                 ${party.currentMembers}/${party.maxMembers}
               </div>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">Slots Filled</div>
+              <div style="font-size: 0.72rem; color: #94a3b8;">Slots Filled</div>
             </div>
 
-            <button type="button" class="join-party-action-btn btn btn-primary" data-party-id="${party.id}" ${party.currentMembers >= party.maxMembers ? 'disabled' : ''} style="padding: 8px 16px; font-size: 0.84rem; font-weight: 700;">
+            <button type="button" class="join-party-action-btn btn btn-primary" data-party-id="${party.id}" ${party.currentMembers >= party.maxMembers ? 'disabled' : ''} style="padding: 8px 16px; font-size: 0.84rem; font-weight: 700; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 14px rgba(255, 34, 0, 0.35);">
               ${party.currentMembers >= party.maxMembers ? 'Full' : '🎮 Join Party'}
             </button>
           </div>
         </div>
       `).join('');
 
-// Attach join party handlers
+      // Attach join party handlers
       partyContainer.querySelectorAll('.join-party-action-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const partyId = btn.getAttribute('data-party-id');
@@ -3019,15 +3016,15 @@
       [yourFeedTabBtn, communityTabBtn, partyTabBtn].forEach(btn => {
         if (!btn) return;
         if (btn === activeBtn) {
-          btn.style.background = 'rgba(245, 158, 11, 0.12)';
-          btn.style.borderColor = 'rgba(245, 158, 11, 0.35)';
-          btn.style.color = '#b45309';
-          btn.style.boxShadow = '0 2px 8px rgba(245, 158, 11, 0.08)';
+          btn.style.background = 'rgba(255, 34, 0, 0.18)';
+          btn.style.borderColor = 'rgba(255, 34, 0, 0.45)';
+          btn.style.color = '#ff5522';
+          btn.style.boxShadow = '0 4px 14px rgba(255, 34, 0, 0.2)';
         } else {
-          btn.style.background = '#ffffff';
-          btn.style.borderColor = 'rgba(226, 232, 240, 0.95)';
-          btn.style.color = 'var(--text-secondary)';
-          btn.style.boxShadow = '0 2px 6px rgba(15, 23, 42, 0.03)';
+          btn.style.background = 'rgba(15, 23, 42, 0.85)';
+          btn.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+          btn.style.color = '#cbd5e1';
+          btn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
         }
       });
     };
@@ -3070,11 +3067,12 @@
       const commentsCount = (post.comments || []).length;
       return `
         <div class="feed-post-card" style="
-          background: #ffffff;
-          border: 1px solid rgba(226, 232, 240, 0.95);
+          background: rgba(13, 19, 33, 0.88);
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: var(--radius-lg);
           padding: 20px;
-          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
           display: flex;
           flex-direction: column;
           gap: 14px;
@@ -3082,27 +3080,27 @@
           <!-- Post Author Header -->
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-              <div style="width: 42px; height: 42px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; border: 2px solid var(--accent-gold); flex-shrink: 0;">
+              <div style="width: 42px; height: 42px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
                 ${post.authorAvatar || '👑'}
               </div>
               <div>
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                  <span style="font-weight: 800; color: var(--text-primary); font-size: 0.98rem;">${post.authorName}</span>
-                  ${post.badge ? `<span style="font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: rgba(245, 158, 11, 0.15); color: #b45309;">${post.badge}</span>` : ''}
+                  <span style="font-weight: 800; color: #ffffff; font-size: 0.98rem;">${post.authorName}</span>
+                  ${post.badge ? `<span style="font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: rgba(255, 34, 0, 0.18); color: #ff5522;">${post.badge}</span>` : ''}
                   <span class="badge badge-gold" style="font-size: 0.72rem; padding: 1px 6px;">${post.authorRank || 'Divine'}</span>
                 </div>
-                <div style="font-size: 0.76rem; color: var(--text-muted); margin-top: 1px;">
+                <div style="font-size: 0.76rem; color: #94a3b8; margin-top: 1px;">
                   ${post.timestamp}
                 </div>
               </div>
             </div>
 
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 0.76rem; font-weight: 700; padding: 3px 9px; border-radius: 6px; background: #f1f5f9; color: var(--text-secondary); border: 1px solid rgba(226, 232, 240, 0.9);">
+              <span style="font-size: 0.76rem; font-weight: 700; padding: 3px 9px; border-radius: 6px; background: rgba(30, 41, 59, 0.8); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.12);">
                 ${post.tag || 'Discussion'}
               </span>
               ${isPersonalFeed ? `
-                <button type="button" class="feed-delete-btn" data-post-id="${post.id}" title="Delete Post" style="background: transparent; border: none; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; padding: 4px;" onmouseover="this.style.color='#ef4444';" onmouseout="this.style.color='var(--text-muted)';">
+                <button type="button" class="feed-delete-btn" data-post-id="${post.id}" title="Delete Post" style="background: transparent; border: none; font-size: 0.85rem; color: #94a3b8; cursor: pointer; padding: 4px;" onmouseover="this.style.color='#ef4444';" onmouseout="this.style.color='#94a3b8';">
                   🗑️
                 </button>
               ` : ''}
@@ -3110,16 +3108,16 @@
           </div>
 
           <!-- Post Text Content -->
-          <div style="color: var(--text-primary); font-size: 0.94rem; line-height: 1.6; white-space: pre-wrap;">${post.content}</div>
+          <div style="color: #f8fafc; font-size: 0.94rem; line-height: 1.6; white-space: pre-wrap;">${post.content}</div>
 
           <!-- Post Actions (Like, Comment, Share) -->
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(226, 232, 240, 0.8); margin-top: 2px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 2px;">
             <div style="display: flex; align-items: center; gap: 16px;">
               <!-- Like Button -->
               <button type="button" class="feed-like-btn" data-post-id="${post.id}" style="
-                background: ${isLiked ? 'rgba(239, 68, 68, 0.1)' : 'transparent'};
-                border: 1px solid ${isLiked ? 'rgba(239, 68, 68, 0.3)' : 'transparent'};
-                color: ${isLiked ? '#ef4444' : 'var(--text-secondary)'};
+                background: ${isLiked ? 'rgba(239, 68, 68, 0.18)' : 'transparent'};
+                border: 1px solid ${isLiked ? 'rgba(239, 68, 68, 0.35)' : 'transparent'};
+                color: ${isLiked ? '#ef4444' : '#cbd5e1'};
                 padding: 6px 12px;
                 border-radius: 8px;
                 font-size: 0.86rem;
@@ -3137,7 +3135,7 @@
               <button type="button" class="feed-comment-toggle-btn" data-post-id="${post.id}" style="
                 background: transparent;
                 border: 1px solid transparent;
-                color: var(--text-secondary);
+                color: #cbd5e1;
                 padding: 6px 12px;
                 border-radius: 8px;
                 font-size: 0.86rem;
@@ -3156,7 +3154,7 @@
             <button type="button" class="feed-share-btn" data-post-id="${post.id}" style="
               background: transparent;
               border: none;
-              color: var(--text-muted);
+              color: #94a3b8;
               padding: 6px 10px;
               font-size: 0.84rem;
               font-weight: 600;
@@ -3170,17 +3168,17 @@
           </div>
 
           <!-- Comments Expandable Container -->
-          <div id="comments-section-${post.id}" class="feed-comments-container" style="display: none; padding-top: 10px; border-top: 1px dashed rgba(226, 232, 240, 0.9); flex-direction: column; gap: 10px;">
+          <div id="comments-section-${post.id}" class="feed-comments-container" style="display: none; padding-top: 10px; border-top: 1px dashed rgba(255, 255, 255, 0.15); flex-direction: column; gap: 10px;">
             <div class="comments-list" style="display: flex; flex-direction: column; gap: 8px;">
               ${(post.comments || []).map(c => `
-                <div style="display: flex; gap: 10px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; font-size: 0.88rem;">
+                <div style="display: flex; gap: 10px; background: rgba(10, 15, 26, 0.85); padding: 10px 12px; border-radius: 8px; font-size: 0.88rem; border: 1px solid rgba(255, 255, 255, 0.08);">
                   <div style="font-size: 1.1rem; flex-shrink: 0;">${c.avatar || '⚔️'}</div>
                   <div style="flex: 1;">
                     <div style="display: flex; align-items: center; justify-content: space-between;">
-                      <span style="font-weight: 700; color: var(--text-primary);">${c.author}</span>
-                      <span style="font-size: 0.72rem; color: var(--text-muted);">${c.timestamp || 'Just now'}</span>
+                      <span style="font-weight: 700; color: #ffffff;">${c.author}</span>
+                      <span style="font-size: 0.72rem; color: #94a3b8;">${c.timestamp || 'Just now'}</span>
                     </div>
-                    <p style="margin: 2px 0 0; color: var(--text-secondary); line-height: 1.4;">${c.text}</p>
+                    <p style="margin: 2px 0 0; color: #cbd5e1; line-height: 1.4;">${c.text}</p>
                   </div>
                 </div>
               `).join('')}
@@ -3190,15 +3188,16 @@
             <div style="display: flex; gap: 8px; margin-top: 6px;">
               <input type="text" id="comment-input-${post.id}" placeholder="Write a reply..." style="
                 flex: 1;
-                border: 1px solid rgba(226, 232, 240, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.18);
                 border-radius: 8px;
                 padding: 8px 12px;
                 font-size: 0.86rem;
-                color: var(--text-primary);
+                color: #ffffff;
+                background: rgba(8, 12, 22, 0.9);
                 outline: none;
-                background: #ffffff;
+                box-sizing: border-box;
               " />
-              <button type="button" class="feed-submit-comment-btn btn btn-primary" data-post-id="${post.id}" style="padding: 8px 14px; font-size: 0.82rem; font-weight: 700; border-radius: 8px;">
+              <button type="button" class="feed-submit-comment-btn btn btn-primary" data-post-id="${post.id}" style="padding: 6px 14px; font-size: 0.84rem; font-weight: 700; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none;">
                 Reply
               </button>
             </div>
