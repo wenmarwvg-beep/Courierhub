@@ -1238,45 +1238,19 @@
             }).join('')}
           </div>
 
-          <!-- Chat Input Footer -->
+          <!-- Apple-Style Messages Input Footer -->
           <div style="
             padding: 10px 14px;
-            background: rgba(13, 19, 33, 0.98);
+            background: rgba(10, 16, 28, 0.96);
+            backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            gap: 8px;
-            align-items: center;
           ">
-            <input type="text" id="chat-direct-input" placeholder="Message ${openFriend.name}..." style="
-              flex: 1;
-              border: 1px solid rgba(255, 255, 255, 0.18);
-              border-radius: 20px;
-              padding: 9px 14px;
-              font-size: 0.88rem;
-              color: #ffffff;
-              background: rgba(8, 12, 22, 0.9);
-              outline: none;
-              font-family: inherit;
-              box-sizing: border-box;
-            " autocomplete="off" />
-
-            <button type="button" id="chat-direct-send-btn" style="
-              width: 36px;
-              height: 36px;
-              border-radius: 50%;
-              background: linear-gradient(135deg, #ff2200 0%, #d97706 100%);
-              color: #ffffff;
-              border: none;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 1rem;
-              cursor: pointer;
-              box-shadow: 0 3px 10px rgba(255, 34, 0, 0.4);
-              flex-shrink: 0;
-            ">
-              🚀
-            </button>
+            <div class="apple-input-capsule">
+              <input type="text" id="chat-direct-input" class="apple-input-field" placeholder="iMessage • ${openFriend.name}..." autocomplete="off" />
+              <button type="button" id="chat-direct-send-btn" class="apple-send-circle-btn" title="Send message">
+                ${Icons.send}
+              </button>
+            </div>
           </div>
         </div>
       `;
@@ -2365,18 +2339,18 @@
               “${target.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}”
             </div>
 
-            <!-- Social Action Buttons (Follow, Add Friend, Message) -->
+            <!-- Social Action Buttons (Apple-Style Follow, Add Friend, Message) -->
             <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto; padding-top: 6px;">
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button type="button" id="card-follow-toggle-btn" class="${isFollowing ? 'btn-card-following' : 'btn-card-follow'}">
-                  ${isFollowing ? '✓ Following' : '➕ Follow'}
+                <button type="button" id="card-follow-toggle-btn" class="${isFollowing ? 'btn-card-following' : 'btn-card-follow'}" style="border-radius: 9999px;">
+                  ${isFollowing ? Icons.check : Icons.plus} <span>${isFollowing ? 'Following' : 'Follow'}</span>
                 </button>
-                <button type="button" id="card-friend-toggle-btn" class="${isFriend ? 'btn-card-friends-active' : 'btn-card-friend'}">
-                  ${isFriend ? '🤝 Friends' : '➕ Add Friend'}
+                <button type="button" id="card-friend-toggle-btn" class="${isFriend ? 'btn-card-friends-active' : 'btn-card-friend'}" style="border-radius: 9999px;">
+                  ${isFriend ? Icons.userCheck : Icons.userPlus} <span>${isFriend ? 'Friends' : 'Add Friend'}</span>
                 </button>
               </div>
-              <button type="button" id="card-direct-message-btn" class="btn btn-secondary" style="padding: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; border-color: rgba(255, 34, 0, 0.4); color: #ffffff;">
-                💬 Send Message
+              <button type="button" id="card-direct-message-btn" class="apple-capsule-btn" style="width: 100%; padding: 9px; font-weight: 700; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2);">
+                ${Icons.chatBubble} <span>Send Message</span>
               </button>
             </div>
           </div>
@@ -3300,8 +3274,8 @@
                           </select>
                         </div>
 
-                        <button type="button" id="your-feed-post-submit-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 14px rgba(255, 34, 0, 0.35);">
-                          🚀 Post to Your Feed
+                        <button type="button" id="your-feed-post-submit-btn" class="apple-capsule-btn">
+                          ${Icons.send} <span>Post to Your Feed</span>
                         </button>
                       </div>
                     </div>
@@ -3386,8 +3360,8 @@
                           </select>
                         </div>
 
-                        <button type="button" id="feed-post-submit-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 14px rgba(255, 34, 0, 0.35);">
-                          🚀 Publish Post
+                        <button type="button" id="feed-post-submit-btn" class="apple-capsule-btn">
+                          ${Icons.send} <span>Publish Post</span>
                         </button>
                       </div>
                     </div>
@@ -3628,60 +3602,23 @@
           <!-- Post Text Content -->
           <div style="color: #f8fafc; font-size: 0.94rem; line-height: 1.6; white-space: pre-wrap;">${post.content}</div>
 
-          <!-- Post Actions (Like, Comment, Share) -->
+          <!-- Post Actions (Apple-style Like, Comment, Share) -->
           <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 2px;">
-            <div style="display: flex; align-items: center; gap: 16px;">
-              <!-- Like Button -->
-              <button type="button" class="feed-like-btn" data-post-id="${post.id}" style="
-                background: ${isLiked ? 'rgba(239, 68, 68, 0.18)' : 'transparent'};
-                border: 1px solid ${isLiked ? 'rgba(239, 68, 68, 0.35)' : 'transparent'};
-                color: ${isLiked ? '#ef4444' : '#cbd5e1'};
-                padding: 6px 12px;
-                border-radius: 8px;
-                font-size: 0.86rem;
-                font-weight: 700;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                transition: all 0.15s ease;
-              ">
-                ${isLiked ? '❤️' : '🤍'} <span>${post.likes || 0}</span> GG
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <!-- Apple Like Button -->
+              <button type="button" class="feed-like-btn apple-pill-action ${isLiked ? 'is-liked' : ''}" data-post-id="${post.id}">
+                ${isLiked ? Icons.heartFilled : Icons.heart} <span>${post.likes || 0}</span> GG
               </button>
 
-              <!-- Comment Toggle Button -->
-              <button type="button" class="feed-comment-toggle-btn" data-post-id="${post.id}" style="
-                background: transparent;
-                border: 1px solid transparent;
-                color: #cbd5e1;
-                padding: 6px 12px;
-                border-radius: 8px;
-                font-size: 0.86rem;
-                font-weight: 700;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                transition: all 0.15s ease;
-              ">
-                💬 <span>${commentsCount}</span> Comments
+              <!-- Apple Comment Toggle Button -->
+              <button type="button" class="feed-comment-toggle-btn apple-pill-action" data-post-id="${post.id}">
+                ${Icons.comment} <span>${commentsCount}</span> Comments
               </button>
             </div>
 
-            <!-- Share Button -->
-            <button type="button" class="feed-share-btn" data-post-id="${post.id}" style="
-              background: transparent;
-              border: none;
-              color: #94a3b8;
-              padding: 6px 10px;
-              font-size: 0.84rem;
-              font-weight: 600;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              gap: 4px;
-            ">
-              🔗 Share
+            <!-- Apple Share Button -->
+            <button type="button" class="feed-share-btn apple-pill-action" data-post-id="${post.id}">
+              ${Icons.share} <span>Share</span>
             </button>
           </div>
 
@@ -3689,7 +3626,7 @@
           <div id="comments-section-${post.id}" class="feed-comments-container" style="display: none; padding-top: 10px; border-top: 1px dashed rgba(255, 255, 255, 0.15); flex-direction: column; gap: 10px;">
             <div class="comments-list" style="display: flex; flex-direction: column; gap: 8px;">
               ${(post.comments || []).map(c => `
-                <div style="display: flex; gap: 10px; background: rgba(10, 15, 26, 0.85); padding: 10px 12px; border-radius: 8px; font-size: 0.88rem; border: 1px solid rgba(255, 255, 255, 0.08);">
+                <div style="display: flex; gap: 10px; background: rgba(10, 15, 26, 0.85); padding: 10px 12px; border-radius: 12px; font-size: 0.88rem; border: 1px solid rgba(255, 255, 255, 0.08);">
                   <div class="user-profile-card-trigger clickable-player-trigger" data-author-name="${c.author}" title="Click to view ${c.author}'s Profile Card" style="width: 28px; height: 28px; border-radius: 50%; background: #0f172a; padding: 1.5px; box-sizing: border-box; overflow: hidden; border: 1px solid #ff2200; flex-shrink: 0; cursor: pointer;">
                     ${renderAvatarHTML(c.avatar || 'assets/avatar-shadow-fiend.jpg')}
                   </div>
@@ -3704,21 +3641,11 @@
               `).join('')}
             </div>
 
-            <!-- Add Comment Input Box -->
-            <div style="display: flex; gap: 8px; margin-top: 6px;">
-              <input type="text" id="comment-input-${post.id}" placeholder="Write a reply..." style="
-                flex: 1;
-                border: 1px solid rgba(255, 255, 255, 0.18);
-                border-radius: 8px;
-                padding: 8px 12px;
-                font-size: 0.86rem;
-                color: #ffffff;
-                background: rgba(8, 12, 22, 0.9);
-                outline: none;
-                box-sizing: border-box;
-              " />
-              <button type="button" class="feed-submit-comment-btn btn btn-primary" data-post-id="${post.id}" style="padding: 6px 14px; font-size: 0.84rem; font-weight: 700; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none;">
-                Reply
+            <!-- Apple-Style Comment Input Capsule -->
+            <div class="apple-input-capsule" style="margin-top: 6px;">
+              <input type="text" id="comment-input-${post.id}" class="apple-input-field" placeholder="Reply to ${post.authorName}..." />
+              <button type="button" class="feed-submit-comment-btn apple-send-circle-btn" data-post-id="${post.id}" title="Send reply">
+                ${Icons.send}
               </button>
             </div>
           </div>
