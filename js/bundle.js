@@ -153,6 +153,60 @@
         ],
         lobbies: [],
         communityMessages: [],
+        communityPosts: [
+          {
+            id: 'post_tourney_season3',
+            authorId: 'user_wenmar_master',
+            authorName: 'wenmar',
+            authorAvatar: '👑',
+            authorRank: 'Divine V',
+            badge: 'Founder',
+            timestamp: 'Just now',
+            tag: 'Tournament',
+            tagColor: 'var(--accent-gold)',
+            content: '🏆 CourierHub SEA Championship Season 3 registration is officially OPEN! Assemble your 5-man squad. Match schedule and brackets will be streamed live. Divine & Immortal divisions will have exclusive rewards!',
+            likes: 28,
+            likedByMe: true,
+            comments: [
+              { author: 'MiranaShadow', avatar: '🏹', text: 'Our team is locked in! Signed up for SEA Div 1.', timestamp: '15 mins ago' },
+              { author: 'InvokerPro', avatar: '⚡', text: 'Looking for a Pos 5 support player for the tournament.', timestamp: '5 mins ago' }
+            ]
+          },
+          {
+            id: 'post_meta_736c',
+            authorId: 'user_valvedota',
+            authorName: 'CourierHub Meta Bot',
+            authorAvatar: '🤖',
+            authorRank: 'Immortal',
+            badge: 'News',
+            timestamp: '3 hours ago',
+            tag: 'Patch 7.36c Analysis',
+            tagColor: 'var(--mana-blue)',
+            content: '📊 Patch 7.36c Meta Breakdown: Facet adjustments have boosted Ringmaster and Shadow Fiend win rates by +4.8% in high MMR SEA brackets. What are your favorite facet builds right now?',
+            likes: 45,
+            likedByMe: false,
+            comments: [
+              { author: 'JuggernautSlash', avatar: '⚔️', text: 'The blade fury facet is super strong with swift blink right now.', timestamp: '2 hours ago' }
+            ]
+          },
+          {
+            id: 'post_battlecup_prep',
+            authorId: 'user_phantom_assassin',
+            authorName: 'ShadowAssassin',
+            authorAvatar: '🗡️',
+            authorRank: 'Ancient IV',
+            badge: 'LFP',
+            timestamp: '6 hours ago',
+            tag: 'Looking for Party',
+            tagColor: 'var(--radiant-green)',
+            content: '⚔️ Tier 7 SEA Battle Cup tonight at 8:00 PM GMT+8! Need 1 Offlane Pos 3 and 1 Pos 4 Roamer. English/Tagalog mic, PMA only. Drop your Dota IDs below!',
+            likes: 19,
+            likedByMe: false,
+            comments: [
+              { author: 'EarthShakerSlam', avatar: '💥', text: 'Pos 4 Earthshaker / Tusk ready! Added you.', timestamp: '4 hours ago' }
+            ]
+          }
+        ],
         partyFinder: [],
         statsOverview: { totalMembers: 1, onlineNow: 1, activeLobbies: 0, partyQueue: 0 }
       };
@@ -1121,40 +1175,394 @@
               </div>
             </div>
 
-            <!-- Right Column ON THE BANNER Beside the Rectangle Avatar: Name and Customizable Quote -->
-            <div class="profile-beside-content" style="flex: 1; min-width: 280px; margin-top: -135px; position: relative; z-index: 10; display: flex; flex-direction: column; gap: 12px;">
-              <!-- Name of the User on Banner -->
-              <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
-                <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.6rem; font-weight: 900; color: #0f172a; margin: 0; letter-spacing: 0.01em; line-height: 1.15; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);">
-                  ${user.displayName || user.username}
-                </h1>
-                <span class="badge badge-gold" style="font-size: 0.88rem; padding: 5px 14px; font-weight: 800; box-shadow: 0 2px 10px rgba(217, 119, 6, 0.25);">👑 ${user.rank || 'Divine V'}</span>
+            <!-- Right Column: Banner Overlay (Name & Quote) + Community News Feed Below -->
+            <div class="profile-right-column" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 24px;">
+              
+              <!-- Banner Overlay Section (Name & Transparent Quote on the Banner) -->
+              <div class="profile-banner-beside-content" style="margin-top: -135px; position: relative; z-index: 10; display: flex; flex-direction: column; gap: 12px;">
+                <!-- Name of the User on Banner -->
+                <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                  <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.6rem; font-weight: 900; color: #0f172a; margin: 0; letter-spacing: 0.01em; line-height: 1.15; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);">
+                    ${user.displayName || user.username}
+                  </h1>
+                  <span class="badge badge-gold" style="font-size: 0.88rem; padding: 5px 14px; font-weight: 800; box-shadow: 0 2px 10px rgba(217, 119, 6, 0.25);">👑 ${user.rank || 'Divine V'}</span>
+                </div>
+
+                <!-- Customizable Quote on Banner with Transparent Background -->
+                <div class="profile-quote-card" style="
+                  display: flex;
+                  align-items: flex-start;
+                  gap: 8px;
+                  background: transparent;
+                  border: none;
+                  padding: 2px 0 0;
+                  max-width: 660px;
+                  box-shadow: none;
+                  position: relative;
+                ">
+                  <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">“</span>
+                  <p id="profile-quote-display" style="font-size: 1.08rem; font-style: italic; color: #1e293b; line-height: 1.5; margin: 0; font-weight: 600; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">
+                    ${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}
+                  </p>
+                  <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">”</span>
+                </div>
               </div>
 
-              <!-- Customizable Quote on Banner with Transparent Background -->
-              <div class="profile-quote-card" style="
-                display: flex;
-                align-items: flex-start;
-                gap: 8px;
-                background: transparent;
-                border: none;
-                padding: 2px 0 0;
-                max-width: 660px;
-                box-shadow: none;
-                position: relative;
-              ">
-                <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">“</span>
-                <p id="profile-quote-display" style="font-size: 1.08rem; font-style: italic; color: #1e293b; line-height: 1.5; margin: 0; font-weight: 600; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">
-                  ${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}
-                </p>
-                <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">”</span>
+              <!-- COMMUNITY NEWS FEED AREA (Below Banner & Beside Left Column) -->
+              <div class="community-news-feed-area" style="margin-top: 8px; display: flex; flex-direction: column; gap: 20px;">
+                
+                <!-- Feed Header -->
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(245, 158, 11, 0.12); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(245, 158, 11, 0.25);">
+                      📰
+                    </div>
+                    <div>
+                      <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.2;">
+                        Community News Feed
+                      </h2>
+                      <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+                        Tournament updates, match highlights & player discussions
+                      </p>
+                    </div>
+                  </div>
+                  <span class="badge badge-gold" style="font-size: 0.78rem; padding: 4px 10px; font-weight: 700;">🔴 LIVE FEED</span>
+                </div>
+
+                <!-- Feed Post Composer Card -->
+                <div class="feed-composer-card" style="
+                  background: #ffffff;
+                  border: 1px solid rgba(226, 232, 240, 0.95);
+                  border-radius: var(--radius-lg);
+                  padding: 18px 20px;
+                  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+                ">
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid var(--accent-gold); flex-shrink: 0; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);">
+                      ${user.avatar || '👑'}
+                    </div>
+                    <div style="flex: 1;">
+                      <textarea id="feed-post-input" placeholder="What's happening on your Dota 2 journey, ${user.displayName || user.username}? Share match highlights, meta strategies, or party up..." rows="2" style="
+                        width: 100%;
+                        border: 1px solid rgba(226, 232, 240, 0.95);
+                        border-radius: 10px;
+                        padding: 12px 14px;
+                        font-size: 0.92rem;
+                        color: var(--text-primary);
+                        background: #f8fafc;
+                        resize: none;
+                        outline: none;
+                        font-family: inherit;
+                        box-sizing: border-box;
+                        transition: all 0.2s ease;
+                      " onfocus="this.style.background='#ffffff'; this.style.borderColor='var(--accent-gold)';" onblur="this.style.background='#f8fafc'; this.style.borderColor='rgba(226, 232, 240, 0.95)';"></textarea>
+
+                      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);">Tag:</span>
+                          <select id="feed-post-tag" style="
+                            padding: 6px 12px;
+                            border-radius: 8px;
+                            border: 1px solid rgba(226, 232, 240, 0.95);
+                            font-size: 0.82rem;
+                            font-weight: 600;
+                            color: var(--text-primary);
+                            background: #ffffff;
+                            outline: none;
+                            cursor: pointer;
+                          ">
+                            <option value="Tournament">🏆 Tournament</option>
+                            <option value="Match Highlight">⚡ Match Highlight</option>
+                            <option value="Looking for Party">⚔️ Looking for Party</option>
+                            <option value="Strategy & Meta">📜 Strategy & Meta</option>
+                            <option value="Discussion">💬 Discussion</option>
+                          </select>
+                        </div>
+
+                        <button type="button" id="feed-post-submit-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 6px;">
+                          🚀 Publish Post
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Feed Posts List Container -->
+                <div id="community-feed-list" style="display: flex; flex-direction: column; gap: 16px;">
+                  <!-- Dynamic Feed Posts populated by renderCommunityFeedPosts() -->
+                </div>
+
               </div>
+
             </div>
 
           </div>
         </div>
       </div>
     `;
+
+    // Function to render community feed posts
+    const renderCommunityFeedPosts = () => {
+      const feedList = document.getElementById('community-feed-list');
+      if (!feedList) return;
+
+      const posts = Store.state.communityPosts || [];
+      if (posts.length === 0) {
+        feedList.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; background: #ffffff; border-radius: var(--radius-lg); border: 1px solid rgba(226, 232, 240, 0.95);">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">🎮</div>
+            <div style="font-weight: 700; color: var(--text-primary);">No posts yet</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Be the first hero to share a post on CourierHub!</div>
+          </div>
+        `;
+        return;
+      }
+
+      feedList.innerHTML = posts.map(post => {
+        const isLiked = !!post.likedByMe;
+        const commentsCount = (post.comments || []).length;
+        const tagColor = post.tag === 'Tournament' ? 'var(--accent-gold)' : post.tag === 'Match Highlight' ? '#ef4444' : post.tag === 'Looking for Party' ? 'var(--radiant-green)' : 'var(--mana-blue)';
+
+        return `
+          <div class="feed-post-card" id="post-card-${post.id}" style="
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+          ">
+            <!-- Post Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 42px; height: 42px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; border: 2px solid ${tagColor}; flex-shrink: 0;">
+                  ${post.authorAvatar || '👑'}
+                </div>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <span style="font-weight: 800; color: var(--text-primary); font-size: 0.98rem;">${post.authorName}</span>
+                    <span class="badge badge-gold" style="font-size: 0.72rem; padding: 2px 8px; font-weight: 700;">${post.authorRank || 'Divine V'}</span>
+                    ${post.badge ? `<span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: rgba(245, 158, 11, 0.15); color: #b45309;">${post.badge}</span>` : ''}
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 1px;">
+                    ${post.timestamp} • Public
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tag Pill -->
+              <span style="font-size: 0.78rem; font-weight: 700; color: ${tagColor}; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.2); padding: 4px 10px; border-radius: 20px;">
+                #${post.tag || 'Community'}
+              </span>
+            </div>
+
+            <!-- Post Body Content -->
+            <p style="font-size: 0.95rem; color: var(--text-primary); line-height: 1.6; margin: 0; white-space: pre-line;">
+              ${post.content}
+            </p>
+
+            <!-- Post Action Bar -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(226, 232, 240, 0.8); margin-top: 2px;">
+              <div style="display: flex; align-items: center; gap: 16px;">
+                <!-- Like Button -->
+                <button type="button" class="feed-like-btn" data-post-id="${post.id}" style="
+                  background: ${isLiked ? 'rgba(239, 68, 68, 0.1)' : 'transparent'};
+                  border: 1px solid ${isLiked ? 'rgba(239, 68, 68, 0.3)' : 'transparent'};
+                  color: ${isLiked ? '#ef4444' : 'var(--text-secondary)'};
+                  padding: 6px 12px;
+                  border-radius: 8px;
+                  font-size: 0.86rem;
+                  font-weight: 700;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  transition: all 0.15s ease;
+                ">
+                  ${isLiked ? '❤️' : '🤍'} <span>${post.likes || 0}</span> GG
+                </button>
+
+                <!-- Comment Toggle Button -->
+                <button type="button" class="feed-comment-toggle-btn" data-post-id="${post.id}" style="
+                  background: transparent;
+                  border: 1px solid transparent;
+                  color: var(--text-secondary);
+                  padding: 6px 12px;
+                  border-radius: 8px;
+                  font-size: 0.86rem;
+                  font-weight: 700;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  transition: all 0.15s ease;
+                ">
+                  💬 <span>${commentsCount}</span> Comments
+                </button>
+              </div>
+
+              <!-- Share Button -->
+              <button type="button" class="feed-share-btn" data-post-id="${post.id}" style="
+                background: transparent;
+                border: none;
+                color: var(--text-muted);
+                padding: 6px 10px;
+                font-size: 0.84rem;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+              ">
+                🔗 Share
+              </button>
+            </div>
+
+            <!-- Comments Expandable Container -->
+            <div id="comments-section-${post.id}" class="feed-comments-container" style="display: none; padding-top: 10px; border-top: 1px dashed rgba(226, 232, 240, 0.9); flex-direction: column; gap: 10px;">
+              <!-- Existing Comments -->
+              <div class="comments-list" style="display: flex; flex-direction: column; gap: 8px;">
+                ${(post.comments || []).map(c => `
+                  <div style="display: flex; gap: 10px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; font-size: 0.88rem;">
+                    <div style="font-size: 1.1rem; flex-shrink: 0;">${c.avatar || '⚔️'}</div>
+                    <div style="flex: 1;">
+                      <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-weight: 700; color: var(--text-primary);">${c.author}</span>
+                        <span style="font-size: 0.72rem; color: var(--text-muted);">${c.timestamp || 'Just now'}</span>
+                      </div>
+                      <p style="margin: 2px 0 0; color: var(--text-secondary); line-height: 1.4;">${c.text}</p>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- Add Comment Input -->
+              <div style="display: flex; gap: 8px; margin-top: 6px;">
+                <input type="text" id="comment-input-${post.id}" placeholder="Write a reply..." style="
+                  flex: 1;
+                  border: 1px solid rgba(226, 232, 240, 0.95);
+                  border-radius: 8px;
+                  padding: 8px 12px;
+                  font-size: 0.86rem;
+                  outline: none;
+                  background: #ffffff;
+                ">
+                <button type="button" class="feed-submit-comment-btn btn btn-secondary" data-post-id="${post.id}" style="padding: 8px 14px; font-size: 0.82rem; font-weight: 700;">
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Attach Like button handlers
+      feedList.querySelectorAll('.feed-like-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const postId = btn.getAttribute('data-post-id');
+          const post = (Store.state.communityPosts || []).find(p => p.id === postId);
+          if (post) {
+            post.likedByMe = !post.likedByMe;
+            post.likes = (post.likes || 0) + (post.likedByMe ? 1 : -1);
+            Store.save();
+            if (window.Sound) window.Sound.playClick();
+            renderCommunityFeedPosts();
+          }
+        });
+      });
+
+      // Attach Comment Toggle handlers
+      feedList.querySelectorAll('.feed-comment-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const postId = btn.getAttribute('data-post-id');
+          const commentsSec = document.getElementById(`comments-section-${postId}`);
+          if (commentsSec) {
+            const isHidden = commentsSec.style.display === 'none';
+            commentsSec.style.display = isHidden ? 'flex' : 'none';
+            if (window.Sound) window.Sound.playClick();
+          }
+        });
+      });
+
+      // Attach Submit Comment handlers
+      feedList.querySelectorAll('.feed-submit-comment-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const postId = btn.getAttribute('data-post-id');
+          const input = document.getElementById(`comment-input-${postId}`);
+          if (!input || !input.value.trim()) return;
+
+          const text = input.value.trim();
+          const post = (Store.state.communityPosts || []).find(p => p.id === postId);
+          if (post) {
+            if (!post.comments) post.comments = [];
+            post.comments.push({
+              author: user.displayName || user.username,
+              avatar: user.avatar || '👑',
+              text: text,
+              timestamp: 'Just now'
+            });
+            Store.save();
+            if (window.Sound) window.Sound.playMessage();
+            Toast.success('Comment Posted', 'Your reply has been added to the discussion.');
+            renderCommunityFeedPosts();
+            const commentsSec = document.getElementById(`comments-section-${postId}`);
+            if (commentsSec) commentsSec.style.display = 'flex';
+          }
+        });
+      });
+
+      // Attach Share button handlers
+      feedList.querySelectorAll('.feed-share-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          navigator.clipboard?.writeText?.(window.location.href);
+          if (window.Sound) window.Sound.playClick();
+          Toast.success('Link Copied', 'Post link copied to clipboard.');
+        });
+      });
+    };
+
+    // Initial render of community feed posts
+    renderCommunityFeedPosts();
+
+    // Attach Composer Submit Handler
+    document.getElementById('feed-post-submit-btn')?.addEventListener('click', () => {
+      const textarea = document.getElementById('feed-post-input');
+      const tagSelect = document.getElementById('feed-post-tag');
+      if (!textarea || !textarea.value.trim()) {
+        Toast.error('Empty Post', 'Please write something to post on the community feed.');
+        return;
+      }
+
+      const content = textarea.value.trim();
+      const tag = tagSelect ? tagSelect.value : 'Discussion';
+
+      const newPost = {
+        id: 'post_' + Date.now(),
+        authorId: user.id || 'user_anon',
+        authorName: user.displayName || user.username,
+        authorAvatar: user.avatar || '👑',
+        authorRank: user.rank || 'Divine V',
+        badge: user.username === 'wenmar' ? 'Founder' : 'Member',
+        timestamp: 'Just now',
+        tag: tag,
+        content: content,
+        likes: 0,
+        likedByMe: false,
+        comments: []
+      };
+
+      if (!Store.state.communityPosts) Store.state.communityPosts = [];
+      Store.state.communityPosts.unshift(newPost);
+      Store.save();
+
+      textarea.value = '';
+      if (window.Sound) window.Sound.playVictory();
+      Toast.success('Post Published!', 'Your update is now live on the CourierHub community feed.');
+      renderCommunityFeedPosts();
+    });
 
     // Interactive View Bio button logic
     const bioBtn = document.getElementById('profile-view-bio-btn');
