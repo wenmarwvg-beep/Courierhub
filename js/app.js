@@ -509,8 +509,19 @@
                     <input type="text" id="login-input-user" class="input-control" placeholder="Enter your username" required>
                   </div>
                   <div class="form-group">
-                    <label class="form-label">${Icons.lock} Password</label>
-                    <input type="password" id="login-input-pw" class="input-control" placeholder="Enter password" required>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                      <label class="form-label" style="margin-bottom: 0;">${Icons.lock} Password</label>
+                      <button type="button" class="pw-toggle-btn" data-target="login-input-pw" style="background: none; border: none; font-size: 0.76rem; color: var(--accent-primary); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px;">
+                        <span class="pw-icon-span">${Icons.eye}</span>
+                        <span class="pw-text-span">Show</span>
+                      </button>
+                    </div>
+                    <div style="position: relative;">
+                      <input type="password" id="login-input-pw" class="input-control" placeholder="Enter password" required style="padding-right: 42px;">
+                      <button type="button" class="pw-toggle-icon-btn" data-target="login-input-pw" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); padding: 4px;" title="Toggle password visibility">
+                        ${Icons.eye}
+                      </button>
+                    </div>
                   </div>
                   <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 8px;">
                     <span>Sign In to CourierHub</span>
@@ -552,8 +563,19 @@
                       <input type="email" id="signup-input-email" class="input-control" placeholder="name@domain.com" required>
                     </div>
                     <div class="form-group" style="margin-bottom: 14px;">
-                      <label class="form-label">${Icons.lock} Password (min 6 chars)</label>
-                      <input type="password" id="signup-input-pw" class="input-control" minlength="6" placeholder="Create password" required>
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <label class="form-label" style="margin-bottom: 0;">${Icons.lock} Password (min 6 chars)</label>
+                        <button type="button" class="pw-toggle-btn" data-target="signup-input-pw" style="background: none; border: none; font-size: 0.76rem; color: var(--accent-primary); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px;">
+                          <span class="pw-icon-span">${Icons.eye}</span>
+                          <span class="pw-text-span">Show</span>
+                        </button>
+                      </div>
+                      <div style="position: relative;">
+                        <input type="password" id="signup-input-pw" class="input-control" minlength="6" placeholder="Create password" required style="padding-right: 42px;">
+                        <button type="button" class="pw-toggle-icon-btn" data-target="signup-input-pw" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); padding: 4px;" title="Toggle password visibility">
+                          ${Icons.eye}
+                        </button>
+                      </div>
                     </div>
                     <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-block btn-lg">
                       <span>Create Account</span>
@@ -595,6 +617,34 @@
           </div>
         </div>
       `;
+
+      // Password Toggle Handler
+      const handlePwToggle = (targetId) => {
+        const input = document.getElementById(targetId);
+        if (!input) return;
+        const isPw = input.type === 'password';
+        input.type = isPw ? 'text' : 'password';
+        const icon = isPw ? Icons.eyeOff : Icons.eye;
+        const label = isPw ? 'Hide' : 'Show';
+
+        document.querySelectorAll(`.pw-toggle-btn[data-target="${targetId}"]`).forEach(btn => {
+          const iconSpan = btn.querySelector('.pw-icon-span');
+          const textSpan = btn.querySelector('.pw-text-span');
+          if (iconSpan) iconSpan.innerHTML = icon;
+          if (textSpan) textSpan.innerText = label;
+        });
+        document.querySelectorAll(`.pw-toggle-icon-btn[data-target="${targetId}"]`).forEach(btn => {
+          btn.innerHTML = icon;
+        });
+        if (window.Sound) window.Sound.playHover();
+      };
+
+      document.querySelectorAll('.pw-toggle-btn, .pw-toggle-icon-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.dataset.target;
+          if (target) handlePwToggle(target);
+        });
+      });
 
       const card = document.getElementById('auth-card-inner');
       document.getElementById('flip-to-signup')?.addEventListener('click', () => {
