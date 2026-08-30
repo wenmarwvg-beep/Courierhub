@@ -109,6 +109,28 @@
     }
   ];
 
+  function isImageAvatar(avatar) {
+    if (!avatar || typeof avatar !== 'string') return false;
+    return avatar.startsWith('data:image') ||
+           avatar.startsWith('http://') ||
+           avatar.startsWith('https://') ||
+           avatar.startsWith('assets/') ||
+           avatar.startsWith('images/') ||
+           avatar.includes('.jpg') ||
+           avatar.includes('.png') ||
+           avatar.includes('.webp') ||
+           avatar.includes('.gif') ||
+           avatar.includes('.svg');
+  }
+
+  function renderAvatarHTML(avatar, extraStyle = '', className = '') {
+    const av = avatar || 'assets/avatar-shadow-fiend.jpg';
+    if (isImageAvatar(av)) {
+      return `<img src="${encodeURI(av)}" class="${className}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; ${extraStyle}" alt="Avatar" />`;
+    }
+    return `<span class="${className}" style="${extraStyle}">${av}</span>`;
+  }
+
   const Icons = {
     home: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
     community: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
@@ -225,12 +247,11 @@
             gender: 'Male',
             address: 'Philippines, Metro Manila',
             region: 'SEA',
-            avatar: '👑',
+            avatar: 'assets/avatar-shadow-fiend.jpg',
             avatarFrame: 'avatar-frame-immortal',
             skin: 'shadow-fiend',
             banner: 'Shadow Fiend Requiem.jpg',
             quote: 'The path to victory is paved with courage, patience, and unbreakable teamwork.',
-            bio: 'CourierHub Founder & Dota 2 Captain',
             winRate: 64.2,
             gamesPlayed: 1540,
             onlineStatus: 'online'
@@ -427,7 +448,12 @@
           return {
             ...defaults,
             ...parsed,
-            currentUser: parsed.currentUser ? { skin: 'shadow-fiend', banner: 'Shadow Fiend Requiem.jpg', ...parsed.currentUser } : null,
+            currentUser: parsed.currentUser ? { 
+              skin: 'shadow-fiend', 
+              banner: 'Shadow Fiend Requiem.jpg', 
+              ...parsed.currentUser,
+              avatar: (parsed.currentUser.avatar && (parsed.currentUser.avatar.startsWith('data:image') || parsed.currentUser.avatar.includes('.jpg') || parsed.currentUser.avatar.includes('.png') || parsed.currentUser.avatar.includes('.webp') || parsed.currentUser.avatar.startsWith('http'))) ? parsed.currentUser.avatar : 'assets/avatar-shadow-fiend.jpg'
+            } : null,
             friends: parsed.friends && parsed.friends.length ? parsed.friends : defaults.friends,
             chatMessages: parsed.chatMessages || defaults.chatMessages,
             activeChatHeads: parsed.activeChatHeads || defaults.activeChatHeads,
@@ -773,7 +799,7 @@
 
               <!-- Mini Circle Profile Image -->
               <div class="topbar-user-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
-                <span>${user.avatar || '👑'}</span>
+                ${renderAvatarHTML(user.avatar)}
                 <div class="status-dot status-online" style="width: 10px; height: 10px; border-width: 2px; bottom: -1px; right: -1px;"></div>
               </div>
 
@@ -785,8 +811,8 @@
             <div id="user-dropdown-card" class="user-dropdown-card">
               <!-- User Preview Header -->
               <div style="display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle);">
-                <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; border: 2px solid var(--accent-gold); flex-shrink: 0; background: var(--bg-secondary);">
-                  <span>${user.avatar || '👑'}</span>
+                <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; border: 2px solid var(--accent-gold); flex-shrink: 0; background: var(--bg-secondary); overflow: hidden;">
+                  ${renderAvatarHTML(user.avatar)}
                 </div>
                 <div style="min-width: 0; flex: 1;">
                   <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
@@ -1760,13 +1786,15 @@
               <div style="position: absolute; left: 20px; bottom: 14px; z-index: 15; display: flex; align-items: center; gap: 16px;">
                 <div style="position: relative; width: 62px; height: 80px; border-radius: 12px; background: #0a0307; display: flex; align-items: center; justify-content: center;">
                   <!-- Mini SVG Traveling Border Laser -->
-                  <svg style="position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); overflow: visible; pointer-events: none;" viewBox="0 0 62 80">
+                  <svg style="position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); overflow: visible; pointer-events: none; z-index: 20;" viewBox="0 0 62 80">
                     <rect x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${skin.accent}33" stroke-width="2.5" />
                     <rect x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${skin.borderGlow}" stroke-width="5" stroke-linecap="round" stroke-dasharray="220 280 220 280" style="animation: neonBorderPathTravel 3.2s linear infinite; filter: blur(3px);" />
                     <rect x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${skin.borderColor}" stroke-width="3" stroke-linecap="round" stroke-dasharray="180 320 180 320" style="animation: neonBorderPathTravel 3.2s linear infinite;" />
                     <rect x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${skin.borderHead}" stroke-width="3" stroke-linecap="round" stroke-dasharray="55 445 55 445" style="animation: neonBorderPathTravel 3.2s linear infinite;" />
                   </svg>
-                  <span style="font-size: 1.8rem; z-index: 10;">${user.avatar || '👑'}</span>
+                  <div style="width: 100%; height: 100%; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; z-index: 10;">
+                    ${renderAvatarHTML(user.avatar)}
+                  </div>
                 </div>
 
                 <div>
@@ -1882,18 +1910,22 @@
   }
 
   /* --- MODAL: EDIT PROFILE --- */
-  /* --- MODAL: EDIT PROFILE --- */
   function openEditProfileModal() {
     const user = Store.state.currentUser;
     if (!user) return;
 
     document.getElementById('edit-profile-modal')?.remove();
 
-    const avatarPresets = ['👑', '🔥', '👹', '⚔️', '🛡️', '⚡', '🏹', '🧙', '🐉', '💀', '🦅', '❄️', '🗡️', '🏆', '💎', '🎯', '🦁', '🐺'];
-    let currentSelectedAvatar = user.avatar || '👑';
+    const heroAvatarPresets = [
+      { name: 'Shadow Fiend', img: 'assets/avatar-shadow-fiend.jpg' },
+      { name: 'Invoker', img: 'assets/avatar-invoker.jpg' },
+      { name: 'Juggernaut', img: 'assets/avatar-juggernaut.jpg' }
+    ];
+
+    let currentSelectedAvatar = user.avatar || 'assets/avatar-shadow-fiend.jpg';
 
     const modalHtml = `
-      <div id="edit-profile-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.8); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;">
+      <div id="edit-profile-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.82); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;">
         <div class="hud-panel" style="width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; padding: 26px 28px; border-radius: var(--radius-lg); background: rgba(13, 19, 33, 0.98); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 34, 0, 0.45); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 34, 0, 0.25); position: relative; animation: fadeInDown 0.25s ease;">
           
           <!-- Header -->
@@ -1909,43 +1941,58 @@
 
           <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 14px;">
             
-            <!-- 1. PROFILE PICTURE / AVATAR SELECTOR -->
+            <!-- 1. PROFILE PICTURE IMAGE SELECTOR / UPLOAD -->
             <div>
               <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
-                Profile Picture / Avatar
+                Profile Picture (Image Upload & Presets)
               </label>
               
               <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
                 <!-- Live Avatar Preview Frame -->
-                <div style="position: relative; width: 64px; height: 78px; border-radius: 12px; background: #0c0204; border: 2px solid #ff2200; box-shadow: 0 0 16px rgba(255, 34, 0, 0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                  <span id="edit-avatar-preview" style="font-size: 2.2rem;">${currentSelectedAvatar}</span>
+                <div style="position: relative; width: 72px; height: 88px; border-radius: 14px; background: #0c0204; border: 2px solid #ff2200; box-shadow: 0 0 18px rgba(255, 34, 0, 0.45); overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <div id="edit-avatar-preview" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                    ${renderAvatarHTML(currentSelectedAvatar)}
+                  </div>
                 </div>
                 
-                <!-- Quick Avatar Presets Grid -->
-                <div style="flex: 1;">
-                  <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                    ${avatarPresets.map(av => `
-                      <button type="button" class="avatar-preset-btn ${av === currentSelectedAvatar ? 'active' : ''}" data-avatar="${av}" style="
-                        width: 34px;
-                        height: 34px;
-                        border-radius: 8px;
-                        background: ${av === currentSelectedAvatar ? 'rgba(255, 34, 0, 0.25)' : 'rgba(255, 255, 255, 0.05)'};
-                        border: 1.5px solid ${av === currentSelectedAvatar ? '#ff2200' : 'rgba(255, 255, 255, 0.12)'};
-                        font-size: 1.15rem;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        cursor: pointer;
-                        transition: all 0.15s ease;
-                      ">${av}</button>
-                    `).join('')}
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                  <!-- Upload Image File Button -->
+                  <div>
+                    <input type="file" id="edit-profile-avatar-file" accept="image/*" style="display: none;">
+                    <button type="button" id="trigger-avatar-upload-btn" class="btn btn-secondary" style="font-size: 0.82rem; font-weight: 700; padding: 7px 14px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; border-color: rgba(255, 34, 0, 0.4); background: rgba(255, 34, 0, 0.1); color: #ffffff;">
+                      <span>📷</span>
+                      <span>Upload Profile Image</span>
+                    </button>
                   </div>
-                  
-                  <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 0.74rem; color: #94a3b8;">Custom:</span>
-                    <input type="text" id="edit-profile-custom-avatar" class="input-control" placeholder="Type emoji/symbol" maxlength="4" value="${avatarPresets.includes(currentSelectedAvatar) ? '' : currentSelectedAvatar}" style="padding: 4px 8px; font-size: 0.85rem; width: 130px;">
+
+                  <!-- Preset Hero Avatars -->
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Presets:</span>
+                    <div style="display: flex; gap: 8px;">
+                      ${heroAvatarPresets.map(hp => `
+                        <button type="button" class="avatar-hero-preset-btn ${hp.img === currentSelectedAvatar ? 'active' : ''}" data-avatar-img="${hp.img}" title="${hp.name}" style="
+                          width: 38px;
+                          height: 38px;
+                          border-radius: 10px;
+                          padding: 0;
+                          overflow: hidden;
+                          background: #000;
+                          border: 2px solid ${hp.img === currentSelectedAvatar ? '#ff2200' : 'rgba(255, 255, 255, 0.15)'};
+                          box-shadow: ${hp.img === currentSelectedAvatar ? '0 0 10px rgba(255, 34, 0, 0.6)' : 'none'};
+                          cursor: pointer;
+                          transition: all 0.18s ease;
+                        ">
+                          <img src="${hp.img}" alt="${hp.name}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                        </button>
+                      `).join('')}
+                    </div>
                   </div>
                 </div>
+              </div>
+
+              <!-- Direct Image URL Input (Alternative) -->
+              <div>
+                <input type="text" id="edit-profile-avatar-url" class="input-control" placeholder="Or paste direct image URL (https://...)" value="${(typeof currentSelectedAvatar === 'string' && (currentSelectedAvatar.startsWith('http://') || currentSelectedAvatar.startsWith('https://'))) ? currentSelectedAvatar : ''}" style="width: 100%; font-size: 0.8rem; padding: 6px 10px;">
               </div>
             </div>
 
@@ -2007,14 +2054,8 @@
               <input type="text" id="edit-profile-quote" class="input-control" value="${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}" placeholder="Your signature quote on the banner" style="width: 100%;">
             </div>
 
-            <!-- 7. PLAYER BIOGRAPHY -->
-            <div>
-              <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Biography / Bio</label>
-              <textarea id="edit-profile-bio" class="input-control" rows="2" placeholder="Tell the community about yourself..." style="width: 100%; resize: vertical;">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</textarea>
-            </div>
-
             <!-- Footer Buttons -->
-            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
               <button type="button" class="btn btn-secondary" id="cancel-edit-profile-btn" style="padding: 8px 18px;">Cancel</button>
               <button type="submit" class="btn btn-primary" style="padding: 9px 24px; font-weight: 800; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.4);">
                 💾 Save Changes
@@ -2030,34 +2071,59 @@
     const modal = document.getElementById('edit-profile-modal');
     const close = () => modal?.remove();
     const previewEl = document.getElementById('edit-avatar-preview');
-    const customInput = document.getElementById('edit-profile-custom-avatar');
+    const fileInput = document.getElementById('edit-profile-avatar-file');
+    const uploadBtn = document.getElementById('trigger-avatar-upload-btn');
+    const urlInput = document.getElementById('edit-profile-avatar-url');
 
-    // Preset avatar click events
-    modal.querySelectorAll('.avatar-preset-btn').forEach(btn => {
+    const updatePreview = (newAvatar) => {
+      currentSelectedAvatar = newAvatar;
+      if (previewEl) {
+        previewEl.innerHTML = renderAvatarHTML(newAvatar);
+      }
+      modal.querySelectorAll('.avatar-hero-preset-btn').forEach(btn => {
+        const isSelected = btn.getAttribute('data-avatar-img') === newAvatar;
+        btn.style.borderColor = isSelected ? '#ff2200' : 'rgba(255, 255, 255, 0.15)';
+        btn.style.boxShadow = isSelected ? '0 0 10px rgba(255, 34, 0, 0.6)' : 'none';
+      });
+    };
+
+    // File Upload Trigger
+    uploadBtn?.addEventListener('click', () => fileInput?.click());
+
+    fileInput?.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) {
+          Toast.error('File Too Large', 'Please select an image smaller than 5MB.');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (re) => {
+          if (re.target?.result) {
+            updatePreview(re.target.result);
+            if (urlInput) urlInput.value = '';
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Preset hero avatar click events
+    modal.querySelectorAll('.avatar-hero-preset-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const av = btn.getAttribute('data-avatar');
-        currentSelectedAvatar = av;
-        if (previewEl) previewEl.innerText = av;
-        if (customInput) customInput.value = '';
-        modal.querySelectorAll('.avatar-preset-btn').forEach(b => {
-          b.style.background = 'rgba(255, 255, 255, 0.05)';
-          b.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-        });
-        btn.style.background = 'rgba(255, 34, 0, 0.25)';
-        btn.style.borderColor = '#ff2200';
+        const avImg = btn.getAttribute('data-avatar-img');
+        if (avImg) {
+          updatePreview(avImg);
+          if (urlInput) urlInput.value = '';
+        }
       });
     });
 
-    // Custom avatar input event
-    customInput?.addEventListener('input', (e) => {
+    // Custom URL input event
+    urlInput?.addEventListener('input', (e) => {
       const val = e.target.value.trim();
       if (val) {
-        currentSelectedAvatar = val;
-        if (previewEl) previewEl.innerText = val;
-        modal.querySelectorAll('.avatar-preset-btn').forEach(b => {
-          b.style.background = 'rgba(255, 255, 255, 0.05)';
-          b.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-        });
+        updatePreview(val);
       }
     });
 
@@ -2071,17 +2137,15 @@
       const newGender = document.getElementById('edit-profile-gender').value;
       const newAddress = document.getElementById('edit-profile-address').value.trim();
       const newQuote = document.getElementById('edit-profile-quote').value.trim();
-      const newBio = document.getElementById('edit-profile-bio').value.trim();
       const newRank = document.getElementById('edit-profile-rank').value;
       const newDotaId = document.getElementById('edit-profile-dotaid').value.trim();
       const newRegion = document.getElementById('edit-profile-region').value;
 
-      user.avatar = currentSelectedAvatar || user.avatar || '👑';
+      user.avatar = currentSelectedAvatar || user.avatar || 'assets/avatar-shadow-fiend.jpg';
       user.displayName = newName || user.username;
       user.gender = newGender;
       user.address = newAddress;
       user.quote = newQuote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.';
-      user.bio = newBio;
       user.rank = newRank;
       user.dotaId = newDotaId;
       user.region = newRegion;
@@ -2097,14 +2161,14 @@
           region: user.region,
           address: user.address,
           dota_id: user.dotaId,
-          quote: user.quote,
-          bio: user.bio
+          quote: user.quote
         }).eq('id', user.id).catch(() => {});
       }
 
       if (window.Sound) window.Sound.playClick();
       Toast.success('Profile Updated!', 'Your profile details have been saved.');
       close();
+      renderLayoutShell();
       renderHome();
     });
   }
@@ -2437,7 +2501,7 @@
                 dotaId: profile?.dota_id || (isWenmar ? '782910432' : '109283742'),
                 rank: profile?.rank || (isWenmar ? 'Divine V' : 'Legend I'),
                 region: profile?.region || 'SEA',
-                avatar: profile?.avatar || (isWenmar ? '👑' : '🔥'),
+                avatar: profile?.avatar || (isWenmar ? 'assets/avatar-shadow-fiend.jpg' : 'assets/avatar-shadow-fiend.jpg'),
                 avatarFrame: profile?.avatar_frame || 'avatar-frame-immortal',
                 bio: profile?.bio || (isWenmar ? 'CourierHub Founder & Dota 2 Captain' : 'Ready to party on CourierHub!'),
                 winRate: profile?.win_rate || (isWenmar ? 64.2 : 52.5),
@@ -2471,10 +2535,9 @@
               gender: 'Male',
               address: 'Philippines, Metro Manila',
               region: 'SEA',
-              avatar: '👑',
+              avatar: 'assets/avatar-shadow-fiend.jpg',
               avatarFrame: 'avatar-frame-immortal',
               quote: 'The path to victory is paved with courage, patience, and unbreakable teamwork.',
-              bio: 'CourierHub Founder & Dota 2 Captain',
               winRate: 64.2,
               gamesPlayed: 1540
             };
@@ -2489,10 +2552,9 @@
               gender: 'Male',
               address: 'SEA Server',
               region: 'SEA',
-              avatar: '🔥',
+              avatar: 'assets/avatar-shadow-fiend.jpg',
               avatarFrame: 'avatar-frame-immortal',
-              quote: 'Ready to battle on Ancient grounds!',
-              bio: 'Ready to party on CourierHub!'
+              quote: 'Ready to battle on Ancient grounds!'
             };
           }
         }
@@ -2630,7 +2692,7 @@
 
                 <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
                   <div class="profile-avatar-glow-overlay"></div>
-                  <span>${user.avatar || '👑'}</span>
+                  ${renderAvatarHTML(user.avatar)}
                 </div>
                 <div class="profile-status-badge" title="Online & Ready" style="z-index: 65;"></div>
               </div>
@@ -2831,8 +2893,8 @@
                 <!-- Your Feed Post Composer Card -->
                 <div class="feed-composer-card" style="padding: 18px 20px;">
                   <div style="display: flex; gap: 12px; align-items: flex-start;">
-                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
-                      ${user.avatar || '👑'}
+                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
+                      ${renderAvatarHTML(user.avatar)}
                     </div>
                     <div style="flex: 1;">
                       <textarea id="your-feed-post-input" placeholder="Share your latest match victory, build strategy, or status update..." rows="2" style="
@@ -2917,8 +2979,8 @@
                 <!-- Feed Post Composer Card -->
                 <div class="feed-composer-card" style="padding: 18px 20px;">
                   <div style="display: flex; gap: 12px; align-items: flex-start;">
-                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
-                      ${user.avatar || '👑'}
+                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
+                      ${renderAvatarHTML(user.avatar)}
                     </div>
                     <div style="flex: 1;">
                       <textarea id="feed-post-input" placeholder="What's happening on your Dota 2 journey, ${user.displayName || user.username}? Share match highlights, meta strategies, or party up..." rows="2" style="
@@ -3989,8 +4051,8 @@
           <div class="hud-corner-accent hud-corner-br"></div>
 
           <div style="text-align: center; margin-bottom: 24px;">
-            <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 80px; height: 80px; font-size: 2.8rem; margin: 0 auto 16px;">
-              <span>${user.avatar || '🔥'}</span>
+            <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 80px; height: 80px; font-size: 2.8rem; margin: 0 auto 16px; overflow: hidden; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              ${renderAvatarHTML(user.avatar)}
             </div>
             <h1 style="font-family: var(--font-header); font-size: 1.8rem; color: var(--text-primary); margin: 0 0 6px;">${user.displayName || user.username}</h1>
             <div><span class="rank-badge rank-immortal" style="font-size: 0.9rem; padding: 4px 14px;">${user.rank || 'Legend I'}</span></div>
