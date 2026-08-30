@@ -1138,6 +1138,7 @@
               width: 260px;
               max-width: 100%;
               flex-shrink: 0;
+              position: -webkit-sticky;
               position: sticky;
               top: 80px;
               align-self: flex-start;
