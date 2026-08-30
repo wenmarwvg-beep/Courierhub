@@ -760,54 +760,73 @@
   class Router {
     constructor() {
       this.routes = {};
-      this.currentRoute = 'home';
+      this.currentRoute = '';
       this.currentParam = null;
+      this.isHandling = false;
       window.addEventListener('hashchange', () => this.handle());
     }
     register(path, fn) { this.routes[path] = fn; }
     navigate(path) {
-      window.location.hash = path.startsWith('#') ? path : '#' + path;
+      const targetHash = path.startsWith('#') ? path : '#' + path;
+      if (window.location.hash !== targetHash) {
+        window.location.hash = targetHash;
+      } else {
+        this.handle();
+      }
     }
     handle() {
-      let hash = window.location.hash.slice(1) || 'home';
-      if (hash.startsWith('/')) hash = hash.slice(1);
-      const parts = hash.split('/');
-      const mainPath = parts[0] || 'home';
-      const param = parts[1] || null;
+      if (this.isHandling) return;
+      this.isHandling = true;
 
-      const isAuth = !!Store.state.currentUser;
-      if (!isAuth && mainPath !== 'login' && mainPath !== 'signup') {
-        this.currentRoute = 'login';
-        if (window.location.hash !== '#login' && window.location.hash !== '#signup') {
-          window.location.hash = '#login';
-        }
-        if (this.routes['login']) this.routes['login']();
-        return;
-      }
-      if (isAuth && (mainPath === 'login' || mainPath === 'signup')) {
-        this.navigate('home');
-        return;
-      }
+      try {
+        let hash = window.location.hash.slice(1) || '';
+        if (hash.startsWith('/')) hash = hash.slice(1);
+        const parts = hash.split('/');
+        let mainPath = parts[0] || '';
+        const param = parts[1] || null;
 
-      this.currentRoute = mainPath;
-      this.currentParam = param;
+        const isAuth = !!Store.state.currentUser;
 
-      if (this.routes[mainPath]) {
-        this.routes[mainPath](param);
-      } else if (this.routes['home']) {
-        this.routes['home']();
-      }
-
-      // Update active links
-      document.querySelectorAll('.nav-link, .bottom-nav-item').forEach(el => {
-        const href = el.getAttribute('href') || '';
-        const linkRoute = href.replace('#', '').split('/')[0];
-        if (linkRoute === mainPath || (mainPath === 'lobby' && linkRoute === 'lobbies')) {
-          el.classList.add('active');
+        if (!isAuth) {
+          if (mainPath !== 'login' && mainPath !== 'signup') {
+            mainPath = 'login';
+            if (window.location.hash !== '#login' && window.location.hash !== '#signup') {
+              window.location.hash = '#login';
+            }
+          }
         } else {
-          el.classList.remove('active');
+          if (!mainPath || mainPath === 'login' || mainPath === 'signup') {
+            mainPath = 'home';
+            if (window.location.hash !== '#home') {
+              window.location.hash = '#home';
+            }
+          }
         }
-      });
+
+        this.currentRoute = mainPath;
+        this.currentParam = param;
+
+        if (this.routes[mainPath]) {
+          this.routes[mainPath](param);
+        } else if (this.routes['home']) {
+          this.routes['home']();
+        }
+
+        // Update active links
+        document.querySelectorAll('.nav-link, .bottom-nav-item').forEach(el => {
+          const href = el.getAttribute('href') || '';
+          const linkRoute = href.replace('#', '').split('/')[0];
+          if (linkRoute === mainPath || (mainPath === 'lobby' && linkRoute === 'lobbies')) {
+            el.classList.add('active');
+          } else {
+            el.classList.remove('active');
+          }
+        });
+      } catch (err) {
+        console.error('Router error:', err);
+      } finally {
+        this.isHandling = false;
+      }
     }
   }
   const AppRouter = new Router();
@@ -2888,11 +2907,9 @@
 
     // Auth state changes
     sb.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_OUT' || !session) {
+      if (event === 'SIGNED_OUT') {
         Store.logout();
-        if (window.location.hash !== '#login' && window.location.hash !== '#signup') {
-          AppRouter.navigate('login');
-        }
+        AppRouter.navigate('login');
         return;
       }
       if (event === 'SIGNED_IN' && session?.user) {
