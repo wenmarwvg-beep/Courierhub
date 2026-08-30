@@ -704,9 +704,16 @@
         const sb = getSupabase();
         if (sb) {
           try {
+            const redirectUrl = (window.location.origin && !window.location.origin.includes('file://'))
+              ? window.location.origin
+              : 'https://courierhb.vercel.app';
+
             const { data, error } = await sb.auth.signUp({
               email, password: pVal,
-              options: { data: { username: uVal, display_name: uVal, rank: 'Legend I', region: 'SEA' } }
+              options: {
+                emailRedirectTo: redirectUrl,
+                data: { username: uVal, display_name: uVal, rank: 'Legend I', region: 'SEA' }
+              }
             });
             if (error) {
               Toast.error('Registration Notice', error.message || 'Could not complete registration.');
