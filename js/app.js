@@ -1840,8 +1840,8 @@
               <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.08); border: 1px solid rgba(255, 34, 0, 0.25); display: flex; align-items: flex-start; gap: 10px;">
                 <span style="font-size: 1.25rem;">🔥</span>
                 <div>
-                  <strong style="display: block; font-size: 0.85rem; color: #ffffff; font-weight: 800;">Demonic Soul Chat Crest</strong>
-                  <span style="font-size: 0.74rem; color: #94a3b8;">Custom chat trigger & halo</span>
+                  <strong style="display: block; font-size: 0.85rem; color: #ffffff; font-weight: 800;">Demonic Chat & Scrollbars</strong>
+                  <span style="font-size: 0.74rem; color: #94a3b8;">Custom chat crest & soulfire scrollbars</span>
                 </div>
               </div>
 
