@@ -2528,13 +2528,25 @@
               align-self: flex-start;
               z-index: 40;
             ">
-              <!-- Rectangle Profile Image at Left Side (In Front of Banner) with Red Neon Border Animation -->
+              <!-- Rectangle Profile Image with Red Neon Border Travel Path Animation -->
               <div class="profile-avatar-anchor">
+                <!-- SVG Traveling Neon Border Line (Traces the Exact Perimeter) -->
+                <svg class="profile-neon-svg" viewBox="0 0 260 350" preserveAspectRatio="none">
+                  <!-- Base Track Line -->
+                  <rect class="neon-border-track" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" />
+                  <!-- Glowing Neon Laser Trail (Dual pulses traveling around border) -->
+                  <rect class="neon-border-glow" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" />
+                  <!-- Sharp Traveling Red Laser Beam -->
+                  <rect class="neon-border-traveler" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" />
+                  <!-- White-Hot Leading Laser Head Tip -->
+                  <rect class="neon-border-head" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" />
+                </svg>
+
                 <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
                   <div class="profile-avatar-glow-overlay"></div>
                   <span>${user.avatar || '👑'}</span>
                 </div>
-                <div class="profile-status-badge" title="Online & Ready" style="z-index: 55;"></div>
+                <div class="profile-status-badge" title="Online & Ready" style="z-index: 65;"></div>
               </div>
 
               <!-- Below the rectangle profile image: Horizontal Info Items with Premium Icons Only -->
