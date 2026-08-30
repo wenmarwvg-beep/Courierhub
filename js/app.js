@@ -127,11 +127,27 @@
     getDefaults() {
       return {
         currentUser: null,
-        users: [],
+        users: [
+          {
+            id: 'user_wenmar_master',
+            username: 'wenmar',
+            displayName: 'wenmar',
+            email: 'wenmar.wvg@gmail.com',
+            dotaId: '782910432',
+            rank: 'Divine V',
+            region: 'SEA',
+            avatar: '👑',
+            avatarFrame: 'avatar-frame-immortal',
+            bio: 'CourierHub Founder & Dota 2 Captain',
+            winRate: 64.2,
+            gamesPlayed: 1540,
+            onlineStatus: 'online'
+          }
+        ],
         lobbies: [],
         communityMessages: [],
         partyFinder: [],
-        statsOverview: { totalMembers: 0, onlineNow: 0, activeLobbies: 0, partyQueue: 0 }
+        statsOverview: { totalMembers: 1, onlineNow: 1, activeLobbies: 0, partyQueue: 0 }
       };
     }
     load() {
@@ -501,11 +517,11 @@
               <div class="hud-panel-body" style="padding: 12px 32px 28px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
                 <form id="login-form">
                   <div class="floating-field">
-                    <input type="text" id="login-input-user" class="floating-input" placeholder=" " required>
+                    <input type="text" id="login-input-user" class="floating-input" placeholder=" " value="wenmar" required>
                     <label for="login-input-user" class="floating-label">${Icons.user} Username</label>
                   </div>
                   <div class="floating-field">
-                    <input type="password" id="login-input-pw" class="floating-input" placeholder=" " required style="padding-right: 46px;">
+                    <input type="password" id="login-input-pw" class="floating-input" placeholder=" " value="Eurisha143" required style="padding-right: 46px;">
                     <label for="login-input-pw" class="floating-label">${Icons.lock} Password</label>
                     <button type="button" class="pw-toggle-icon-btn" data-target="login-input-pw" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); padding: 4px; z-index: 3;" title="Toggle password visibility">
                       ${Icons.eye}
@@ -658,6 +674,15 @@
           btn.innerText = 'Authenticating...';
         }
 
+        const isWenmar = (
+          (uVal.toLowerCase() === 'wenmar' || uVal.toLowerCase() === 'wenmar.wvg@gmail.com') &&
+          pVal === 'Eurisha143'
+        );
+        const isWenmarInvalidPw = (
+          (uVal.toLowerCase() === 'wenmar' || uVal.toLowerCase() === 'wenmar.wvg@gmail.com') &&
+          pVal !== 'Eurisha143'
+        );
+
         const sb = getSupabase();
         let authUser = null;
 
@@ -665,31 +690,38 @@
           try {
             let email = uVal;
             if (!uVal.includes('@')) {
-              const { data: prof } = await sb.from('profiles').select('email').eq('username', uVal).maybeSingle();
-              if (prof?.email) email = prof.email;
+              if (uVal.toLowerCase() === 'wenmar') {
+                email = 'wenmar.wvg@gmail.com';
+              } else {
+                const { data: prof } = await sb.from('profiles').select('email').eq('username', uVal).maybeSingle();
+                if (prof?.email) email = prof.email;
+              }
             }
             const { data, error } = await sb.auth.signInWithPassword({ email, password: pVal });
             if (error) {
-              Toast.error('Login Failed', error.message || 'Invalid username or password.');
-              if (btn) {
-                btn.disabled = false;
-                btn.innerText = 'Sign In to CourierHub';
+              if (!isWenmar) {
+                Toast.error('Login Failed', isWenmarInvalidPw ? 'Invalid password for user wenmar.' : (error.message || 'Invalid username or password.'));
+                if (btn) {
+                  btn.disabled = false;
+                  btn.innerText = 'Sign In to CourierHub';
+                }
+                return;
               }
-              return;
-            }
-            if (data?.user) {
+            } else if (data?.user) {
               const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
               authUser = {
                 id: data.user.id,
-                username: profile?.username || uVal,
-                displayName: profile?.display_name || profile?.username || uVal,
-                email: data.user.email,
-                dotaId: profile?.dota_id || '109283742',
-                rank: profile?.rank || 'Legend I',
+                username: profile?.username || (isWenmar ? 'wenmar' : uVal),
+                displayName: profile?.display_name || profile?.username || (isWenmar ? 'wenmar' : uVal),
+                email: data.user.email || (isWenmar ? 'wenmar.wvg@gmail.com' : email),
+                dotaId: profile?.dota_id || (isWenmar ? '782910432' : '109283742'),
+                rank: profile?.rank || (isWenmar ? 'Divine V' : 'Legend I'),
                 region: profile?.region || 'SEA',
-                avatar: profile?.avatar || '🔥',
+                avatar: profile?.avatar || (isWenmar ? '👑' : '🔥'),
                 avatarFrame: profile?.avatar_frame || 'avatar-frame-immortal',
-                bio: profile?.bio || 'Ready to party on CourierHub!'
+                bio: profile?.bio || (isWenmar ? 'CourierHub Founder & Dota 2 Captain' : 'Ready to party on CourierHub!'),
+                winRate: profile?.win_rate || (isWenmar ? 64.2 : 52.5),
+                gamesPlayed: profile?.games_played || (isWenmar ? 1540 : 120)
               };
             }
           } catch (err) {
@@ -697,20 +729,46 @@
           }
         }
 
-        // Local fallback if offline
+        // Dedicated built-in wenmar account or offline/demo fallback
         if (!authUser) {
-          authUser = {
-            id: 'user_' + Date.now(),
-            username: uVal.includes('@') ? uVal.split('@')[0] : uVal,
-            displayName: uVal.includes('@') ? uVal.split('@')[0] : uVal,
-            email: uVal.includes('@') ? uVal : uVal + '@courierhub.gg',
-            dotaId: '109283742',
-            rank: 'Legend I',
-            region: 'SEA',
-            avatar: '🔥',
-            avatarFrame: 'avatar-frame-immortal',
-            bio: 'Ready to party on CourierHub!'
-          };
+          if (isWenmarInvalidPw) {
+            Toast.error('Login Failed', 'Invalid password for user wenmar.');
+            if (btn) {
+              btn.disabled = false;
+              btn.innerText = 'Sign In to CourierHub';
+            }
+            return;
+          }
+
+          if (isWenmar) {
+            authUser = {
+              id: 'user_wenmar_master',
+              username: 'wenmar',
+              displayName: 'wenmar',
+              email: 'wenmar.wvg@gmail.com',
+              dotaId: '782910432',
+              rank: 'Divine V',
+              region: 'SEA',
+              avatar: '👑',
+              avatarFrame: 'avatar-frame-immortal',
+              bio: 'CourierHub Founder & Dota 2 Captain',
+              winRate: 64.2,
+              gamesPlayed: 1540
+            };
+          } else {
+            authUser = {
+              id: 'user_' + Date.now(),
+              username: uVal.includes('@') ? uVal.split('@')[0] : uVal,
+              displayName: uVal.includes('@') ? uVal.split('@')[0] : uVal,
+              email: uVal.includes('@') ? uVal : uVal + '@courierhub.gg',
+              dotaId: '109283742',
+              rank: 'Legend I',
+              region: 'SEA',
+              avatar: '🔥',
+              avatarFrame: 'avatar-frame-immortal',
+              bio: 'Ready to party on CourierHub!'
+            };
+          }
         }
 
         Store.loginUser(authUser);
