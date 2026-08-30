@@ -27,8 +27,43 @@
   }
 
   /* ==========================================================================
-     2. SVG ICONS REGISTRY
+     2. SVG ICONS & BANNER TEMPLATES REGISTRY
      ========================================================================== */
+  const BANNER_TEMPLATES = [
+    {
+      id: 'purple_galaxy',
+      name: 'Purple Galaxy Over Alien Worlds',
+      file: 'Purple Galaxy Over Alien Worlds.jpg',
+      src: 'Purple Galaxy Over Alien Worlds.jpg',
+      tag: 'Cosmic / Galaxy',
+      accent: '#c084fc'
+    },
+    {
+      id: 'neon_shardscape',
+      name: 'Neon Shardscape Cyberpunk Horizon',
+      file: 'Neon Shardscape Cyberpunk Horizon.jpg',
+      src: 'Neon Shardscape Cyberpunk Horizon.jpg',
+      tag: 'Cyberpunk / Horizon',
+      accent: '#38bdf8'
+    },
+    {
+      id: 'crimson_red',
+      name: 'Crimson Red',
+      file: 'Crimson Red.jpg',
+      src: 'Crimson Red.jpg',
+      tag: 'Crimson / Dire Fury',
+      accent: '#f87171'
+    },
+    {
+      id: 'neon_cyberpunk',
+      name: 'Neon Cyberpunk Gaming Banner',
+      file: 'Neon Cyberpunk Gaming Banner.jpg',
+      src: 'Neon Cyberpunk Gaming Banner.jpg',
+      tag: 'Neon Arcade / Gaming',
+      accent: '#fbbf24'
+    }
+  ];
+
   const Icons = {
     home: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
     community: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
@@ -49,7 +84,10 @@
     gender: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="11" r="5"></circle><path d="M12 16v6"></path><path d="M9 19h6"></path><path d="M16 4l4-4m0 0h-4m4 0v4"></path></svg>`,
     region: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`,
     location: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`,
-    rankCrown: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path><path d="M5 20h14"></path></svg>`
+    rankCrown: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path><path d="M5 20h14"></path></svg>`,
+    camera: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>`,
+    palette: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>`,
+    upload: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>`
   };
 
   /* ==========================================================================
@@ -144,6 +182,7 @@
             region: 'SEA',
             avatar: '👑',
             avatarFrame: 'avatar-frame-immortal',
+            banner: 'Purple Galaxy Over Alien Worlds.jpg',
             quote: 'The path to victory is paved with courage, patience, and unbreakable teamwork.',
             bio: 'CourierHub Founder & Dota 2 Captain',
             winRate: 64.2,
@@ -335,9 +374,13 @@
         if (saved) {
           const parsed = JSON.parse(saved);
           const defaults = this.getDefaults();
+          if (parsed.currentUser && !parsed.currentUser.banner) {
+            parsed.currentUser.banner = 'Purple Galaxy Over Alien Worlds.jpg';
+          }
           return {
             ...defaults,
             ...parsed,
+            currentUser: parsed.currentUser ? { banner: 'Purple Galaxy Over Alien Worlds.jpg', ...parsed.currentUser } : null,
             friends: parsed.friends && parsed.friends.length ? parsed.friends : defaults.friends,
             chatMessages: parsed.chatMessages || defaults.chatMessages,
             activeChatHeads: parsed.activeChatHeads || defaults.activeChatHeads,
@@ -660,6 +703,11 @@
 
               <!-- Action Menu Items -->
               <div style="display: flex; flex-direction: column; gap: 6px;">
+                <button type="button" class="dropdown-item-btn" id="dropdown-customize-banner-btn">
+                  <span style="font-size: 1.05rem;">🎨</span>
+                  <span>Customize Banner</span>
+                </button>
+
                 <button type="button" class="dropdown-item-btn" id="dropdown-edit-profile-btn">
                   <span style="font-size: 1.05rem;">✏️</span>
                   <span>Edit Profile</span>
@@ -709,6 +757,12 @@
     }
 
     // Dropdown Actions
+    document.getElementById('dropdown-customize-banner-btn')?.addEventListener('click', () => {
+      dropdown?.classList.remove('show');
+      trigger?.classList.remove('active');
+      openCustomizeBannerModal();
+    });
+
     document.getElementById('dropdown-edit-profile-btn')?.addEventListener('click', () => {
       dropdown?.classList.remove('show');
       trigger?.classList.remove('active');
@@ -1521,6 +1575,307 @@
     });
   }
 
+  /* --- MODAL: CUSTOMIZE BANNER --- */
+  function openCustomizeBannerModal() {
+    const user = Store.state.currentUser;
+    if (!user) return;
+
+    document.getElementById('customize-banner-modal')?.remove();
+    if (window.Sound) window.Sound.playClick();
+
+    let selectedBanner = user.banner || 'Purple Galaxy Over Alien Worlds.jpg';
+    let tempUploadedBanner = null;
+
+    const renderPreview = (bannerSrc) => {
+      const previewEl = document.getElementById('modal-banner-live-preview');
+      if (previewEl) {
+        previewEl.style.backgroundImage = `url("${encodeURI(bannerSrc)}")`;
+      }
+    };
+
+    const modalHtml = `
+      <div id="customize-banner-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; padding: 24px 28px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.3); position: relative; animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+          
+          <!-- Modal Header -->
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; border: 1px solid rgba(245, 158, 11, 0.3);">
+                🎨
+              </div>
+              <div>
+                <h3 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+                  Customize Profile Banner
+                </h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
+                  Select a gaming preset template or upload your custom artwork
+                </p>
+              </div>
+            </div>
+            <button id="close-customize-banner-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s ease;">✕</button>
+          </div>
+
+          <!-- 1. LIVE BANNER PREVIEW -->
+          <div style="margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">Live Preview</span>
+              <span class="badge badge-gold" style="font-size: 0.72rem; padding: 2px 8px; font-weight: 700;">Active Look</span>
+            </div>
+            
+            <div id="modal-banner-live-preview" class="banner-preview-wrapper" style="background-image: url('${encodeURI(selectedBanner)}');">
+              <div class="profile-banner-ambient"></div>
+              <div class="profile-banner-grid"></div>
+              
+              <!-- Mini Overlay on Preview -->
+              <div style="position: absolute; left: 16px; bottom: 12px; z-index: 10; display: flex; align-items: center; gap: 12px;">
+                <div style="width: 44px; height: 44px; border-radius: 10px; background: #ffffff; border: 2px solid #ffffff; box-shadow: 0 4px 14px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                  ${user.avatar || '👑'}
+                </div>
+                <div>
+                  <div style="font-family: var(--font-header); font-size: 1.15rem; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.9); line-height: 1.2;">
+                    ${user.displayName || user.username}
+                  </div>
+                  <div style="font-size: 0.75rem; color: rgba(255,255,255,0.9); font-style: italic; text-shadow: 0 1px 4px rgba(0,0,0,0.9); max-width: 360px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    “${user.quote || 'The path to victory is paved with courage...'}”
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. PRESET TEMPLATES SECTION -->
+          <div style="margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">Preset Templates</span>
+              <span style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 600;">4 High-Definition Themes</span>
+            </div>
+
+            <div class="banner-template-grid">
+              ${BANNER_TEMPLATES.map(tpl => {
+                const isSelected = selectedBanner === tpl.file;
+                return `
+                  <div class="banner-template-card ${isSelected ? 'selected' : ''}" data-file="${tpl.file}" id="tpl-card-${tpl.id}">
+                    <div class="banner-card-thumb-wrap">
+                      <img src="${encodeURI(tpl.src)}" alt="${tpl.name}" class="banner-card-thumb-img" loading="lazy" />
+                      <div class="banner-card-check-badge">✓</div>
+                    </div>
+                    <div class="banner-card-meta">
+                      <div class="banner-card-title" title="${tpl.name}">${tpl.name}</div>
+                      <div class="banner-card-tag">${tpl.tag}</div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <!-- 3. UPLOAD CUSTOM BANNER SECTION -->
+          <div style="margin-bottom: 22px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">Or Upload Custom Banner</span>
+              <span style="font-size: 0.76rem; color: var(--text-muted);">JPG, PNG, WebP (Max 10MB)</span>
+            </div>
+
+            <div id="banner-upload-dropzone" class="banner-upload-dropzone">
+              <input type="file" id="banner-file-input" accept="image/jpeg,image/png,image/webp,image/gif" style="display: none;" />
+              
+              <div id="upload-idle-state" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                  📤
+                </div>
+                <div>
+                  <strong style="color: var(--text-primary); font-size: 0.88rem; display: block;">Click to browse or drag & drop custom banner</strong>
+                  <span style="font-size: 0.76rem; color: var(--text-muted);">Recommended: 1920×340 or 16:9 ratio high-resolution image</span>
+                </div>
+              </div>
+
+              <div id="upload-success-state" style="display: none; align-items: center; justify-content: space-between; padding: 4px 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 38px; height: 38px; border-radius: 8px; overflow: hidden; border: 1px solid var(--accent-gold);">
+                    <img id="upload-preview-thumb" src="" style="width: 100%; height: 100%; object-fit: cover;" />
+                  </div>
+                  <div style="text-align: left;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);" id="upload-file-name">custom-banner.png</div>
+                    <div style="font-size: 0.74rem; color: #16a34a; font-weight: 600;">✓ Ready to apply</div>
+                  </div>
+                </div>
+                <button type="button" id="remove-upload-banner-btn" class="btn btn-secondary" style="padding: 5px 12px; font-size: 0.78rem; color: #ef4444; border-color: rgba(239,68,68,0.3);">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions Footer -->
+          <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+            <button type="button" id="reset-banner-default-btn" class="btn btn-secondary" style="font-size: 0.82rem; padding: 8px 14px;">
+              Reset Default
+            </button>
+            <div style="display: flex; gap: 10px;">
+              <button type="button" id="cancel-customize-banner-btn" class="btn btn-secondary" style="padding: 8px 18px;">
+                Cancel
+              </button>
+              <button type="button" id="save-customize-banner-btn" class="btn btn-primary" style="padding: 8px 22px; font-weight: 700; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);">
+                Save & Apply Banner
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = document.getElementById('customize-banner-modal');
+    const close = () => modal?.remove();
+
+    // Close handlers
+    document.getElementById('close-customize-banner-btn')?.addEventListener('click', close);
+    document.getElementById('cancel-customize-banner-btn')?.addEventListener('click', close);
+    modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+    // Template selection handlers
+    const cards = modal.querySelectorAll('.banner-template-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const file = card.getAttribute('data-file');
+        if (!file) return;
+        selectedBanner = file;
+        tempUploadedBanner = null;
+
+        cards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+
+        // Hide upload success state
+        const idleState = document.getElementById('upload-idle-state');
+        const successState = document.getElementById('upload-success-state');
+        if (idleState) idleState.style.display = 'flex';
+        if (successState) successState.style.display = 'none';
+
+        renderPreview(selectedBanner);
+        if (window.Sound) window.Sound.playClick();
+      });
+    });
+
+    // File Upload Handler
+    const dropzone = document.getElementById('banner-upload-dropzone');
+    const fileInput = document.getElementById('banner-file-input');
+    const idleState = document.getElementById('upload-idle-state');
+    const successState = document.getElementById('upload-success-state');
+    const uploadThumb = document.getElementById('upload-preview-thumb');
+    const uploadFileName = document.getElementById('upload-file-name');
+
+    dropzone?.addEventListener('click', (e) => {
+      if (e.target.id !== 'remove-upload-banner-btn' && !e.target.closest('#remove-upload-banner-btn')) {
+        fileInput?.click();
+      }
+    });
+
+    dropzone?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+
+    dropzone?.addEventListener('dragleave', () => {
+      dropzone.classList.remove('dragover');
+    });
+
+    dropzone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        processBannerFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput?.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        processBannerFile(e.target.files[0]);
+      }
+    });
+
+    function processBannerFile(file) {
+      if (!file.type.startsWith('image/')) {
+        Toast.error('Invalid File Type', 'Please upload a valid image file (JPG, PNG, WebP).');
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        Toast.error('File Too Large', 'Banner image must be under 10MB.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = ev.target.result;
+        selectedBanner = dataUrl;
+        tempUploadedBanner = dataUrl;
+
+        // Deselect template cards
+        cards.forEach(c => c.classList.remove('selected'));
+
+        // Show upload success state
+        if (idleState) idleState.style.display = 'none';
+        if (successState) successState.style.display = 'flex';
+        if (uploadThumb) uploadThumb.src = dataUrl;
+        if (uploadFileName) uploadFileName.textContent = file.name;
+
+        renderPreview(dataUrl);
+        Toast.success('Image Loaded', 'Custom banner preview ready.');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Remove custom upload button
+    document.getElementById('remove-upload-banner-btn')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      tempUploadedBanner = null;
+      selectedBanner = 'Purple Galaxy Over Alien Worlds.jpg';
+      if (idleState) idleState.style.display = 'flex';
+      if (successState) successState.style.display = 'none';
+      if (fileInput) fileInput.value = '';
+
+      cards.forEach(c => {
+        if (c.getAttribute('data-file') === selectedBanner) c.classList.add('selected');
+        else c.classList.remove('selected');
+      });
+
+      renderPreview(selectedBanner);
+    });
+
+    // Reset default button
+    document.getElementById('reset-banner-default-btn')?.addEventListener('click', () => {
+      selectedBanner = 'Purple Galaxy Over Alien Worlds.jpg';
+      tempUploadedBanner = null;
+      if (idleState) idleState.style.display = 'flex';
+      if (successState) successState.style.display = 'none';
+      if (fileInput) fileInput.value = '';
+
+      cards.forEach(c => {
+        if (c.getAttribute('data-file') === selectedBanner) c.classList.add('selected');
+        else c.classList.remove('selected');
+      });
+
+      renderPreview(selectedBanner);
+      Toast.success('Reset to Default', 'Purple Galaxy theme selected.');
+    });
+
+    // Save & Apply
+    document.getElementById('save-customize-banner-btn')?.addEventListener('click', () => {
+      user.banner = selectedBanner;
+      Store.save();
+
+      // Instantly update live banner on current page if present
+      const liveBanner = document.querySelector('.profile-fullwidth-banner');
+      if (liveBanner) {
+        liveBanner.style.backgroundImage = `url("${encodeURI(user.banner)}")`;
+      }
+
+      if (window.Sound) window.Sound.playClick();
+      Toast.success('Banner Updated!', 'Your profile banner has been customized.');
+      close();
+    });
+  }
+
   /* --- MODAL: EDIT PROFILE --- */
   function openEditProfileModal() {
     const user = Store.state.currentUser;
@@ -1536,6 +1891,20 @@
               ✏️ Edit Profile
             </div>
             <button id="close-edit-profile-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+          </div>
+
+          <!-- Quick Banner Customization Link inside Edit Profile -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 10px; margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="font-size: 1.25rem;">🎨</div>
+              <div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Profile Banner</div>
+                <div style="font-size: 0.74rem; color: var(--text-muted);">Preset templates & custom upload</div>
+              </div>
+            </div>
+            <button type="button" id="edit-profile-change-banner-btn" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px; font-weight: 700; border-color: var(--accent-gold); color: #b45309; background: #ffffff;">
+              Customize Banner
+            </button>
           </div>
 
           <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 14px;">
@@ -1608,6 +1977,11 @@
 
     const modal = document.getElementById('edit-profile-modal');
     const close = () => modal?.remove();
+
+    document.getElementById('edit-profile-change-banner-btn')?.addEventListener('click', () => {
+      close();
+      openCustomizeBannerModal();
+    });
 
     document.getElementById('close-edit-profile-btn')?.addEventListener('click', close);
     document.getElementById('cancel-edit-profile-btn')?.addEventListener('click', close);
@@ -2108,11 +2482,35 @@
     container.innerHTML = `
       <div class="animate-fade-in profile-fullwidth-wrapper">
         <!-- 1. FULL-WIDTH TOP COVER BANNER (100% Edge-to-Edge) -->
-        <div class="profile-fullwidth-banner">
+        <div class="profile-fullwidth-banner" style="background-image: url('${encodeURI(user.banner || 'Purple Galaxy Over Alien Worlds.jpg')}');">
           <div class="profile-banner-ambient"></div>
           <div class="profile-banner-grid"></div>
           <div class="hud-corner-accent hud-corner-tl"></div>
           <div class="hud-corner-accent hud-corner-tr"></div>
+
+          <!-- Floating Customize Banner Button -->
+          <button type="button" id="profile-customize-banner-btn" class="customize-banner-btn" style="
+            position: absolute;
+            right: 24px;
+            bottom: 18px;
+            z-index: 35;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            color: #ffffff;
+            font-size: 0.86rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+          ">
+            <span>🎨</span>
+            <span>Customize Banner</span>
+          </button>
         </div>
 
         <!-- 2. CONSTRAINED PROFILE CONTAINER -->
@@ -2329,7 +2727,7 @@
               ">
                 <!-- Name of the User on Banner -->
                 <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
-                  <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.6rem; font-weight: 900; color: #0f172a; margin: 0; letter-spacing: 0.01em; line-height: 1.15; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);">
+                  <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.6rem; font-weight: 900; color: #ffffff; margin: 0; letter-spacing: 0.01em; line-height: 1.15; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 24px rgba(0, 0, 0, 0.65);">
                     ${user.displayName || user.username}
                   </h1>
                   <span class="badge badge-gold" style="font-size: 0.88rem; padding: 5px 14px; font-weight: 800; box-shadow: 0 2px 10px rgba(217, 119, 6, 0.25);">👑 ${user.rank || 'Divine V'}</span>
@@ -2348,7 +2746,7 @@
                   position: relative;
                 ">
                   <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">“</span>
-                  <p id="profile-quote-display" style="font-size: 1.08rem; font-style: italic; color: #1e293b; line-height: 1.5; margin: 0; font-weight: 600; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">
+                  <p id="profile-quote-display" style="font-size: 1.08rem; font-style: italic; color: #f8fafc; line-height: 1.5; margin: 0; font-weight: 600; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);">
                     ${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}
                   </p>
                   <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">”</span>
@@ -3096,6 +3494,11 @@
       renderHomePartyList();
     });
 
+    // Customize Banner Listener
+    document.getElementById('profile-customize-banner-btn')?.addEventListener('click', () => {
+      openCustomizeBannerModal();
+    });
+
     // Privacy Policy and Terms & Conditions button listeners
     document.getElementById('profile-privacy-policy-btn')?.addEventListener('click', () => {
       openPrivacyPolicyModal();
@@ -3646,6 +4049,22 @@
         </h1>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+          <!-- 1. Profile Banner Customizer Panel -->
+          <div class="hud-panel" style="padding: 24px;">
+            <div class="hud-panel-title" style="margin-bottom: 14px;">🖼️ Profile Cover Banner</div>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Personalize your full-width profile header with gaming themes or your own art.
+            </p>
+            <div class="banner-preview-wrapper" id="hud-settings-banner-preview" style="height: 120px; margin-bottom: 16px; background-image: url('${encodeURI(user.banner || 'Purple Galaxy Over Alien Worlds.jpg')}');">
+              <div class="profile-banner-ambient"></div>
+              <div class="profile-banner-grid"></div>
+            </div>
+            <button class="btn btn-primary btn-block" id="hud-open-banner-modal-btn">
+              🎨 Customize Profile Banner
+            </button>
+          </div>
+
+          <!-- 2. Visual Theme Presets Panel -->
           <div class="hud-panel" style="padding: 24px;">
             <div class="hud-panel-title" style="margin-bottom: 16px;">🎨 Visual Theme Presets</div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -3658,6 +4077,7 @@
             </div>
           </div>
 
+          <!-- 3. Sound Synthesizer Panel -->
           <div class="hud-panel" style="padding: 24px;">
             <div class="hud-panel-title" style="margin-bottom: 16px;">🔊 Sound Synthesizer</div>
             <button class="btn btn-secondary btn-block" id="test-fanfare-btn" style="margin-bottom: 12px;">🎺 Test Fanfare Sound</button>
@@ -3666,6 +4086,10 @@
         </div>
       </div>
     `;
+
+    document.getElementById('hud-open-banner-modal-btn')?.addEventListener('click', () => {
+      openCustomizeBannerModal();
+    });
 
     document.querySelectorAll('.theme-btn').forEach(b => {
       b.addEventListener('click', () => {
