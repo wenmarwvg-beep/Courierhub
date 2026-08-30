@@ -19,45 +19,83 @@
 }
 
 /* ==========================================================================
-   1. ULTRA-PREMIUM MAIN CHAT TRIGGER BUTTON
+   1. ULTRA-PREMIUM MAIN CHAT TRIGGER BUTTON (Shadow Fiend Soulfire Crest)
    ========================================================================== */
 .main-chat-btn {
-  width: 62px;
-  height: 62px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #1e293b 0%, #0f172a 70%, #060913 100%);
-  border: 2px solid rgba(245, 158, 11, 0.7);
+  background: radial-gradient(circle at 35% 25%, #2a0808 0%, #150508 45%, #080204 80%, #000000 100%);
+  border: 2px solid #ff2200;
   box-shadow: 
-    0 0 0 1px rgba(254, 240, 138, 0.3),
-    0 0 0 3px rgba(15, 23, 42, 0.9),
-    0 10px 30px rgba(0, 0, 0, 0.45),
-    0 0 20px rgba(245, 158, 11, 0.3),
-    inset 0 1px 2px rgba(255, 255, 255, 0.25),
-    inset 0 -2px 6px rgba(0, 0, 0, 0.8);
+    0 0 0 1.5px rgba(255, 68, 34, 0.6),
+    0 0 0 4px rgba(10, 2, 4, 0.9),
+    0 14px 38px rgba(0, 0, 0, 0.75),
+    0 0 28px rgba(255, 34, 0, 0.45),
+    inset 0 2px 4px rgba(255, 100, 50, 0.4),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   position: relative;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.28s ease, background 0.28s ease;
   outline: none;
   overflow: visible;
 }
 
-/* Outer Breathing Halo Glow */
+/* Outer Breathing Netherflame Halo */
 .chat-btn-halo {
   position: absolute;
-  inset: -6px;
+  inset: -8px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(217, 119, 6, 0.1) 60%, transparent 80%);
+  background: radial-gradient(circle, rgba(255, 34, 0, 0.4) 0%, rgba(255, 85, 0, 0.15) 55%, transparent 75%);
   z-index: -1;
-  animation: heraldHaloPulse 3s infinite ease-in-out;
+  animation: soulfireHaloPulse 2.8s infinite ease-in-out;
   pointer-events: none;
 }
 
-@keyframes heraldHaloPulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.18); opacity: 1; filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6)); }
+@keyframes soulfireHaloPulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.22); opacity: 1; filter: drop-shadow(0 0 14px rgba(255, 34, 0, 0.8)); }
+}
+
+/* Orbital Revolving Embers Ring */
+.chat-btn-orbit-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sfOrbitSpin 5s linear infinite;
+}
+
+@keyframes sfOrbitSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.chat-orbit-dot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px #ff2200, 0 0 16px #ff5500;
+}
+
+.chat-orbit-dot-2 {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: #ff5522;
+  box-shadow: 0 0 8px #ff2200;
 }
 
 /* Specular Light Sheen Reflection Sweep */
@@ -80,7 +118,7 @@
     60deg,
     transparent 35%,
     rgba(255, 255, 255, 0.28) 48%,
-    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.6) 50%,
     rgba(255, 255, 255, 0.28) 52%,
     transparent 65%
   );
@@ -93,15 +131,15 @@
 }
 
 .main-chat-btn:hover {
-  transform: translateY(-3px) scale(1.06);
-  border-color: #fde047;
+  transform: translateY(-4px) scale(1.08);
+  border-color: #ff5522;
   box-shadow: 
-    0 0 0 1.5px rgba(254, 240, 138, 0.6),
-    0 0 0 4px rgba(15, 23, 42, 0.95),
-    0 16px 36px rgba(0, 0, 0, 0.55),
-    0 0 28px rgba(245, 158, 11, 0.5),
-    inset 0 1px 3px rgba(255, 255, 255, 0.4),
-    inset 0 -2px 6px rgba(0, 0, 0, 0.8);
+    0 0 0 2px rgba(255, 100, 50, 0.8),
+    0 0 0 5px rgba(15, 2, 4, 0.95),
+    0 20px 45px rgba(0, 0, 0, 0.85),
+    0 0 36px rgba(255, 34, 0, 0.7),
+    inset 0 2px 5px rgba(255, 150, 100, 0.6),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.9);
 }
 
 .main-chat-btn:active {
@@ -109,38 +147,55 @@
 }
 
 .main-chat-btn.active {
-  background: radial-gradient(circle at 35% 30%, #334155 0%, #0f172a 70%, #020617 100%);
-  border-color: #f59e0b;
+  background: radial-gradient(circle at 35% 30%, #3a0e14 0%, #150508 70%, #050102 100%);
+  border-color: #ff3300;
 }
 
 /* Icon & Crossfade Animation */
 .chat-btn-icon-wrapper {
   position: relative;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.chat-icon-svg {
-  width: 26px;
-  height: 26px;
-  filter: drop-shadow(0 2px 6px rgba(245, 158, 11, 0.5));
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+.sf-chat-flame {
+  filter: drop-shadow(0 0 8px #ff2200) drop-shadow(0 0 16px rgba(255, 85, 0, 0.75));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+  animation: sfFlamePulse 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes sfFlamePulse {
+  0% {
+    transform: scale(0.98) translateY(1px);
+    filter: drop-shadow(0 0 8px #ff2200) drop-shadow(0 0 14px rgba(255, 85, 0, 0.6));
+  }
+  100% {
+    transform: scale(1.08) translateY(-1px);
+    filter: drop-shadow(0 0 16px #ff3300) drop-shadow(0 0 26px rgba(255, 120, 0, 0.9));
+  }
+}
+
+.main-chat-btn:hover .sf-chat-flame {
+  transform: scale(1.18) translateY(-2px);
+  filter: drop-shadow(0 0 20px #ff2200) drop-shadow(0 0 35px #ff7700);
 }
 
 .chat-btn-close-icon {
   position: absolute;
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #fde047;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 0 10px #ff2200, 0 0 20px #ff5500;
   opacity: 0;
   transform: rotate(-90deg) scale(0.5);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
 }
 
-.main-chat-btn.active .chat-icon-svg {
+.main-chat-btn.active .chat-custom-skin-icon,
+.main-chat-btn.active .sf-chat-flame {
   opacity: 0;
   transform: rotate(90deg) scale(0.5);
 }
@@ -150,19 +205,19 @@
   transform: rotate(0deg) scale(1);
 }
 
-/* Radiant Emerald Status Gem Badge */
+/* Radiant Emerald / Soulfire Status Gem Badge */
 .chat-online-gem {
   position: absolute;
   top: -4px;
   right: -4px;
-  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  background: linear-gradient(135deg, #ff2200 0%, #990000 100%);
   color: #ffffff;
-  font-size: 0.68rem;
-  font-weight: 800;
-  padding: 2px 7px 2px 6px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 2px 8px 2px 7px;
   border-radius: 12px;
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), 0 0 10px rgba(34, 197, 94, 0.5);
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 12px rgba(255, 34, 0, 0.6);
   display: flex;
   align-items: center;
   gap: 4px;

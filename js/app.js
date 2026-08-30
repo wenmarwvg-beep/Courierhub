@@ -29,6 +29,66 @@
   /* ==========================================================================
      2. SVG ICONS & HERO SKIN BUNDLES REGISTRY (Abyssal Soulfire Signature)
      ========================================================================== */
+  const SHADOW_FIEND_CHAT_ICON_SVG = `
+    <svg class="sf-chat-flame" viewBox="0 0 40 40" width="34" height="34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sfFlameOuter" x1="20" y1="36" x2="20" y2="4" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#800000" />
+          <stop offset="35%" stop-color="#ff1100" />
+          <stop offset="75%" stop-color="#ff5500" />
+          <stop offset="100%" stop-color="#ffcc00" />
+        </linearGradient>
+        
+        <linearGradient id="sfSoulCore" x1="20" y1="30" x2="20" y2="10" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ff2200" />
+          <stop offset="50%" stop-color="#ff9900" />
+          <stop offset="100%" stop-color="#ffffff" />
+        </linearGradient>
+
+        <linearGradient id="sfHornArmor" x1="4" y1="8" x2="36" y2="34" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#300808" />
+          <stop offset="50%" stop-color="#180406" />
+          <stop offset="100%" stop-color="#050102" />
+        </linearGradient>
+
+        <linearGradient id="sfHornRim" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ff4422" />
+          <stop offset="70%" stop-color="#880000" />
+          <stop offset="100%" stop-color="#ff2200" />
+        </linearGradient>
+
+        <filter id="sfFlameGlow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="1.6" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      <!-- Demonic Obsidian Horn Armor Spikes -->
+      <path d="M7 26C5 18 8 10 12 6C11 11 12 16 15 19C12 21 8 23 7 26Z" fill="url(#sfHornArmor)" stroke="url(#sfHornRim)" stroke-width="1.3" stroke-linejoin="round" />
+      <path d="M33 26C35 18 32 10 28 6C29 11 28 16 25 19C28 21 32 23 33 26Z" fill="url(#sfHornArmor)" stroke="url(#sfHornRim)" stroke-width="1.3" stroke-linejoin="round" />
+
+      <!-- Outer Roaring Netherflame -->
+      <path d="M20 4C16.8 11 11 15 11 23C11 29 15 34 20 34C25 34 29 29 29 23C29 15 23.2 11 20 4Z" fill="url(#sfFlameOuter)" filter="url(#sfFlameGlow)" />
+      
+      <!-- Left Flickering Flame Tongue -->
+      <path d="M16 28C14 26 13 22 15 18C16 20 17 21 17 23C17 25 16.5 27 16 28Z" fill="#ff7700" opacity="0.95" />
+
+      <!-- Right Flickering Flame Tongue -->
+      <path d="M24 28C26 26 27 22 25 18C24 20 23 21 23 23C23 25 23.5 27 24 28Z" fill="#ff7700" opacity="0.95" />
+
+      <!-- Blazing Soul Core (White Hot Heart) -->
+      <path d="M20 12C18 17 15 20 15 25C15 28.5 17.2 31.5 20 31.5C22.8 31.5 25 28.5 25 25C25 20 22 17 20 12Z" fill="url(#sfSoulCore)" />
+
+      <!-- Demonic Nether Eyes Crest in Center -->
+      <path d="M17 23L19 25L17 27" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M23 23L21 25L23 27" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="20" cy="20" r="1.3" fill="#ffffff" />
+
+      <!-- Base Nether Collar Armor -->
+      <path d="M13 33C17 35.5 23 35.5 27 33C25.5 36.5 14.5 36.5 13 33Z" fill="#180406" stroke="#ff2200" stroke-width="1" />
+    </svg>
+  `;
+
   const SKIN_BUNDLES = [
     {
       id: 'shadow-fiend',
@@ -42,8 +102,9 @@
       borderHead: '#ffffff',
       bgStyle: 'shadow-fiend',
       chatBadge: '🔥',
-      chatIconName: 'Demonic Soul Flame',
-      desc: 'Exclusive Nevermore theme. Synchronizes full-bleed Requiem artwork, red soulfire laser border travel path, atmospheric ember particles, and burning soul crest.'
+      chatIconSvg: SHADOW_FIEND_CHAT_ICON_SVG,
+      chatIconName: 'Abyssal Soulfire Crest',
+      desc: 'Exclusive Nevermore theme. Synchronizes full-bleed Requiem artwork, red soulfire laser border travel path, atmospheric ember particles, and blazing Netherflame soul crest.'
     }
   ];
 
@@ -1349,26 +1410,32 @@
     const activeSkin = SKIN_BUNDLES.find(s => s.id === (user.skin || 'shadow-fiend')) || SKIN_BUNDLES[0];
     
     html += `
-      <button type="button" id="main-chat-trigger-btn" class="main-chat-btn ${isFriendsListOpen ? 'active' : ''}" title="Dota Friends & Chat (${activeSkin.name})" aria-label="Open Dota Friends and Chat" style="border-color: ${activeSkin.accent}; box-shadow: 0 0 22px ${activeSkin.accent}55, 0 10px 30px rgba(0,0,0,0.5);">
+      <button type="button" id="main-chat-trigger-btn" class="main-chat-btn ${isFriendsListOpen ? 'active' : ''}" title="Dota Friends & Chat (${activeSkin.name})" aria-label="Open Dota Friends and Chat">
         <!-- Outer Ambient Halo Glow Ring -->
-        <div class="chat-btn-halo" style="background: radial-gradient(circle, ${activeSkin.accent}55 0%, ${activeSkin.accent}1a 60%, transparent 80%);"></div>
+        <div class="chat-btn-halo"></div>
+
+        <!-- Orbital Revolving Embers Ring -->
+        <div class="chat-btn-orbit-ring">
+          <div class="chat-orbit-dot"></div>
+          <div class="chat-orbit-dot-2"></div>
+        </div>
 
         <!-- Specular Light Sheen Reflection -->
         <div class="chat-btn-sheen"></div>
 
         <!-- Glowing Custom Skin Chat Icon / Close Morph -->
         <div class="chat-btn-icon-wrapper">
-          <div class="chat-custom-skin-icon" style="font-size: 1.55rem; filter: drop-shadow(0 0 8px ${activeSkin.accent}); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
-            ${activeSkin.chatBadge}
+          <div class="chat-custom-skin-icon" style="display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+            ${activeSkin.chatIconSvg || `<span style="font-size: 1.55rem; filter: drop-shadow(0 0 8px ${activeSkin.accent});">${activeSkin.chatBadge}</span>`}
           </div>
           <span class="chat-btn-close-icon">✕</span>
         </div>
 
         <!-- Radiant Live Status Gem with Radar Ping -->
-        <div class="chat-online-gem" title="${onlineCount} Friends Online" style="background: linear-gradient(135deg, ${activeSkin.accent} 0%, #1e1b4b 100%); border-color: #ffffff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), 0 0 10px ${activeSkin.accent}88;">
+        <div class="chat-online-gem" title="${onlineCount} Friends Online">
           <div class="chat-gem-ping-wrapper">
-            <span class="chat-gem-ping" style="background: ${activeSkin.accent}88;"></span>
-            <span class="chat-gem-dot" style="background: #ffffff; box-shadow: 0 0 6px ${activeSkin.accent};"></span>
+            <span class="chat-gem-ping" style="background: rgba(255, 255, 255, 0.8);"></span>
+            <span class="chat-gem-dot" style="background: #ffffff; box-shadow: 0 0 6px #ff2200;"></span>
           </div>
           <span class="chat-gem-count">${onlineCount}</span>
         </div>
@@ -1719,8 +1786,10 @@
               <!-- Mini Floating Chat Trigger Preview -->
               <div style="position: absolute; right: 16px; bottom: 14px; z-index: 15; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
                 <span style="font-size: 0.68rem; font-weight: 700; color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.9);">Chat Icon Preview</span>
-                <div style="width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #1e293b 0%, #0f172a 70%, #060913 100%); border: 2px solid ${skin.accent}; box-shadow: 0 0 16px ${skin.accent}66; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-                  <span>${skin.chatBadge}</span>
+                <div style="position: relative; width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle at 35% 25%, #2a0808 0%, #150508 45%, #080204 80%, #000000 100%); border: 2px solid ${skin.accent}; box-shadow: 0 0 20px ${skin.accent}88, inset 0 2px 4px rgba(255,100,50,0.4); display: flex; align-items: center; justify-content: center;">
+                  <div style="transform: scale(0.85); display: flex; align-items: center; justify-content: center;">
+                    ${skin.chatIconSvg || `<span>${skin.chatBadge}</span>`}
+                  </div>
                 </div>
               </div>
             </div>
