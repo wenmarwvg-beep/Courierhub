@@ -222,7 +222,7 @@
 }
 
 /* ==========================================================================
-   Full-Width Banner with Boxed Profile Card System
+   Full-Width LinkedIn-Style Profile Banner System
    ========================================================================== */
 .profile-fullwidth-wrapper {
   width: 100%;
@@ -268,35 +268,25 @@
   position: relative;
 }
 
-.profile-boxed-card {
-  position: relative;
-  background: var(--bg-card);
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-  margin-top: -65px;
-  padding: 0 32px 32px;
-}
-
 .profile-avatar-anchor {
   position: relative;
-  margin-top: -65px;
-  margin-bottom: 16px;
+  margin-top: -75px;
+  margin-bottom: 18px;
   display: inline-block;
   z-index: 10;
 }
 
 .profile-large-avatar {
-  width: 135px;
-  height: 135px;
+  width: 145px;
+  height: 145px;
   border-radius: 50%;
-  border: 4.5px solid var(--bg-card);
+  border: 5px solid var(--bg-primary);
   background: var(--bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 4.2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.25);
+  font-size: 4.5rem;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(245, 158, 11, 0.25);
   position: relative;
   transition: transform var(--transition-fast);
 }
@@ -307,14 +297,14 @@
 
 .profile-status-badge {
   position: absolute;
-  bottom: 6px;
-  right: 6px;
-  width: 22px;
-  height: 22px;
+  bottom: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 3.5px solid var(--bg-card);
+  border: 3.5px solid var(--bg-primary);
   background: var(--radiant-green);
-  box-shadow: 0 0 10px var(--radiant-green-glow);
+  box-shadow: 0 0 12px var(--radiant-green-glow);
 }
 
 .profile-info-block {
@@ -332,7 +322,7 @@
 
 .profile-display-name {
   font-family: var(--font-header);
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 900;
   color: var(--text-primary);
   margin: 0;
@@ -341,7 +331,7 @@
 }
 
 .profile-headline-text {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: var(--text-secondary);
   margin: 2px 0 8px;
   font-weight: 500;
@@ -352,10 +342,9 @@
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: var(--text-muted);
   margin-top: 4px;
 }
-
 
 

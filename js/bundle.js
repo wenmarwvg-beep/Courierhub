@@ -423,29 +423,27 @@
 
     root.innerHTML = `
       <div class="app-layout" style="display: flex; flex-direction: column;">
-        <!-- Clean Modern Topbar Navigation (Boxed Content) -->
-        <header class="topbar" style="position: sticky; top: 0; z-index: 50; width: 100%; border-bottom: 1px solid var(--border-subtle); background: var(--bg-glass); backdrop-filter: blur(16px); padding: 0;">
-          <div style="max-width: 1080px; margin: 0 auto; width: 100%; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: var(--topbar-height);">
-            <div style="display: flex; align-items: center; gap: 14px;">
-              <a href="#home" class="brand-logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-                <img src="assets/logo.png" alt="CourierHub" style="width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.4));">
-                <span style="font-family: var(--font-header); font-size: 1.2rem; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.04em;">CourierHub</span>
-              </a>
-            </div>
+        <!-- Clean Modern Topbar Navigation -->
+        <header class="topbar" style="position: sticky; top: 0; z-index: 50; width: 100%; border-bottom: 1px solid var(--border-subtle); background: var(--bg-glass); backdrop-filter: blur(16px); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: var(--topbar-height);">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <a href="#home" class="brand-logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+              <img src="assets/logo.png" alt="CourierHub" style="width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.4));">
+              <span style="font-family: var(--font-header); font-size: 1.2rem; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.04em;">CourierHub</span>
+            </a>
+          </div>
 
-            <div class="topbar-actions" style="display: flex; align-items: center; gap: 14px;">
-              <div class="user-pill" style="display: flex; align-items: center; gap: 8px; padding: 5px 14px; background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-xl);">
-                <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 26px; height: 26px; font-size: 1.1rem;">
-                  <span>${user.avatar || '👑'}</span>
-                </div>
-                <strong style="font-size: 0.88rem; color: var(--text-primary);">${user.displayName || user.username}</strong>
-                <span class="rank-badge rank-legend" style="font-size: 0.7rem; padding: 2px 6px;">${user.rank || 'Divine V'}</span>
+          <div class="topbar-actions" style="display: flex; align-items: center; gap: 14px;">
+            <div class="user-pill" style="display: flex; align-items: center; gap: 8px; padding: 5px 14px; background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-xl);">
+              <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 26px; height: 26px; font-size: 1.1rem;">
+                <span>${user.avatar || '👑'}</span>
               </div>
-
-              <button class="btn btn-secondary btn-sm" id="logout-btn" style="padding: 7px 14px; font-size: 0.82rem; gap: 6px;">
-                ${Icons.logout} <span>Sign Out</span>
-              </button>
+              <strong style="font-size: 0.88rem; color: var(--text-primary);">${user.displayName || user.username}</strong>
+              <span class="rank-badge rank-legend" style="font-size: 0.7rem; padding: 2px 6px;">${user.rank || 'Divine V'}</span>
             </div>
+
+            <button class="btn btn-secondary btn-sm" id="logout-btn" style="padding: 7px 14px; font-size: 0.82rem; gap: 6px;">
+              ${Icons.logout} <span>Sign Out</span>
+            </button>
           </div>
         </header>
 
@@ -823,38 +821,31 @@
           <div class="hud-corner-accent hud-corner-tr"></div>
         </div>
 
-        <!-- 2. BOXED PROFILE CARD (Centered Boxed Card with Avatar & Info on Left) -->
+        <!-- 2. PROFILE BODY (AVATAR ON THE LEFT OVERLAPPING BANNER, CONSTRAINED CONTAINER) -->
         <div class="profile-content-container">
-          <div class="profile-boxed-card hud-highlight">
-            <div class="hud-corner-accent hud-corner-tl"></div>
-            <div class="hud-corner-accent hud-corner-tr"></div>
-            <div class="hud-corner-accent hud-corner-bl"></div>
-            <div class="hud-corner-accent hud-corner-br"></div>
+          <!-- User Profile Image at Left Side -->
+          <div class="profile-avatar-anchor">
+            <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
+              <span>${user.avatar || '👑'}</span>
+            </div>
+            <div class="profile-status-badge" title="Online & Ready"></div>
+          </div>
 
-            <!-- Left-Side Avatar Overlapping Top Edge of Boxed Card -->
-            <div class="profile-avatar-anchor">
-              <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
-                <span>${user.avatar || '👑'}</span>
-              </div>
-              <div class="profile-status-badge" title="Online & Ready"></div>
+          <!-- User Details (Left-Aligned) -->
+          <div class="profile-info-block">
+            <div class="profile-name-row">
+              <h1 class="profile-display-name">${user.displayName || user.username}</h1>
+              <span class="badge badge-gold" style="font-size: 0.85rem; padding: 4px 12px;">👑 ${user.rank || 'Divine V'}</span>
             </div>
 
-            <!-- User Information Block inside Boxed Card -->
-            <div class="profile-info-block">
-              <div class="profile-name-row">
-                <h1 class="profile-display-name">${user.displayName || user.username}</h1>
-                <span class="badge badge-gold" style="font-size: 0.85rem; padding: 4px 12px;">👑 ${user.rank || 'Divine V'}</span>
-              </div>
+            <p class="profile-headline-text">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</p>
 
-              <p class="profile-headline-text">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</p>
-
-              <div class="profile-meta-pills">
-                <span>🌐 Region: <strong style="color: var(--text-primary);">${user.region || 'SEA'}</strong></span>
-                <span>•</span>
-                <span>🆔 Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats); font-size: 1.05rem;">${user.dotaId || '782910432'}</strong></span>
-                <span>•</span>
-                <span>✉️ <strong style="color: var(--text-secondary);">${user.email || 'wenmar.wvg@gmail.com'}</strong></span>
-              </div>
+            <div class="profile-meta-pills">
+              <span>🌐 Region: <strong style="color: var(--text-primary);">${user.region || 'SEA'}</strong></span>
+              <span>•</span>
+              <span>🆔 Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats); font-size: 1.05rem;">${user.dotaId || '782910432'}</strong></span>
+              <span>•</span>
+              <span>✉️ <strong style="color: var(--text-secondary);">${user.email || 'wenmar.wvg@gmail.com'}</strong></span>
             </div>
           </div>
         </div>
