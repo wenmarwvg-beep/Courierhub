@@ -432,18 +432,60 @@
             </a>
           </div>
 
-          <div class="topbar-actions" style="display: flex; align-items: center; gap: 14px;">
-            <div class="user-pill" style="display: flex; align-items: center; gap: 8px; padding: 5px 14px; background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-xl);">
-              <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 26px; height: 26px; font-size: 1.1rem;">
-                <span>${user.avatar || '👑'}</span>
-              </div>
-              <strong style="font-size: 0.88rem; color: var(--text-primary);">${user.displayName || user.username}</strong>
-              <span class="rank-badge rank-legend" style="font-size: 0.7rem; padding: 2px 6px;">${user.rank || 'Divine V'}</span>
-            </div>
+          <!-- Top-Right User Menu Trigger (Username on the left, mini circle avatar on the right) -->
+          <div class="topbar-user-menu-wrapper">
+            <button id="user-menu-trigger" class="topbar-user-trigger" type="button" aria-haspopup="true" aria-expanded="false" title="Account Menu">
+              <!-- Username on the left side of the circle image -->
+              <span class="topbar-user-name">${user.displayName || user.username}</span>
 
-            <button class="btn btn-secondary btn-sm" id="logout-btn" style="padding: 7px 14px; font-size: 0.82rem; gap: 6px;">
-              ${Icons.logout} <span>Sign Out</span>
+              <!-- Mini Circle Profile Image -->
+              <div class="topbar-user-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
+                <span>${user.avatar || '👑'}</span>
+                <div class="status-dot status-online" style="width: 10px; height: 10px; border-width: 2px; bottom: -1px; right: -1px;"></div>
+              </div>
+
+              <!-- Dropdown Chevron Icon -->
+              <span class="topbar-user-chevron" id="user-menu-chevron">▼</span>
             </button>
+
+            <!-- Dropdown Card -->
+            <div id="user-dropdown-card" class="hud-panel user-dropdown-card">
+              <div class="hud-corner-accent hud-corner-tl"></div>
+              <div class="hud-corner-accent hud-corner-tr"></div>
+              <div class="hud-corner-accent hud-corner-bl"></div>
+              <div class="hud-corner-accent hud-corner-br"></div>
+
+              <!-- User Preview Header -->
+              <div style="display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle);">
+                <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; border: 2px solid var(--accent-gold); flex-shrink: 0; background: var(--bg-secondary);">
+                  <span>${user.avatar || '👑'}</span>
+                </div>
+                <div style="min-width: 0; flex: 1;">
+                  <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${user.displayName || user.username}
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 700; margin-top: 1px;">
+                    👑 ${user.rank || 'Divine V'}
+                  </div>
+                  <div style="font-size: 0.74rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">
+                    ${user.email || 'wenmar.wvg@gmail.com'}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Menu Items -->
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <button type="button" class="dropdown-item-btn" id="dropdown-edit-profile-btn">
+                  <span style="font-size: 1.05rem;">✏️</span>
+                  <span>Edit Profile</span>
+                </button>
+
+                <button type="button" class="dropdown-item-btn dropdown-item-danger" id="dropdown-logout-btn">
+                  <span style="font-size: 1.05rem;">🚪</span>
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            </div>
           </div>
         </header>
 
@@ -454,13 +496,158 @@
       </div>
     `;
 
-    document.getElementById('logout-btn')?.addEventListener('click', async () => {
+    // Dropdown toggle logic
+    const trigger = document.getElementById('user-menu-trigger');
+    const dropdown = document.getElementById('user-dropdown-card');
+
+    if (trigger && dropdown) {
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('show');
+        if (isOpen) {
+          dropdown.classList.remove('show');
+          trigger.classList.remove('active');
+        } else {
+          dropdown.classList.add('show');
+          trigger.classList.add('active');
+          if (window.Sound) window.Sound.playClick();
+        }
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target) && !trigger.contains(e.target)) {
+          dropdown.classList.remove('show');
+          trigger.classList.remove('active');
+        }
+      });
+    }
+
+    // Dropdown Actions
+    document.getElementById('dropdown-edit-profile-btn')?.addEventListener('click', () => {
+      dropdown?.classList.remove('show');
+      trigger?.classList.remove('active');
+      openEditProfileModal();
+    });
+
+    document.getElementById('dropdown-logout-btn')?.addEventListener('click', async () => {
+      dropdown?.classList.remove('show');
+      trigger?.classList.remove('active');
       if (window.Sound) window.Sound.playClick();
       const sb = getSupabase();
       if (sb) await sb.auth.signOut().catch(() => {});
       Store.logout();
       Toast.success('Signed Out', 'See you next match, Hero!');
       AppRouter.navigate('login');
+    });
+  }
+
+  /* --- MODAL: EDIT PROFILE --- */
+  function openEditProfileModal() {
+    const user = Store.state.currentUser;
+    if (!user) return;
+
+    document.getElementById('edit-profile-modal')?.remove();
+
+    const modalHtml = `
+      <div id="edit-profile-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;">
+        <div class="hud-panel hud-highlight" style="width: 100%; max-width: 500px; padding: 26px; border-radius: var(--radius-lg); position: relative; animation: fadeInDown 0.25s ease;">
+          <div class="hud-corner-accent hud-corner-tl"></div>
+          <div class="hud-corner-accent hud-corner-tr"></div>
+          <div class="hud-corner-accent hud-corner-bl"></div>
+          <div class="hud-corner-accent hud-corner-br"></div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            <div style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: var(--accent-gold);">
+              ✏️ Edit Profile
+            </div>
+            <button id="close-edit-profile-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+          </div>
+
+          <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+              <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Display Name</label>
+              <input type="text" id="edit-profile-name" class="input-control" value="${user.displayName || user.username}" required style="width: 100%;">
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Bio / Headline</label>
+              <input type="text" id="edit-profile-bio" class="input-control" value="${user.bio || 'CourierHub Founder & Dota 2 Captain'}" style="width: 100%;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div>
+                <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Rank Tier</label>
+                <select id="edit-profile-rank" class="input-control" style="width: 100%;">
+                  ${['Herald', 'Guardian', 'Crusader', 'Archon', 'Legend', 'Ancient', 'Divine V', 'Immortal'].map(r => `
+                    <option value="${r}" ${(user.rank || 'Divine V') === r ? 'selected' : ''}>${r}</option>
+                  `).join('')}
+                </select>
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Dota Friend ID</label>
+                <input type="text" id="edit-profile-dotaid" class="input-control" value="${user.dotaId || '782910432'}" style="width: 100%;">
+              </div>
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Region</label>
+              <select id="edit-profile-region" class="input-control" style="width: 100%;">
+                ${['SEA', 'US East', 'US West', 'Europe West', 'Europe East', 'China', 'South America'].map(reg => `
+                  <option value="${reg}" ${(user.region || 'SEA') === reg ? 'selected' : ''}>${reg}</option>
+                `).join('')}
+              </select>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;">
+              <button type="button" class="btn btn-secondary" id="cancel-edit-profile-btn">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    const modal = document.getElementById('edit-profile-modal');
+    const close = () => modal?.remove();
+
+    document.getElementById('close-edit-profile-btn')?.addEventListener('click', close);
+    document.getElementById('cancel-edit-profile-btn')?.addEventListener('click', close);
+    modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+    document.getElementById('edit-profile-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newName = document.getElementById('edit-profile-name').value.trim();
+      const newBio = document.getElementById('edit-profile-bio').value.trim();
+      const newRank = document.getElementById('edit-profile-rank').value;
+      const newDotaId = document.getElementById('edit-profile-dotaid').value.trim();
+      const newRegion = document.getElementById('edit-profile-region').value;
+
+      user.displayName = newName || user.username;
+      user.bio = newBio;
+      user.rank = newRank;
+      user.dotaId = newDotaId;
+      user.region = newRegion;
+
+      Store.save();
+      const sb = getSupabase();
+      if (sb && user.id) {
+        await sb.from('profiles').update({
+          display_name: user.displayName,
+          rank: user.rank,
+          region: user.region,
+          dota_id: user.dotaId,
+          bio: user.bio
+        }).eq('id', user.id).catch(() => {});
+      }
+
+      if (window.Sound) window.Sound.playClick();
+      Toast.success('Profile Updated!', 'Your profile details have been saved.');
+      close();
+      renderHome();
     });
   }
 
