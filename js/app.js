@@ -828,8 +828,8 @@
       });
     }
 
-  /* --- VIEW: HOME HUD --- */
-  function renderHome() {
+  /* --- VIEW: HOME HUD (BANNER + TABS DASHBOARD) --- */
+  function renderHome(currentTab = 'lobbies') {
     const user = Store.state.currentUser;
     if (!user) { AppRouter.navigate('login'); return; }
     renderLayoutShell();
@@ -839,110 +839,386 @@
     const lobbies = Store.state.lobbies;
     const party = Store.state.partyFinder;
     const users = Store.state.users;
+    const msgs = Store.state.communityMessages;
 
     container.innerHTML = `
       <div class="animate-fade-in content-container">
-        <!-- Hero Command Panel -->
-        <div class="hud-panel hud-highlight" style="margin-bottom: 24px; padding: 28px 32px;">
+        <!-- 1. TOP HERO COMMAND BANNER -->
+        <div class="dashboard-hero-banner hud-highlight">
           <div class="hud-corner-accent hud-corner-tl"></div>
           <div class="hud-corner-accent hud-corner-tr"></div>
           <div class="hud-corner-accent hud-corner-bl"></div>
           <div class="hud-corner-accent hud-corner-br"></div>
 
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 18px;">
-              <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 60px; height: 60px; font-size: 2rem;">
-                <span>${user.avatar || '🔥'}</span>
-                <div class="status-dot status-online"></div>
-              </div>
-              <div>
-                <div style="font-size: 0.78rem; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.08em; text-transform: uppercase;">
-                  📦 CourierHub Headquarters
+          <div class="dashboard-banner-content">
+            <!-- Left Side: User Profile Image & Details -->
+            <div class="dashboard-profile-left">
+              <div class="dashboard-avatar-wrapper">
+                <div class="dashboard-avatar-img ${user.avatarFrame || 'avatar-frame-immortal'}">
+                  <span>${user.avatar || '👑'}</span>
                 </div>
-                <h1 style="font-family: var(--font-header); font-size: 1.8rem; font-weight: 900; color: var(--text-primary); margin: 2px 0;">
-                  Welcome, <span style="color: var(--accent-primary);">${user.displayName || user.username}</span>
+                <div class="status-dot status-online" title="Online & Battle-Ready"></div>
+              </div>
+
+              <div class="dashboard-user-info">
+                <div class="dashboard-user-badge-tag">
+                  📦 CourierHub Command • Active Station
+                </div>
+                <h1 class="dashboard-user-name">
+                  ${user.displayName || user.username}
                 </h1>
-                <div style="display: flex; gap: 14px; font-size: 0.84rem; color: var(--text-secondary);">
-                  <span>Rank: <strong style="color: var(--text-primary);">${user.rank || 'Legend I'}</strong></span> • 
-                  <span>Region: <strong style="color: var(--text-primary);">${user.region || 'SEA'}</strong></span> • 
-                  <span>Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats);">${user.dotaId || '109283742'}</strong></span>
+                <div class="dashboard-meta-pills">
+                  <span class="dashboard-pill dashboard-pill-gold">👑 ${user.rank || 'Divine V'}</span>
+                  <span class="dashboard-pill">🌐 ${user.region || 'SEA'}</span>
+                  <span class="dashboard-pill">🆔 Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats); margin-left: 3px;">${user.dotaId || '782910432'}</strong></span>
+                  <span class="dashboard-pill">📈 ${user.winRate || 64.2}% WR (${user.gamesPlayed || 1540} Matches)</span>
                 </div>
               </div>
             </div>
 
-            <div style="display: flex; gap: 12px;">
-              <button class="btn btn-secondary" id="home-party-btn">${Icons.party} <span>Find Party (${party.length})</span></button>
-              <button class="btn btn-primary" id="home-create-lobby-btn">${Icons.plus} <span>Create Lobby</span></button>
+            <!-- Right Side: Quick Action Buttons -->
+            <div class="dashboard-banner-actions">
+              <button class="btn btn-primary" id="banner-create-lobby-btn">
+                ${Icons.plus} <span>Create Match Lobby</span>
+              </button>
+              <button class="btn btn-secondary" id="banner-find-party-btn">
+                ${Icons.party} <span>Find Party (${party.length})</span>
+              </button>
             </div>
           </div>
         </div>
 
-        <!-- Metric Counters -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon-wrapper">🎮</div>
-            <div>
-              <div class="stat-val">${lobbies.length}</div>
-              <div class="stat-lbl">Active Match Lobbies</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon-wrapper">🛡️</div>
-            <div>
-              <div class="stat-val">${party.length}</div>
-              <div class="stat-lbl">Players in Party Queue</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon-wrapper">⚔️</div>
-            <div>
-              <div class="stat-val">${users.length || 1}</div>
-              <div class="stat-lbl">Active Roster Heroes</div>
-            </div>
+        <!-- 2. DASHBOARD TABS BAR -->
+        <div class="dashboard-tabs-container">
+          <div class="dashboard-tabs-bar" id="dashboard-tabs-bar">
+            <button type="button" class="dashboard-tab-btn ${currentTab === 'lobbies' ? 'active' : ''}" data-tab="lobbies">
+              ${Icons.lobbies} <span>Match Lobbies</span>
+              <span class="dashboard-tab-badge">${lobbies.length}</span>
+            </button>
+            <button type="button" class="dashboard-tab-btn ${currentTab === 'party' ? 'active' : ''}" data-tab="party">
+              ${Icons.party} <span>Party Finder Queue</span>
+              <span class="dashboard-tab-badge">${party.length}</span>
+            </button>
+            <button type="button" class="dashboard-tab-btn ${currentTab === 'chat' ? 'active' : ''}" data-tab="chat">
+              ${Icons.community} <span>Community Chat</span>
+              <span class="dashboard-tab-badge">${msgs.length}</span>
+            </button>
+            <button type="button" class="dashboard-tab-btn ${currentTab === 'directory' ? 'active' : ''}" data-tab="directory">
+              ${Icons.members} <span>Player Directory</span>
+              <span class="dashboard-tab-badge">${users.length}</span>
+            </button>
+            <button type="button" class="dashboard-tab-btn ${currentTab === 'hud' ? 'active' : ''}" data-tab="hud">
+              ${Icons.hud} <span>Profile & HUD</span>
+            </button>
           </div>
         </div>
 
-        <!-- Lobbies Section -->
-        <div class="hud-panel" style="margin-bottom: 24px;">
-          <div class="hud-panel-header">
-            <div class="hud-panel-title">⚔️ Featured Matchmaking Lobbies</div>
-            <a href="#lobbies" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 14px;">View All Lobbies →</a>
-          </div>
-          <div class="hud-panel-body">
-            ${lobbies.length === 0 ? `
-              <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-                <div style="font-size: 2.5rem; margin-bottom: 12px;">🎮</div>
-                <h3 style="color: var(--text-primary); margin-bottom: 6px;">No Active Lobbies Right Now</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 18px;">Be the first player to create a 5v5 custom scrim or party lobby!</p>
-                <button class="btn btn-primary" id="home-create-lobby-btn-2">${Icons.plus} <span>Create Match Lobby</span></button>
-              </div>
-            ` : `
-              <div class="lobby-grid">
-                ${lobbies.slice(0, 3).map(l => `
-                  <div class="lobby-card">
-                    <div>
-                      <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span class="badge badge-gold">${l.region || 'SEA'}</span>
-                        <span class="badge badge-radiant">${l.matchType || 'Ranked'}</span>
-                      </div>
-                      <h3 style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 6px;">${l.name}</h3>
-                      <p style="color: var(--text-secondary); font-size: 0.84rem;">Host: <strong>${l.hostName}</strong></p>
-                    </div>
-                    <a href="#lobby/${l.id}" class="btn btn-primary btn-block">Enter Lobby</a>
-                  </div>
-                `).join('')}
-              </div>
-            `}
-          </div>
-        </div>
+        <!-- 3. TAB VIEW CONTENT PANE -->
+        <div id="dashboard-tab-content"></div>
       </div>
     `;
 
-    document.querySelectorAll('#home-create-lobby-btn, #home-create-lobby-btn-2').forEach(b => {
-      b.addEventListener('click', () => openCreateLobbyModal());
+    // Render Sub-tab view function
+    function renderTabContent(tabKey) {
+      const tabContent = document.getElementById('dashboard-tab-content');
+      if (!tabContent) return;
+
+      if (tabKey === 'lobbies') {
+        tabContent.innerHTML = `
+          <!-- Metric Counters -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon-wrapper">🎮</div>
+              <div>
+                <div class="stat-val">${Store.state.lobbies.length}</div>
+                <div class="stat-lbl">Active Match Lobbies</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper">🛡️</div>
+              <div>
+                <div class="stat-val">${Store.state.partyFinder.length}</div>
+                <div class="stat-lbl">Players in Party Queue</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper">⚔️</div>
+              <div>
+                <div class="stat-val">${Store.state.users.length || 1}</div>
+                <div class="stat-lbl">Active Roster Heroes</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lobbies Grid Panel -->
+          <div class="hud-panel">
+            <div class="hud-panel-header">
+              <div class="hud-panel-title">⚔️ Featured 5v5 Matchmaking Lobbies</div>
+              <button class="btn btn-primary" id="tab-create-lobby-btn" style="font-size: 0.82rem; padding: 6px 14px;">
+                ${Icons.plus} <span>Host New Lobby</span>
+              </button>
+            </div>
+            <div class="hud-panel-body">
+              ${Store.state.lobbies.length === 0 ? `
+                <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                  <div style="font-size: 2.5rem; margin-bottom: 12px;">🎮</div>
+                  <h3 style="color: var(--text-primary); margin-bottom: 6px;">No Active Lobbies Right Now</h3>
+                  <p style="font-size: 0.9rem; margin-bottom: 18px;">Be the first player to create a 5v5 custom scrim or party lobby!</p>
+                  <button class="btn btn-primary" id="tab-create-lobby-btn-empty">${Icons.plus} <span>Create Match Lobby</span></button>
+                </div>
+              ` : `
+                <div class="lobby-grid">
+                  ${Store.state.lobbies.map(l => `
+                    <div class="lobby-card">
+                      <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                          <span class="badge badge-gold">${l.region || 'SEA'}</span>
+                          <span class="badge badge-radiant">${l.matchType || 'Ranked'}</span>
+                        </div>
+                        <h3 style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 6px;">${l.name}</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.84rem; margin-bottom: 12px;">Host: <strong>${l.hostName}</strong></p>
+                        <div class="lobby-slots">
+                          ${[0,1,2,3,4].map(idx => `
+                            <div class="lobby-slot ${l.players && l.players[idx] ? 'occupied' : ''}">
+                              ${l.players && l.players[idx] ? l.players[idx].avatar : '⚔️'}
+                            </div>
+                          `).join('')}
+                        </div>
+                      </div>
+                      <a href="#lobby/${l.id}" class="btn btn-primary btn-block" style="margin-top: 14px;">Enter Lobby</a>
+                    </div>
+                  `).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+
+        tabContent.querySelectorAll('#tab-create-lobby-btn, #tab-create-lobby-btn-empty').forEach(b => {
+          b.addEventListener('click', () => openCreateLobbyModal());
+        });
+      } else if (tabKey === 'party') {
+        const queue = Store.state.partyFinder;
+        const isQueued = queue.some(p => p.userId === user.id);
+        tabContent.innerHTML = `
+          <div class="hud-panel">
+            <div class="hud-panel-header">
+              <div class="hud-panel-title">🛡️ Live Party Queue (${queue.length} Looking for Group)</div>
+              <button class="btn ${isQueued ? 'btn-danger' : 'btn-primary'}" id="tab-party-toggle-btn" style="font-size: 0.82rem; padding: 6px 14px;">
+                ${isQueued ? 'Leave Party Queue' : '+ Post Party Request'}
+              </button>
+            </div>
+            <div class="hud-panel-body">
+              ${queue.length === 0 ? `
+                <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                  <div style="font-size: 2.5rem; margin-bottom: 8px;">🛡️</div>
+                  <h3 style="color: var(--text-primary); margin-bottom: 6px;">Party Queue is Empty</h3>
+                  <p style="font-size: 0.88rem;">Be the first to queue up your role and invite teammates!</p>
+                </div>
+              ` : `
+                <div class="lobby-grid">
+                  ${queue.map(p => `
+                    <div class="hud-panel" style="padding: 18px; border-color: var(--border-medium);">
+                      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                          <div style="font-size: 1.8rem;">${p.avatar || '🔥'}</div>
+                          <div>
+                            <strong style="color: var(--text-primary); font-size: 1rem;">${p.name}</strong>
+                            <div style="font-size: 0.78rem; color: var(--text-secondary);">${p.region || 'SEA'} • ${p.rank || 'Legend'}</div>
+                          </div>
+                        </div>
+                        <span class="badge badge-gold">${p.role || 'Core'}</span>
+                      </div>
+                      ${p.userId === user.id ? `
+                        <button class="btn btn-secondary btn-block btn-sm" disabled>Your Request</button>
+                      ` : `
+                        <button class="btn btn-primary btn-block btn-sm tab-invite-btn" data-name="${p.name}">Invite to Party</button>
+                      `}
+                    </div>
+                  `).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+
+        tabContent.getElementById('tab-party-toggle-btn')?.addEventListener('click', () => {
+          if (isQueued) {
+            Store.state.partyFinder = Store.state.partyFinder.filter(p => p.userId !== user.id);
+            Store.save();
+            Toast.success('Queue Left', 'Removed from party matchmaking.');
+            renderTabContent('party');
+          } else {
+            Store.state.partyFinder.unshift({
+              id: 'party_' + Date.now(),
+              userId: user.id,
+              name: user.displayName || user.username,
+              avatar: user.avatar || '🔥',
+              rank: user.rank || 'Divine V',
+              role: 'Carry / Mid',
+              region: user.region || 'SEA'
+            });
+            Store.save();
+            if (window.Sound) window.Sound.playPartyJoin();
+            Toast.success('Party Queue Joined!', 'Looking for teammates.');
+            renderTabContent('party');
+          }
+        });
+
+        tabContent.querySelectorAll('.tab-invite-btn').forEach(b => b.addEventListener('click', () => {
+          Toast.success('Party Invite Sent', `Invited ${b.dataset.name} to stack!`);
+          b.innerText = 'Invited ✓';
+          b.disabled = true;
+        }));
+      } else if (tabKey === 'chat') {
+        tabContent.innerHTML = `
+          <div class="hud-panel" style="height: 68vh; display: flex; flex-direction: column;">
+            <div class="hud-panel-header">
+              <div class="hud-panel-title">💬 Live Dota 2 Community Discussion</div>
+              <span class="badge badge-radiant">🟢 Realtime Live</span>
+            </div>
+            <div id="tab-chat-messages-container" style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;">
+              ${Store.state.communityMessages.length === 0 ? `
+                <div style="text-align: center; margin: auto; color: var(--text-muted);">
+                  <div style="font-size: 2.2rem; margin-bottom: 6px;">💬</div>
+                  <h3 style="color: var(--text-primary);">No Messages Yet</h3>
+                  <p style="font-size: 0.85rem;">Say hello to fellow Dota 2 players!</p>
+                </div>
+              ` : Store.state.communityMessages.map(m => `
+                <div style="display: flex; gap: 12px; align-items: flex-start;">
+                  <div style="font-size: 1.5rem;">${m.userAvatar || '🔥'}</div>
+                  <div style="background: var(--bg-tertiary); padding: 10px 14px; border-radius: var(--radius-md); max-width: 80%;">
+                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 2px;">
+                      <strong style="color: var(--accent-gold); font-size: 0.86rem;">${m.userName}</strong>
+                      <span style="font-size: 0.72rem; color: var(--text-muted);">${m.userRank || 'Ancient'}</span>
+                    </div>
+                    <div style="color: var(--text-primary); font-size: 0.9rem; line-height: 1.4;">${m.content}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <div style="padding: 14px 18px; border-top: 1px solid var(--border-subtle); background: var(--bg-secondary);">
+              <form id="tab-chat-input-form" style="display: flex; gap: 10px;">
+                <input type="text" id="tab-chat-msg-input" class="input-control" placeholder="Type message to CourierHub community..." required style="flex: 1;">
+                <button type="submit" class="btn btn-primary" style="padding: 0 20px;">${Icons.send} <span>Send</span></button>
+              </form>
+            </div>
+          </div>
+        `;
+
+        const chatBox = tabContent.querySelector('#tab-chat-messages-container');
+        if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+
+        tabContent.querySelector('#tab-chat-input-form')?.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const input = tabContent.querySelector('#tab-chat-msg-input');
+          const text = input.value.trim();
+          if (!text) return;
+
+          const newMsg = {
+            id: 'msg_' + Date.now(),
+            userId: user.id,
+            userName: user.displayName || user.username,
+            userAvatar: user.avatar || '🔥',
+            userRank: user.rank || 'Divine V',
+            content: text,
+            createdAt: new Date().toISOString()
+          };
+
+          Store.state.communityMessages.push(newMsg);
+          Store.save();
+          input.value = '';
+          if (window.Sound) window.Sound.playMessage();
+          renderTabContent('chat');
+        });
+      } else if (tabKey === 'directory') {
+        tabContent.innerHTML = `
+          <div class="hud-panel">
+            <div class="hud-panel-header">
+              <div class="hud-panel-title">👥 Active Hero Directory (${Store.state.users.length} Registered)</div>
+            </div>
+            <div class="hud-panel-body">
+              <div class="lobby-grid">
+                ${Store.state.users.map(u => `
+                  <div class="hud-panel" style="padding: 20px; border-color: var(--border-medium); display: flex; flex-direction: column; justify-content: space-between; gap: 14px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                      <div class="player-avatar-frame ${u.avatarFrame || 'avatar-frame-immortal'}" style="width: 48px; height: 48px; font-size: 1.6rem;">
+                        <span>${u.avatar || '🔥'}</span>
+                      </div>
+                      <div>
+                        <strong style="color: var(--text-primary); font-size: 1.05rem;">${u.displayName || u.username}</strong>
+                        <div style="display: flex; gap: 8px; font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px;">
+                          <span>${u.rank || 'Legend'}</span> • 
+                          <span>${u.region || 'SEA'}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 8px 12px; border-radius: var(--radius-sm);">
+                      <span>Winrate: <strong style="color: var(--accent-gold);">${u.winRate || 58.4}%</strong></span>
+                      <span>Matches: <strong style="color: var(--text-primary);">${u.gamesPlayed || 120}</strong></span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (tabKey === 'hud') {
+        tabContent.innerHTML = `
+          <div class="hud-panel" style="padding: 24px;">
+            <div class="hud-panel-header" style="padding-left: 0; padding-top: 0;">
+              <div class="hud-panel-title">⚙️ Profile & Custom HUD Preferences</div>
+            </div>
+            <div class="hud-panel-body" style="padding-left: 0; padding-right: 0;">
+              <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; background: var(--bg-tertiary); padding: 16px; border-radius: var(--radius-md);">
+                  <div>
+                    <strong style="color: var(--text-primary);">Dota ID</strong>
+                    <div style="font-size: 0.82rem; color: var(--text-secondary);">Your Friend ID used in Dota 2 lobby invites</div>
+                  </div>
+                  <strong style="font-family: var(--font-stats); font-size: 1.2rem; color: var(--accent-gold);">${user.dotaId || '782910432'}</strong>
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; background: var(--bg-tertiary); padding: 16px; border-radius: var(--radius-md);">
+                  <div>
+                    <strong style="color: var(--text-primary);">Audio Engine & Procedural Sound Effects</strong>
+                    <div style="font-size: 0.82rem; color: var(--text-secondary);">Dota 2 responsive synthesizers on actions</div>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" id="hud-test-audio-btn">🔊 Test Sound FX</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        tabContent.querySelector('#hud-test-audio-btn')?.addEventListener('click', () => {
+          if (window.Sound) {
+            window.Sound.playPartyJoin();
+            Toast.success('Audio Test', 'Procedural Web Audio FX active!');
+          }
+        });
+      }
+    }
+
+    // Initial render of current tab content
+    renderTabContent(currentTab);
+
+    // Tab Bar click listener
+    document.querySelectorAll('.dashboard-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetTab = btn.dataset.tab;
+        document.querySelectorAll('.dashboard-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (window.Sound) window.Sound.playClick();
+        renderTabContent(targetTab);
+      });
     });
-    document.getElementById('home-party-btn')?.addEventListener('click', () => {
-      AppRouter.navigate('party-finder');
+
+    // Banner Buttons
+    document.getElementById('banner-create-lobby-btn')?.addEventListener('click', () => openCreateLobbyModal());
+    document.getElementById('banner-find-party-btn')?.addEventListener('click', () => {
+      const partyBtn = document.querySelector('.dashboard-tab-btn[data-tab="party"]');
+      if (partyBtn) partyBtn.click();
     });
   }
 
