@@ -831,20 +831,15 @@
                 </div>
               </div>
 
-              <!-- Action Menu Items -->
+              <!-- Action Menu Items (Apple-styled) -->
               <div style="display: flex; flex-direction: column; gap: 6px;">
                 <button type="button" class="dropdown-item-btn" id="dropdown-edit-profile-btn">
-                  <span style="font-size: 1.05rem;">✏️</span>
+                  ${Icons.edit}
                   <span>Edit Profile</span>
                 </button>
 
-                <button type="button" class="dropdown-item-btn" id="dropdown-view-profile-card-btn">
-                  <span style="font-size: 1.05rem;">🎴</span>
-                  <span>View Profile Card</span>
-                </button>
-
                 <button type="button" class="dropdown-item-btn dropdown-item-danger" id="dropdown-logout-btn">
-                  <span style="font-size: 1.05rem;">🚪</span>
+                  ${Icons.logout}
                   <span>Sign Out</span>
                 </button>
               </div>
@@ -891,12 +886,6 @@
       dropdown?.classList.remove('show');
       trigger?.classList.remove('active');
       openEditProfileModal();
-    });
-
-    document.getElementById('dropdown-view-profile-card-btn')?.addEventListener('click', () => {
-      dropdown?.classList.remove('show');
-      trigger?.classList.remove('active');
-      openPlayerProfileCardModal(user);
     });
 
     document.getElementById('dropdown-logout-btn')?.addEventListener('click', async () => {
@@ -1428,10 +1417,10 @@
         <!-- Specular Light Sheen Reflection -->
         <div class="chat-btn-sheen"></div>
 
-        <!-- Glowing Custom Skin Chat Icon / Close Morph -->
+        <!-- Apple Messages Chat Icon / Close Morph -->
         <div class="chat-btn-icon-wrapper">
-          <div class="chat-custom-skin-icon" style="display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
-            ${activeSkin.chatIconSvg || `<span style="font-size: 1.55rem; filter: drop-shadow(0 0 8px ${activeSkin.accent});">${activeSkin.chatBadge}</span>`}
+          <div class="chat-custom-skin-icon" style="display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; color: #ffffff;">
+            ${Icons.chat}
           </div>
           <span class="chat-btn-close-icon">✕</span>
         </div>
@@ -2955,29 +2944,44 @@
           <div class="hud-corner-accent hud-corner-tl"></div>
           <div class="hud-corner-accent hud-corner-tr"></div>
 
-          <!-- Floating Change Skin Button -->
-          <button type="button" id="profile-change-skin-btn" class="customize-banner-btn" style="
+          <!-- Floating Banner Actions (View Profile Card alongside Change Skin) -->
+          <div style="
             position: absolute;
             right: 24px;
             bottom: 18px;
             z-index: 35;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 9px 18px;
-            border-radius: 10px;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1.5px solid ${activeSkin.accent};
-            color: #ffffff;
-            font-size: 0.88rem;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px ${activeSkin.accent}66;
+            gap: 10px;
           ">
-            <span>🎭</span>
-            <span>Change Skin</span>
-          </button>
+            <!-- View Profile Card Button -->
+            <button type="button" id="banner-view-profile-card-btn" class="apple-pill-action" style="
+              padding: 9px 18px;
+              font-size: 0.88rem;
+              font-weight: 800;
+              background: rgba(10, 16, 28, 0.78);
+              backdrop-filter: blur(16px);
+              -webkit-backdrop-filter: blur(16px);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: #ffffff;
+              box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+              cursor: pointer;
+            ">
+              ${Icons.profileCard}
+              <span>View Profile Card</span>
+            </button>
+
+            <!-- Change Skin Button -->
+            <button type="button" id="profile-change-skin-btn" class="apple-capsule-btn" style="
+              padding: 9px 18px;
+              font-size: 0.88rem;
+              font-weight: 800;
+              cursor: pointer;
+            ">
+              ${Icons.palette}
+              <span>Change Skin</span>
+            </button>
+          </div>
         </div>
 
         <!-- 2. CONSTRAINED PROFILE CONTAINER -->
@@ -3059,8 +3063,8 @@
                   <!-- Your Feed Tab (Above Community Tab) -->
                   <button type="button" id="profile-tab-your-feed-btn" class="side-tab-btn active">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(255, 34, 0, 0.25); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
-                        📰
+                      <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(255, 34, 0, 0.22); display: flex; align-items: center; justify-content: center; color: #ff5522;">
+                        ${Icons.feed}
                       </div>
                       <span>Your Feed</span>
                     </div>
@@ -3070,8 +3074,8 @@
                   <!-- Community Tab -->
                   <button type="button" id="profile-tab-community-btn" class="side-tab-btn">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(14, 165, 233, 0.18); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
-                        💬
+                      <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(14, 165, 233, 0.18); display: flex; align-items: center; justify-content: center; color: #38bdf8;">
+                        ${Icons.community}
                       </div>
                       <span>Community</span>
                     </div>
@@ -3081,8 +3085,8 @@
                   <!-- Party Tab -->
                   <button type="button" id="profile-tab-party-btn" class="side-tab-btn">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(16, 185, 129, 0.18); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
-                        ⚔️
+                      <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(16, 185, 129, 0.18); display: flex; align-items: center; justify-content: center; color: #34d399;">
+                        ${Icons.party}
                       </div>
                       <span>Party</span>
                     </div>
@@ -3894,6 +3898,11 @@
       if (window.Sound) window.Sound.playVictory();
       Toast.success('Party Created!', 'Your party recruitment is now live for other players to join.');
       renderHomePartyList();
+    });
+
+    // View Profile Card from Banner
+    document.getElementById('banner-view-profile-card-btn')?.addEventListener('click', () => {
+      openPlayerProfileCardModal(user);
     });
 
     // Change Skin Vault Listener
