@@ -2182,10 +2182,10 @@
                   border: none;
                 "></div>
 
-                <!-- Navigation Tabs below the divider: Community Tab & Party Tab -->
+                <!-- Navigation Tabs below the divider: Your Feed Tab, Community Tab & Party Tab -->
                 <div class="profile-nav-tabs" style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 4px;">
-                  <!-- Community Tab -->
-                  <button type="button" id="profile-tab-community-btn" class="side-tab-btn active" style="
+                  <!-- Your Feed Tab (Above Community Tab) -->
+                  <button type="button" id="profile-tab-your-feed-btn" class="side-tab-btn active" style="
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
@@ -2203,11 +2203,37 @@
                   ">
                     <div style="display: flex; align-items: center; gap: 10px;">
                       <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(245, 158, 11, 0.2); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                        📰
+                      </div>
+                      <span>Your Feed</span>
+                    </div>
+                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(245, 158, 11, 0.2); color: #b45309;">Personal</span>
+                  </button>
+
+                  <!-- Community Tab -->
+                  <button type="button" id="profile-tab-community-btn" class="side-tab-btn" style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    padding: 12px 14px;
+                    border-radius: 12px;
+                    background: #ffffff;
+                    border: 1px solid rgba(226, 232, 240, 0.95);
+                    color: var(--text-secondary);
+                    font-size: 0.92rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+                    transition: all 0.2s ease;
+                  ">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(2, 132, 199, 0.12); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                         💬
                       </div>
                       <span>Community</span>
                     </div>
-                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(245, 158, 11, 0.2); color: #b45309;">Feed</span>
+                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(2, 132, 199, 0.12); color: var(--mana-blue);">Feed</span>
                   </button>
 
                   <!-- Party Tab -->
@@ -2329,10 +2355,101 @@
                 </div>
               </div>
 
+              <!-- 0. YOUR FEED TAB VIEW (Personal Posts & Match Highlights) -->
+              <div id="home-your-feed-tab-view" class="your-feed-area" style="
+                margin-top: 32px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                position: relative;
+                z-index: 10;
+              ">
+                <!-- Feed Header -->
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(245, 158, 11, 0.3);">
+                      📰
+                    </div>
+                    <div>
+                      <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.2;">
+                        Your Personal Feed
+                      </h2>
+                      <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+                        Personal battle logs, match highlights & shared achievements
+                      </p>
+                    </div>
+                  </div>
+                  <span class="badge badge-gold" style="font-size: 0.78rem; padding: 4px 10px; font-weight: 700;">✨ PERSONAL</span>
+                </div>
+
+                <!-- Your Feed Post Composer Card -->
+                <div class="feed-composer-card" style="
+                  background: #ffffff;
+                  border: 1px solid rgba(226, 232, 240, 0.95);
+                  border-radius: var(--radius-lg);
+                  padding: 18px 20px;
+                  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+                ">
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="width: 44px; height: 44px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid var(--accent-gold); flex-shrink: 0; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);">
+                      ${user.avatar || '👑'}
+                    </div>
+                    <div style="flex: 1;">
+                      <textarea id="your-feed-post-input" placeholder="Share your latest match victory, build strategy, or status update..." rows="2" style="
+                        width: 100%;
+                        border: 1px solid rgba(226, 232, 240, 0.95);
+                        border-radius: 10px;
+                        padding: 12px 14px;
+                        font-size: 0.92rem;
+                        color: var(--text-primary);
+                        background: #f8fafc;
+                        resize: none;
+                        outline: none;
+                        font-family: inherit;
+                        box-sizing: border-box;
+                        transition: all 0.2s ease;
+                      " onfocus="this.style.background='#ffffff'; this.style.borderColor='var(--accent-gold)';" onblur="this.style.background='#f8fafc'; this.style.borderColor='rgba(226, 232, 240, 0.95)';"></textarea>
+
+                      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);">Tag:</span>
+                          <select id="your-feed-post-tag" style="
+                            padding: 6px 12px;
+                            border-radius: 8px;
+                            border: 1px solid rgba(226, 232, 240, 0.95);
+                            font-size: 0.82rem;
+                            font-weight: 600;
+                            color: var(--text-primary);
+                            background: #ffffff;
+                            outline: none;
+                            cursor: pointer;
+                          ">
+                            <option value="Match Highlight">⚡ Match Highlight</option>
+                            <option value="Tournament">🏆 Tournament</option>
+                            <option value="Looking for Party">⚔️ Looking for Party</option>
+                            <option value="Strategy & Meta">📜 Strategy & Meta</option>
+                            <option value="Discussion">💬 Discussion</option>
+                          </select>
+                        </div>
+
+                        <button type="button" id="your-feed-post-submit-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 6px;">
+                          🚀 Post to Your Feed
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Your Feed Posts List Container -->
+                <div id="your-feed-posts-list" style="display: flex; flex-direction: column; gap: 16px;">
+                  <!-- Dynamic Your Feed Posts populated by renderYourFeedPosts() -->
+                </div>
+              </div>
+
               <!-- 1. COMMUNITY TAB VIEW (Strictly BELOW Banner & Beside Left Column) -->
               <div id="home-community-tab-view" class="community-news-feed-area" style="
                 margin-top: 32px;
-                display: flex;
+                display: none;
                 flex-direction: column;
                 gap: 20px;
                 position: relative;
@@ -2342,8 +2459,8 @@
                 <!-- Feed Header -->
                 <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
                   <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(245, 158, 11, 0.12); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(245, 158, 11, 0.25);">
-                      📰
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(2, 132, 199, 0.12); color: var(--mana-blue); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(2, 132, 199, 0.25);">
+                      💬
                     </div>
                     <div>
                       <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.2;">
@@ -2531,7 +2648,7 @@
         </div>
       `).join('');
 
-      // Attach join party handlers
+// Attach join party handlers
       partyContainer.querySelectorAll('.join-party-action-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const partyId = btn.getAttribute('data-party-id');
@@ -2547,38 +2664,56 @@
       });
     };
 
-    // Attach Tab Switch Handlers (Community vs Party)
+    // Attach Tab Switch Handlers (Your Feed vs Community vs Party)
+    const yourFeedTabBtn = document.getElementById('profile-tab-your-feed-btn');
     const communityTabBtn = document.getElementById('profile-tab-community-btn');
     const partyTabBtn = document.getElementById('profile-tab-party-btn');
+    const yourFeedView = document.getElementById('home-your-feed-tab-view');
     const communityView = document.getElementById('home-community-tab-view');
     const partyView = document.getElementById('home-party-tab-view');
 
-    if (communityTabBtn && partyTabBtn && communityView && partyView) {
+    const setActiveTabStyle = (activeBtn) => {
+      [yourFeedTabBtn, communityTabBtn, partyTabBtn].forEach(btn => {
+        if (!btn) return;
+        if (btn === activeBtn) {
+          btn.style.background = 'rgba(245, 158, 11, 0.12)';
+          btn.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+          btn.style.color = '#b45309';
+          btn.style.boxShadow = '0 2px 8px rgba(245, 158, 11, 0.08)';
+        } else {
+          btn.style.background = '#ffffff';
+          btn.style.borderColor = 'rgba(226, 232, 240, 0.95)';
+          btn.style.color = 'var(--text-secondary)';
+          btn.style.boxShadow = '0 2px 6px rgba(15, 23, 42, 0.03)';
+        }
+      });
+    };
+
+    if (yourFeedTabBtn && communityTabBtn && partyTabBtn && yourFeedView && communityView && partyView) {
+      // Switch to Your Feed Tab
+      yourFeedTabBtn.addEventListener('click', () => {
+        setActiveTabStyle(yourFeedTabBtn);
+        yourFeedView.style.display = 'flex';
+        communityView.style.display = 'none';
+        partyView.style.display = 'none';
+        renderYourFeedPosts();
+        if (window.Sound) window.Sound.playClick();
+      });
+
       // Switch to Community Tab
       communityTabBtn.addEventListener('click', () => {
-        communityTabBtn.style.background = 'rgba(245, 158, 11, 0.12)';
-        communityTabBtn.style.borderColor = 'rgba(245, 158, 11, 0.35)';
-        communityTabBtn.style.color = '#b45309';
-
-        partyTabBtn.style.background = '#ffffff';
-        partyTabBtn.style.borderColor = 'rgba(226, 232, 240, 0.95)';
-        partyTabBtn.style.color = 'var(--text-secondary)';
-
+        setActiveTabStyle(communityTabBtn);
+        yourFeedView.style.display = 'none';
         communityView.style.display = 'flex';
         partyView.style.display = 'none';
+        renderCommunityFeedPosts();
         if (window.Sound) window.Sound.playClick();
       });
 
       // Switch to Party Tab
       partyTabBtn.addEventListener('click', () => {
-        partyTabBtn.style.background = 'rgba(34, 197, 94, 0.12)';
-        partyTabBtn.style.borderColor = 'rgba(34, 197, 94, 0.35)';
-        partyTabBtn.style.color = '#16a34a';
-
-        communityTabBtn.style.background = '#ffffff';
-        communityTabBtn.style.borderColor = 'rgba(226, 232, 240, 0.95)';
-        communityTabBtn.style.color = 'var(--text-secondary)';
-
+        setActiveTabStyle(partyTabBtn);
+        yourFeedView.style.display = 'none';
         communityView.style.display = 'none';
         partyView.style.display = 'flex';
         renderHomePartyList();
@@ -2586,193 +2721,154 @@
       });
     }
 
-    // Attach Create Party button handler
-    document.getElementById('create-party-request-btn')?.addEventListener('click', () => {
-      const mode = prompt('Enter Game Mode (e.g. Ranked All Pick, Battle Cup):', 'Ranked All Pick');
-      if (!mode) return;
-      const roles = prompt('Roles Needed (e.g. Pos 3 Offlane, Pos 5 Support):', 'Pos 3 Offlane, Pos 5 Support');
-
-      const newParty = {
-        id: 'party_' + Date.now(),
-        leader: user.displayName || user.username,
-        avatar: user.avatar || '👑',
-        rank: user.rank || 'Divine V',
-        mode: mode.trim(),
-        region: user.region || 'SEA',
-        currentMembers: 1,
-        maxMembers: 5,
-        rolesNeeded: roles ? roles.split(',').map(s => s.trim()) : ['Any Role'],
-        note: 'Recruiting teammates on CourierHub.'
-      };
-
-      if (!Store.state.partyFinder) Store.state.partyFinder = [];
-      Store.state.partyFinder.unshift(newParty);
-      Store.save();
-      if (window.Sound) window.Sound.playVictory();
-      Toast.success('Party Created!', 'Your party recruitment is now live for other players to join.');
-      renderHomePartyList();
-    });
-
-    // Function to render community feed posts
-    const renderCommunityFeedPosts = () => {
-      const feedList = document.getElementById('community-feed-list');
-      if (!feedList) return;
-
-      const posts = Store.state.communityPosts || [];
-      if (posts.length === 0) {
-        feedList.innerHTML = `
-          <div style="text-align: center; padding: 40px 20px; background: #ffffff; border-radius: var(--radius-lg); border: 1px solid rgba(226, 232, 240, 0.95);">
-            <div style="font-size: 2.5rem; margin-bottom: 8px;">🎮</div>
-            <div style="font-weight: 700; color: var(--text-primary);">No posts yet</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Be the first hero to share a post on CourierHub!</div>
-          </div>
-        `;
-        return;
-      }
-
-      feedList.innerHTML = posts.map(post => {
-        const isLiked = !!post.likedByMe;
-        const commentsCount = (post.comments || []).length;
-        const tagColor = post.tag === 'Tournament' ? 'var(--accent-gold)' : post.tag === 'Match Highlight' ? '#ef4444' : post.tag === 'Looking for Party' ? 'var(--radiant-green)' : 'var(--mana-blue)';
-
-        return `
-          <div class="feed-post-card" id="post-card-${post.id}" style="
-            background: #ffffff;
-            border: 1px solid rgba(226, 232, 240, 0.95);
-            border-radius: var(--radius-lg);
-            padding: 20px;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-          ">
-            <!-- Post Header -->
-            <div style="display: flex; align-items: center; justify-content: space-between;">
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 42px; height: 42px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; border: 2px solid ${tagColor}; flex-shrink: 0;">
-                  ${post.authorAvatar || '👑'}
+    // Helper: Render Post Cards (shared between Your Feed and Community Feed)
+    const renderPostCardHTML = (post, isPersonalFeed) => {
+      const isLiked = post.likedByMe;
+      const commentsCount = (post.comments || []).length;
+      return `
+        <div class="feed-post-card" style="
+          background: #ffffff;
+          border: 1px solid rgba(226, 232, 240, 0.95);
+          border-radius: var(--radius-lg);
+          padding: 20px;
+          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        ">
+          <!-- Post Author Header -->
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 42px; height: 42px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; border: 2px solid var(--accent-gold); flex-shrink: 0;">
+                ${post.authorAvatar || '👑'}
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <span style="font-weight: 800; color: var(--text-primary); font-size: 0.98rem;">${post.authorName}</span>
+                  ${post.badge ? `<span style="font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: rgba(245, 158, 11, 0.15); color: #b45309;">${post.badge}</span>` : ''}
+                  <span class="badge badge-gold" style="font-size: 0.72rem; padding: 1px 6px;">${post.authorRank || 'Divine'}</span>
                 </div>
-                <div>
-                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                    <span style="font-weight: 800; color: var(--text-primary); font-size: 0.98rem;">${post.authorName}</span>
-                    <span class="badge badge-gold" style="font-size: 0.72rem; padding: 2px 8px; font-weight: 700;">${post.authorRank || 'Divine V'}</span>
-                    ${post.badge ? `<span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: rgba(245, 158, 11, 0.15); color: #b45309;">${post.badge}</span>` : ''}
-                  </div>
-                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 1px;">
-                    ${post.timestamp} • Public
-                  </div>
+                <div style="font-size: 0.76rem; color: var(--text-muted); margin-top: 1px;">
+                  ${post.timestamp}
                 </div>
               </div>
-
-              <!-- Tag Pill -->
-              <span style="font-size: 0.78rem; font-weight: 700; color: ${tagColor}; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.2); padding: 4px 10px; border-radius: 20px;">
-                #${post.tag || 'Community'}
-              </span>
             </div>
 
-            <!-- Post Body Content -->
-            <p style="font-size: 0.95rem; color: var(--text-primary); line-height: 1.6; margin: 0; white-space: pre-line;">
-              ${post.content}
-            </p>
-
-            <!-- Post Action Bar -->
-            <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(226, 232, 240, 0.8); margin-top: 2px;">
-              <div style="display: flex; align-items: center; gap: 16px;">
-                <!-- Like Button -->
-                <button type="button" class="feed-like-btn" data-post-id="${post.id}" style="
-                  background: ${isLiked ? 'rgba(239, 68, 68, 0.1)' : 'transparent'};
-                  border: 1px solid ${isLiked ? 'rgba(239, 68, 68, 0.3)' : 'transparent'};
-                  color: ${isLiked ? '#ef4444' : 'var(--text-secondary)'};
-                  padding: 6px 12px;
-                  border-radius: 8px;
-                  font-size: 0.86rem;
-                  font-weight: 700;
-                  cursor: pointer;
-                  display: flex;
-                  align-items: center;
-                  gap: 6px;
-                  transition: all 0.15s ease;
-                ">
-                  ${isLiked ? '❤️' : '🤍'} <span>${post.likes || 0}</span> GG
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.76rem; font-weight: 700; padding: 3px 9px; border-radius: 6px; background: #f1f5f9; color: var(--text-secondary); border: 1px solid rgba(226, 232, 240, 0.9);">
+                ${post.tag || 'Discussion'}
+              </span>
+              ${isPersonalFeed ? `
+                <button type="button" class="feed-delete-btn" data-post-id="${post.id}" title="Delete Post" style="background: transparent; border: none; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; padding: 4px;" onmouseover="this.style.color='#ef4444';" onmouseout="this.style.color='var(--text-muted)';">
+                  🗑️
                 </button>
+              ` : ''}
+            </div>
+          </div>
 
-                <!-- Comment Toggle Button -->
-                <button type="button" class="feed-comment-toggle-btn" data-post-id="${post.id}" style="
-                  background: transparent;
-                  border: 1px solid transparent;
-                  color: var(--text-secondary);
-                  padding: 6px 12px;
-                  border-radius: 8px;
-                  font-size: 0.86rem;
-                  font-weight: 700;
-                  cursor: pointer;
-                  display: flex;
-                  align-items: center;
-                  gap: 6px;
-                  transition: all 0.15s ease;
-                ">
-                  💬 <span>${commentsCount}</span> Comments
-                </button>
-              </div>
+          <!-- Post Text Content -->
+          <div style="color: var(--text-primary); font-size: 0.94rem; line-height: 1.6; white-space: pre-wrap;">${post.content}</div>
 
-              <!-- Share Button -->
-              <button type="button" class="feed-share-btn" data-post-id="${post.id}" style="
-                background: transparent;
-                border: none;
-                color: var(--text-muted);
-                padding: 6px 10px;
-                font-size: 0.84rem;
-                font-weight: 600;
+          <!-- Post Actions (Like, Comment, Share) -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(226, 232, 240, 0.8); margin-top: 2px;">
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <!-- Like Button -->
+              <button type="button" class="feed-like-btn" data-post-id="${post.id}" style="
+                background: ${isLiked ? 'rgba(239, 68, 68, 0.1)' : 'transparent'};
+                border: 1px solid ${isLiked ? 'rgba(239, 68, 68, 0.3)' : 'transparent'};
+                color: ${isLiked ? '#ef4444' : 'var(--text-secondary)'};
+                padding: 6px 12px;
+                border-radius: 8px;
+                font-size: 0.86rem;
+                font-weight: 700;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
-                gap: 4px;
+                gap: 6px;
+                transition: all 0.15s ease;
               ">
-                🔗 Share
+                ${isLiked ? '❤️' : '🤍'} <span>${post.likes || 0}</span> GG
+              </button>
+
+              <!-- Comment Toggle Button -->
+              <button type="button" class="feed-comment-toggle-btn" data-post-id="${post.id}" style="
+                background: transparent;
+                border: 1px solid transparent;
+                color: var(--text-secondary);
+                padding: 6px 12px;
+                border-radius: 8px;
+                font-size: 0.86rem;
+                font-weight: 700;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                transition: all 0.15s ease;
+              ">
+                💬 <span>${commentsCount}</span> Comments
               </button>
             </div>
 
-            <!-- Comments Expandable Container -->
-            <div id="comments-section-${post.id}" class="feed-comments-container" style="display: none; padding-top: 10px; border-top: 1px dashed rgba(226, 232, 240, 0.9); flex-direction: column; gap: 10px;">
-              <!-- Existing Comments -->
-              <div class="comments-list" style="display: flex; flex-direction: column; gap: 8px;">
-                ${(post.comments || []).map(c => `
-                  <div style="display: flex; gap: 10px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; font-size: 0.88rem;">
-                    <div style="font-size: 1.1rem; flex-shrink: 0;">${c.avatar || '⚔️'}</div>
-                    <div style="flex: 1;">
-                      <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <span style="font-weight: 700; color: var(--text-primary);">${c.author}</span>
-                        <span style="font-size: 0.72rem; color: var(--text-muted);">${c.timestamp || 'Just now'}</span>
-                      </div>
-                      <p style="margin: 2px 0 0; color: var(--text-secondary); line-height: 1.4;">${c.text}</p>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
+            <!-- Share Button -->
+            <button type="button" class="feed-share-btn" data-post-id="${post.id}" style="
+              background: transparent;
+              border: none;
+              color: var(--text-muted);
+              padding: 6px 10px;
+              font-size: 0.84rem;
+              font-weight: 600;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              gap: 4px;
+            ">
+              🔗 Share
+            </button>
+          </div>
 
-              <!-- Add Comment Input -->
-              <div style="display: flex; gap: 8px; margin-top: 6px;">
-                <input type="text" id="comment-input-${post.id}" placeholder="Write a reply..." style="
-                  flex: 1;
-                  border: 1px solid rgba(226, 232, 240, 0.95);
-                  border-radius: 8px;
-                  padding: 8px 12px;
-                  font-size: 0.86rem;
-                  outline: none;
-                  background: #ffffff;
-                ">
-                <button type="button" class="feed-submit-comment-btn btn btn-secondary" data-post-id="${post.id}" style="padding: 8px 14px; font-size: 0.82rem; font-weight: 700;">
-                  Reply
-                </button>
-              </div>
+          <!-- Comments Expandable Container -->
+          <div id="comments-section-${post.id}" class="feed-comments-container" style="display: none; padding-top: 10px; border-top: 1px dashed rgba(226, 232, 240, 0.9); flex-direction: column; gap: 10px;">
+            <div class="comments-list" style="display: flex; flex-direction: column; gap: 8px;">
+              ${(post.comments || []).map(c => `
+                <div style="display: flex; gap: 10px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; font-size: 0.88rem;">
+                  <div style="font-size: 1.1rem; flex-shrink: 0;">${c.avatar || '⚔️'}</div>
+                  <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-weight: 700; color: var(--text-primary);">${c.author}</span>
+                      <span style="font-size: 0.72rem; color: var(--text-muted);">${c.timestamp || 'Just now'}</span>
+                    </div>
+                    <p style="margin: 2px 0 0; color: var(--text-secondary); line-height: 1.4;">${c.text}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Add Comment Input Box -->
+            <div style="display: flex; gap: 8px; margin-top: 6px;">
+              <input type="text" id="comment-input-${post.id}" placeholder="Write a reply..." style="
+                flex: 1;
+                border: 1px solid rgba(226, 232, 240, 0.95);
+                border-radius: 8px;
+                padding: 8px 12px;
+                font-size: 0.86rem;
+                color: var(--text-primary);
+                outline: none;
+                background: #ffffff;
+              " />
+              <button type="button" class="feed-submit-comment-btn btn btn-primary" data-post-id="${post.id}" style="padding: 8px 14px; font-size: 0.82rem; font-weight: 700; border-radius: 8px;">
+                Reply
+              </button>
             </div>
           </div>
-        `;
-      }).join('');
+        </div>
+      `;
+    };
 
-      // Attach Like button handlers
-      feedList.querySelectorAll('.feed-like-btn').forEach(btn => {
+    // Helper: Attach Post Card Listeners (Like, Toggle comments, Submit comment, Share, Delete)
+    const attachPostCardListeners = (container, refreshFn) => {
+      if (!container) return;
+
+      container.querySelectorAll('.feed-like-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const postId = btn.getAttribute('data-post-id');
           const post = (Store.state.communityPosts || []).find(p => p.id === postId);
@@ -2781,26 +2877,22 @@
             post.likes = (post.likes || 0) + (post.likedByMe ? 1 : -1);
             Store.save();
             if (window.Sound) window.Sound.playClick();
-            renderCommunityFeedPosts();
+            refreshFn();
           }
         });
       });
 
-      // Attach Comment Toggle handlers
-      feedList.querySelectorAll('.feed-comment-toggle-btn').forEach(btn => {
+      container.querySelectorAll('.feed-comment-toggle-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const postId = btn.getAttribute('data-post-id');
           const commentsSec = document.getElementById(`comments-section-${postId}`);
           if (commentsSec) {
-            const isHidden = commentsSec.style.display === 'none';
-            commentsSec.style.display = isHidden ? 'flex' : 'none';
-            if (window.Sound) window.Sound.playClick();
+            commentsSec.style.display = commentsSec.style.display === 'none' ? 'flex' : 'none';
           }
         });
       });
 
-      // Attach Submit Comment handlers
-      feedList.querySelectorAll('.feed-submit-comment-btn').forEach(btn => {
+      container.querySelectorAll('.feed-submit-comment-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const postId = btn.getAttribute('data-post-id');
           const input = document.getElementById(`comment-input-${postId}`);
@@ -2819,15 +2911,26 @@
             Store.save();
             if (window.Sound) window.Sound.playMessage();
             Toast.success('Comment Posted', 'Your reply has been added to the discussion.');
-            renderCommunityFeedPosts();
+            refreshFn();
             const commentsSec = document.getElementById(`comments-section-${postId}`);
             if (commentsSec) commentsSec.style.display = 'flex';
           }
         });
       });
 
-      // Attach Share button handlers
-      feedList.querySelectorAll('.feed-share-btn').forEach(btn => {
+      container.querySelectorAll('.feed-delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const postId = btn.getAttribute('data-post-id');
+          if (confirm('Delete this post from your feed?')) {
+            Store.state.communityPosts = (Store.state.communityPosts || []).filter(p => p.id !== postId);
+            Store.save();
+            Toast.success('Post Deleted', 'Your post has been removed.');
+            refreshFn();
+          }
+        });
+      });
+
+      container.querySelectorAll('.feed-share-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           navigator.clipboard?.writeText?.(window.location.href);
           if (window.Sound) window.Sound.playClick();
@@ -2836,10 +2939,99 @@
       });
     };
 
-    // Initial render of community feed posts
+    // Function to render Your Personal Feed posts
+    const renderYourFeedPosts = () => {
+      const yourFeedList = document.getElementById('your-feed-posts-list');
+      if (!yourFeedList) return;
+
+      const myPosts = (Store.state.communityPosts || []).filter(p => 
+        p.authorName === (user.displayName || user.username) || 
+        p.authorName === user.username || 
+        p.authorId === user.id || 
+        (user.username === 'wenmar' && (p.badge === 'Founder' || p.authorName.toLowerCase().includes('wenmar')))
+      );
+
+      if (myPosts.length === 0) {
+        yourFeedList.innerHTML = `
+          <div style="text-align: center; padding: 48px 20px; background: #ffffff; border-radius: var(--radius-lg); border: 1px solid rgba(226, 232, 240, 0.95); box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);">
+            <div style="font-size: 2.8rem; margin-bottom: 10px;">📰</div>
+            <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-primary);">Your Feed is Ready!</div>
+            <div style="font-size: 0.88rem; color: var(--text-muted); margin-top: 6px; max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+              Share your Dota 2 match victories, hero highlights, tournament achievements, or status updates to build your gaming profile feed.
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      yourFeedList.innerHTML = myPosts.map(post => renderPostCardHTML(post, true)).join('');
+      attachPostCardListeners(yourFeedList, renderYourFeedPosts);
+    };
+
+    // Function to render Community Feed posts
+    const renderCommunityFeedPosts = () => {
+      const feedList = document.getElementById('community-feed-list');
+      if (!feedList) return;
+
+      const posts = Store.state.communityPosts || [];
+      if (posts.length === 0) {
+        feedList.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; background: #ffffff; border-radius: var(--radius-lg); border: 1px solid rgba(226, 232, 240, 0.95);">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">🎮</div>
+            <div style="font-weight: 700; color: var(--text-primary);">No posts yet</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Be the first hero to share a post on CourierHub!</div>
+          </div>
+        `;
+        return;
+      }
+
+      feedList.innerHTML = posts.map(post => renderPostCardHTML(post, false)).join('');
+      attachPostCardListeners(feedList, renderCommunityFeedPosts);
+    };
+
+    // Initial renders
+    renderYourFeedPosts();
     renderCommunityFeedPosts();
 
-    // Attach Composer Submit Handler
+    // Attach Your Feed Post Composer Handler
+    document.getElementById('your-feed-post-submit-btn')?.addEventListener('click', () => {
+      const textarea = document.getElementById('your-feed-post-input');
+      const tagSelect = document.getElementById('your-feed-post-tag');
+      if (!textarea || !textarea.value.trim()) {
+        Toast.error('Empty Post', 'Please write something to post on your feed.');
+        return;
+      }
+
+      const content = textarea.value.trim();
+      const tag = tagSelect ? tagSelect.value : 'Match Highlight';
+
+      const newPost = {
+        id: 'post_' + Date.now(),
+        authorId: user.id || 'user_anon',
+        authorName: user.displayName || user.username,
+        authorAvatar: user.avatar || '👑',
+        authorRank: user.rank || 'Divine V',
+        badge: user.username === 'wenmar' ? 'Founder' : 'Member',
+        timestamp: 'Just now',
+        tag: tag,
+        content: content,
+        likes: 0,
+        likedByMe: false,
+        comments: []
+      };
+
+      if (!Store.state.communityPosts) Store.state.communityPosts = [];
+      Store.state.communityPosts.unshift(newPost);
+      Store.save();
+
+      textarea.value = '';
+      if (window.Sound) window.Sound.playVictory();
+      Toast.success('Posted to Your Feed!', 'Your update is now live on your profile.');
+      renderYourFeedPosts();
+      renderCommunityFeedPosts();
+    });
+
+    // Attach Community Composer Submit Handler
     document.getElementById('feed-post-submit-btn')?.addEventListener('click', () => {
       const textarea = document.getElementById('feed-post-input');
       const tagSelect = document.getElementById('feed-post-tag');
@@ -2874,6 +3066,34 @@
       if (window.Sound) window.Sound.playVictory();
       Toast.success('Post Published!', 'Your update is now live on the CourierHub community feed.');
       renderCommunityFeedPosts();
+      renderYourFeedPosts();
+    });
+
+    // Attach Create Party button handler
+    document.getElementById('create-party-request-btn')?.addEventListener('click', () => {
+      const mode = prompt('Enter Game Mode (e.g. Ranked All Pick, Battle Cup):', 'Ranked All Pick');
+      if (!mode) return;
+      const roles = prompt('Roles Needed (e.g. Pos 3 Offlane, Pos 5 Support):', 'Pos 3 Offlane, Pos 5 Support');
+
+      const newParty = {
+        id: 'party_' + Date.now(),
+        leader: user.displayName || user.username,
+        avatar: user.avatar || '👑',
+        rank: user.rank || 'Divine V',
+        mode: mode.trim(),
+        region: user.region || 'SEA',
+        currentMembers: 1,
+        maxMembers: 5,
+        rolesNeeded: roles ? roles.split(',').map(s => s.trim()) : ['Any Role'],
+        note: 'Recruiting teammates on CourierHub.'
+      };
+
+      if (!Store.state.partyFinder) Store.state.partyFinder = [];
+      Store.state.partyFinder.unshift(newParty);
+      Store.save();
+      if (window.Sound) window.Sound.playVictory();
+      Toast.success('Party Created!', 'Your party recruitment is now live for other players to join.');
+      renderHomePartyList();
     });
 
     // Privacy Policy and Terms & Conditions button listeners
