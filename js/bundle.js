@@ -27,40 +27,83 @@
   }
 
   /* ==========================================================================
-     2. SVG ICONS & BANNER TEMPLATES REGISTRY
+     2. SVG ICONS & HERO SKIN BUNDLES REGISTRY
      ========================================================================== */
-  const BANNER_TEMPLATES = [
+  const SKIN_BUNDLES = [
     {
-      id: 'purple_galaxy',
+      id: 'shadow-fiend',
+      name: 'Shadow Fiend — Requiem of Souls',
+      hero: 'Shadow Fiend (Nevermore)',
+      banner: 'Shadow Fiend Requiem.jpg',
+      tag: '🔥 Abyssal Soulfire',
+      accent: '#ff2200',
+      borderColor: '#ff2200',
+      borderGlow: '#ff0033',
+      borderHead: '#ffffff',
+      bgStyle: 'souls-embers',
+      chatBadge: '🔥',
+      chatIconName: 'Demonic Soul Flame',
+      desc: 'Demonic underworld theme with rising soul embers, netherflame laser, and soul chat head.'
+    },
+    {
+      id: 'purple-galaxy',
       name: 'Purple Galaxy Over Alien Worlds',
-      file: 'Purple Galaxy Over Alien Worlds.jpg',
-      src: 'Purple Galaxy Over Alien Worlds.jpg',
-      tag: 'Cosmic / Galaxy',
-      accent: '#c084fc'
+      hero: 'Enigma / Cosmic Void',
+      banner: 'Purple Galaxy Over Alien Worlds.jpg',
+      tag: '🌌 Cosmic Nebula',
+      accent: '#a855f7',
+      borderColor: '#a855f7',
+      borderGlow: '#c084fc',
+      borderHead: '#ffffff',
+      bgStyle: 'starlight-cosmic',
+      chatBadge: '🌌',
+      chatIconName: 'Cosmic Void',
+      desc: 'Deep cosmic void with drifting purple stardust and ultraviolet laser path.'
     },
     {
-      id: 'neon_shardscape',
+      id: 'neon-shardscape',
       name: 'Neon Shardscape Cyberpunk Horizon',
-      file: 'Neon Shardscape Cyberpunk Horizon.jpg',
-      src: 'Neon Shardscape Cyberpunk Horizon.jpg',
-      tag: 'Cyberpunk / Horizon',
-      accent: '#38bdf8'
+      hero: 'Tinker / Cyber Matrix',
+      banner: 'Neon Shardscape Cyberpunk Horizon.jpg',
+      tag: '⚡ Cyber Synth',
+      accent: '#06b6d4',
+      borderColor: '#06b6d4',
+      borderGlow: '#38bdf8',
+      borderHead: '#ffffff',
+      bgStyle: 'digital-grid',
+      chatBadge: '⚡',
+      chatIconName: 'Cyber Pulse',
+      desc: 'Futuristic synthwave grid with floating data sparks and neon cyan laser.'
     },
     {
-      id: 'crimson_red',
+      id: 'crimson-red',
       name: 'Crimson Red',
-      file: 'Crimson Red.jpg',
-      src: 'Crimson Red.jpg',
-      tag: 'Crimson / Dire Fury',
-      accent: '#f87171'
+      hero: 'Bloodseeker / Dire War',
+      banner: 'Crimson Red.jpg',
+      tag: '🩸 Blood War',
+      accent: '#ef4444',
+      borderColor: '#ef4444',
+      borderGlow: '#dc2626',
+      borderHead: '#ffffff',
+      bgStyle: 'blood-embers',
+      chatBadge: '🩸',
+      chatIconName: 'Crimson Fury',
+      desc: 'Fierce crimson warrior energy with dark red atmospheric mist.'
     },
     {
-      id: 'neon_cyberpunk',
+      id: 'neon-cyberpunk',
       name: 'Neon Cyberpunk Gaming Banner',
-      file: 'Neon Cyberpunk Gaming Banner.jpg',
-      src: 'Neon Cyberpunk Gaming Banner.jpg',
-      tag: 'Neon Arcade / Gaming',
-      accent: '#fbbf24'
+      hero: 'Arc Warden / Neon Spark',
+      banner: 'Neon Cyberpunk Gaming Banner.jpg',
+      tag: '🎮 Neon Arcade',
+      accent: '#ec4899',
+      borderColor: '#ec4899',
+      borderGlow: '#f43f5e',
+      borderHead: '#ffffff',
+      bgStyle: 'arcade-sparks',
+      chatBadge: '🎮',
+      chatIconName: 'Neon Spark',
+      desc: 'Vibrant neon esports theme with pink laser flow and electric particles.'
     }
   ];
 
@@ -182,7 +225,8 @@
             region: 'SEA',
             avatar: '👑',
             avatarFrame: 'avatar-frame-immortal',
-            banner: 'Purple Galaxy Over Alien Worlds.jpg',
+            skin: 'shadow-fiend',
+            banner: 'Shadow Fiend Requiem.jpg',
             quote: 'The path to victory is paved with courage, patience, and unbreakable teamwork.',
             bio: 'CourierHub Founder & Dota 2 Captain',
             winRate: 64.2,
@@ -374,13 +418,14 @@
         if (saved) {
           const parsed = JSON.parse(saved);
           const defaults = this.getDefaults();
-          if (parsed.currentUser && !parsed.currentUser.banner) {
-            parsed.currentUser.banner = 'Purple Galaxy Over Alien Worlds.jpg';
+          if (parsed.currentUser) {
+            if (!parsed.currentUser.skin) parsed.currentUser.skin = 'shadow-fiend';
+            if (!parsed.currentUser.banner) parsed.currentUser.banner = 'Shadow Fiend Requiem.jpg';
           }
           return {
             ...defaults,
             ...parsed,
-            currentUser: parsed.currentUser ? { banner: 'Purple Galaxy Over Alien Worlds.jpg', ...parsed.currentUser } : null,
+            currentUser: parsed.currentUser ? { skin: 'shadow-fiend', banner: 'Shadow Fiend Requiem.jpg', ...parsed.currentUser } : null,
             friends: parsed.friends && parsed.friends.length ? parsed.friends : defaults.friends,
             chatMessages: parsed.chatMessages || defaults.chatMessages,
             activeChatHeads: parsed.activeChatHeads || defaults.activeChatHeads,
@@ -517,13 +562,16 @@
       if (!this.canvas) return;
       this.ctx = this.canvas.getContext('2d');
       this.particles = [];
-      this.mode = 'embers';
-      this.runes = ['ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', 'ᛃ', 'ᛈ', 'ᛉ', 'ᛊ', 'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ'];
+      this.skin = 'souls-embers';
       this.resize();
       window.addEventListener('resize', () => this.resize());
       this.init();
       this.loop = this.loop.bind(this);
       this.loop();
+    }
+    setSkin(skinStyle) {
+      this.skin = skinStyle || 'souls-embers';
+      this.init();
     }
     resize() {
       if (!this.canvas) return;
@@ -532,15 +580,17 @@
     }
     init() {
       this.particles = [];
-      for (let i = 0; i < 40; i++) {
+      const count = this.skin === 'souls-embers' ? 55 : (this.skin === 'starlight-cosmic' ? 65 : 45);
+      for (let i = 0; i < count; i++) {
         this.particles.push({
           x: Math.random() * this.width,
           y: Math.random() * this.height,
-          size: Math.random() * 3 + 1,
-          speedY: Math.random() * 0.7 + 0.3,
-          speedX: (Math.random() - 0.5) * 0.3,
-          alpha: Math.random() * 0.5 + 0.2,
-          rune: this.runes[Math.floor(Math.random() * this.runes.length)]
+          size: Math.random() * (this.skin === 'souls-embers' ? 4.5 : 3) + 1,
+          speedY: Math.random() * 0.85 + 0.35,
+          speedX: (Math.random() - 0.5) * (this.skin === 'souls-embers' ? 0.6 : 0.3),
+          alpha: Math.random() * 0.65 + 0.25,
+          pulse: Math.random() * Math.PI * 2,
+          isSoulWisp: Math.random() > 0.68
         });
       }
     }
@@ -548,15 +598,63 @@
       requestAnimationFrame(this.loop);
       if (!this.ctx) return;
       this.ctx.clearRect(0, 0, this.width, this.height);
+
       for (let i = 0; i < this.particles.length; i++) {
         const p = this.particles[i];
+        p.pulse += 0.035;
         p.y -= p.speedY;
-        p.x += p.speedX;
-        if (p.y < -20) { p.y = this.height + 20; p.x = Math.random() * this.width; }
+        p.x += Math.sin(p.pulse) * p.speedX;
+
+        if (p.y < -30) {
+          p.y = this.height + 30;
+          p.x = Math.random() * this.width;
+        }
+
+        this.ctx.save();
         this.ctx.beginPath();
-        this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        this.ctx.fillStyle = `rgba(245, 158, 11, ${p.alpha * 0.3})`;
-        this.ctx.fill();
+
+        if (this.skin === 'souls-embers') {
+          // Shadow Fiend — Requiem Souls & Netherflame Embers
+          const currentAlpha = p.alpha * (0.55 + Math.sin(p.pulse) * 0.35);
+          const rad = p.isSoulWisp ? p.size * 1.8 : p.size;
+          this.ctx.arc(p.x, p.y, rad, 0, Math.PI * 2);
+          this.ctx.shadowBlur = p.isSoulWisp ? 16 : 8;
+          this.ctx.shadowColor = '#ff2200';
+          this.ctx.fillStyle = p.isSoulWisp 
+            ? `rgba(255, 34, 0, ${currentAlpha * 0.65})` 
+            : `rgba(255, 120, 0, ${currentAlpha * 0.5})`;
+          this.ctx.fill();
+        } else if (this.skin === 'starlight-cosmic') {
+          // Purple Galaxy Cosmic Dust
+          const currentAlpha = p.alpha * (0.6 + Math.sin(p.pulse) * 0.4);
+          this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          this.ctx.shadowBlur = 10;
+          this.ctx.shadowColor = '#a855f7';
+          this.ctx.fillStyle = `rgba(168, 85, 247, ${currentAlpha * 0.45})`;
+          this.ctx.fill();
+        } else if (this.skin === 'digital-grid') {
+          // Cyberpunk Cyan Data Spark
+          this.ctx.rect(p.x, p.y, p.size * 1.6, p.size * 1.6);
+          this.ctx.shadowBlur = 8;
+          this.ctx.shadowColor = '#06b6d4';
+          this.ctx.fillStyle = `rgba(6, 182, 212, ${p.alpha * 0.45})`;
+          this.ctx.fill();
+        } else if (this.skin === 'blood-embers') {
+          // Crimson Fury Embers
+          this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          this.ctx.shadowBlur = 10;
+          this.ctx.shadowColor = '#ef4444';
+          this.ctx.fillStyle = `rgba(239, 68, 68, ${p.alpha * 0.45})`;
+          this.ctx.fill();
+        } else {
+          // Arcade / Default Golden
+          this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          this.ctx.shadowBlur = 6;
+          this.ctx.shadowColor = '#f59e0b';
+          this.ctx.fillStyle = `rgba(245, 158, 11, ${p.alpha * 0.35})`;
+          this.ctx.fill();
+        }
+        this.ctx.restore();
       }
     }
   }
@@ -703,9 +801,9 @@
 
               <!-- Action Menu Items -->
               <div style="display: flex; flex-direction: column; gap: 6px;">
-                <button type="button" class="dropdown-item-btn" id="dropdown-customize-banner-btn">
-                  <span style="font-size: 1.05rem;">🎨</span>
-                  <span>Customize Banner</span>
+                <button type="button" class="dropdown-item-btn" id="dropdown-change-skin-btn">
+                  <span style="font-size: 1.05rem;">🎭</span>
+                  <span>Change Skin</span>
                 </button>
 
                 <button type="button" class="dropdown-item-btn" id="dropdown-edit-profile-btn">
@@ -757,10 +855,10 @@
     }
 
     // Dropdown Actions
-    document.getElementById('dropdown-customize-banner-btn')?.addEventListener('click', () => {
+    document.getElementById('dropdown-change-skin-btn')?.addEventListener('click', () => {
       dropdown?.classList.remove('show');
       trigger?.classList.remove('active');
-      openCustomizeBannerModal();
+      openChangeSkinModal();
     });
 
     document.getElementById('dropdown-edit-profile-btn')?.addEventListener('click', () => {
@@ -1304,36 +1402,30 @@
       </div>
     `;
 
-    // 4. MAIN CHAT TRIGGER BUTTON (Ultra-Premium Golden Herald & Emerald Gem)
+    // 4. MAIN CHAT TRIGGER BUTTON (Skin Themed & Glowing Radar Ping)
+    const activeSkin = SKIN_BUNDLES.find(s => s.id === (user.skin || 'shadow-fiend')) || SKIN_BUNDLES[0];
+    
     html += `
-      <button type="button" id="main-chat-trigger-btn" class="main-chat-btn ${isFriendsListOpen ? 'active' : ''}" title="Dota Friends & Chat" aria-label="Open Dota Friends and Chat">
+      <button type="button" id="main-chat-trigger-btn" class="main-chat-btn ${isFriendsListOpen ? 'active' : ''}" title="Dota Friends & Chat (${activeSkin.name})" aria-label="Open Dota Friends and Chat" style="border-color: ${activeSkin.accent}; box-shadow: 0 0 22px ${activeSkin.accent}55, 0 10px 30px rgba(0,0,0,0.5);">
         <!-- Outer Ambient Halo Glow Ring -->
-        <div class="chat-btn-halo"></div>
+        <div class="chat-btn-halo" style="background: radial-gradient(circle, ${activeSkin.accent}55 0%, ${activeSkin.accent}1a 60%, transparent 80%);"></div>
 
         <!-- Specular Light Sheen Reflection -->
         <div class="chat-btn-sheen"></div>
 
-        <!-- Glowing Golden Icon Crest / Close Morph -->
+        <!-- Glowing Custom Skin Chat Icon / Close Morph -->
         <div class="chat-btn-icon-wrapper">
-          <svg class="chat-icon-svg" viewBox="0 0 24 24" width="28" height="28" fill="none">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="url(#chatBtnGoldGrad)" stroke="#fde047" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M8 12h.01M12 12h.01M16 12h.01" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-            <defs>
-              <linearGradient id="chatBtnGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#fef08a"/>
-                <stop offset="50%" stop-color="#f59e0b"/>
-                <stop offset="100%" stop-color="#b45309"/>
-              </linearGradient>
-            </defs>
-          </svg>
+          <div class="chat-custom-skin-icon" style="font-size: 1.55rem; filter: drop-shadow(0 0 8px ${activeSkin.accent}); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+            ${activeSkin.chatBadge}
+          </div>
           <span class="chat-btn-close-icon">✕</span>
         </div>
 
-        <!-- Radiant Emerald Live Status Gem with Radar Ping -->
-        <div class="chat-online-gem" title="${onlineCount} Friends Online">
+        <!-- Radiant Live Status Gem with Radar Ping -->
+        <div class="chat-online-gem" title="${onlineCount} Friends Online" style="background: linear-gradient(135deg, ${activeSkin.accent} 0%, #1e1b4b 100%); border-color: #ffffff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), 0 0 10px ${activeSkin.accent}88;">
           <div class="chat-gem-ping-wrapper">
-            <span class="chat-gem-ping"></span>
-            <span class="chat-gem-dot"></span>
+            <span class="chat-gem-ping" style="background: ${activeSkin.accent}88;"></span>
+            <span class="chat-gem-dot" style="background: #ffffff; box-shadow: 0 0 6px ${activeSkin.accent};"></span>
           </div>
           <span class="chat-gem-count">${onlineCount}</span>
         </div>
@@ -1575,93 +1667,186 @@
     });
   }
 
-  /* --- MODAL: CUSTOMIZE BANNER --- */
-  function openCustomizeBannerModal() {
+  /* ==========================================================================
+     UI SKIN THEME SYNCHRONIZER
+     ========================================================================== */
+  function applySkinToUI(skinId, customBanner = null) {
+    const user = Store.state.currentUser;
+    if (!user) return;
+    const skin = SKIN_BUNDLES.find(s => s.id === (skinId || user.skin || 'shadow-fiend')) || SKIN_BUNDLES[0];
+    
+    // 1. Set data-skin on body
+    document.body.setAttribute('data-skin', skin.id);
+
+    // 2. Set Canvas Background Engine Style
+    if (window.nexusBgInstance) {
+      window.nexusBgInstance.setSkin(skin.bgStyle);
+    }
+
+    // 3. Update Live Banner on Profile if on view
+    const activeBannerUrl = customBanner || user.banner || skin.banner;
+    const liveBanner = document.querySelector('.profile-fullwidth-banner');
+    if (liveBanner) {
+      liveBanner.style.backgroundImage = `url("${encodeURI(activeBannerUrl)}")`;
+    }
+
+    // 4. Update SVG Neon Border Laser Stroke Colors on Rectangle Profile Picture
+    const track = document.querySelector('.profile-neon-svg .neon-border-track');
+    const glow = document.querySelector('.profile-neon-svg .neon-border-glow');
+    const traveler = document.querySelector('.profile-neon-svg .neon-border-traveler');
+    const head = document.querySelector('.profile-neon-svg .neon-border-head');
+    if (track) track.style.stroke = `${skin.accent}33`;
+    if (glow) glow.style.stroke = skin.borderGlow;
+    if (traveler) traveler.style.stroke = skin.borderColor;
+    if (head) head.style.stroke = skin.borderHead;
+
+    // 5. Update Floating Chat Trigger Button
+    renderFloatingChat();
+  }
+
+  /* --- MODAL: CHANGE HERO & AESTHETIC SKIN --- */
+  function openChangeSkinModal() {
     const user = Store.state.currentUser;
     if (!user) return;
 
-    document.getElementById('customize-banner-modal')?.remove();
+    document.getElementById('change-skin-modal')?.remove();
     if (window.Sound) window.Sound.playClick();
 
-    let selectedBanner = user.banner || 'Purple Galaxy Over Alien Worlds.jpg';
+    let selectedSkinId = user.skin || 'shadow-fiend';
+    let selectedSkin = SKIN_BUNDLES.find(s => s.id === selectedSkinId) || SKIN_BUNDLES[0];
+    let selectedBanner = user.banner || selectedSkin.banner;
     let tempUploadedBanner = null;
 
-    const renderPreview = (bannerSrc) => {
-      const previewEl = document.getElementById('modal-banner-live-preview');
-      if (previewEl) {
-        previewEl.style.backgroundImage = `url("${encodeURI(bannerSrc)}")`;
+    const renderPreview = () => {
+      const bannerEl = document.getElementById('modal-skin-live-banner');
+      const trackEl = document.getElementById('modal-preview-neon-track');
+      const glowEl = document.getElementById('modal-preview-neon-glow');
+      const travelerEl = document.getElementById('modal-preview-neon-traveler');
+      const headEl = document.getElementById('modal-preview-neon-head');
+      const chatBadgeEl = document.getElementById('modal-preview-chat-badge');
+      const chatBtnEl = document.getElementById('modal-preview-chat-btn');
+      const skinDescEl = document.getElementById('modal-preview-skin-desc');
+      const skinTagEl = document.getElementById('modal-preview-skin-tag');
+
+      if (bannerEl) {
+        bannerEl.style.backgroundImage = `url("${encodeURI(selectedBanner)}")`;
+      }
+      if (trackEl) trackEl.style.stroke = `${selectedSkin.accent}33`;
+      if (glowEl) glowEl.style.stroke = selectedSkin.borderGlow;
+      if (travelerEl) travelerEl.style.stroke = selectedSkin.borderColor;
+      if (headEl) headEl.style.stroke = selectedSkin.borderHead;
+      if (chatBadgeEl) chatBadgeEl.textContent = selectedSkin.chatBadge;
+      if (chatBtnEl) {
+        chatBtnEl.style.borderColor = selectedSkin.accent;
+        chatBtnEl.style.boxShadow = `0 0 16px ${selectedSkin.accent}66`;
+      }
+      if (skinDescEl) skinDescEl.textContent = selectedSkin.desc;
+      if (skinTagEl) {
+        skinTagEl.textContent = selectedSkin.tag;
+        skinTagEl.style.color = selectedSkin.accent;
       }
     };
 
     const modalHtml = `
-      <div id="customize-banner-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
-        <div class="hud-panel" style="width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; padding: 24px 28px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.3); position: relative; animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div id="change-skin-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 720px; max-height: 92vh; overflow-y: auto; padding: 26px 30px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.4); position: relative; animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
           
           <!-- Modal Header -->
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; border: 1px solid rgba(245, 158, 11, 0.3);">
-                🎨
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, rgba(255, 34, 0, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%); color: #ff2200; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid rgba(255, 34, 0, 0.35); box-shadow: 0 0 15px rgba(255, 34, 0, 0.25);">
+                🎭
               </div>
               <div>
-                <h3 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0;">
-                  Customize Profile Banner
+                <h3 style="font-family: var(--font-header); font-size: 1.35rem; font-weight: 900; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 8px;">
+                  <span>Hero & Aesthetic Skin Vault</span>
+                  <span class="badge badge-gold" style="font-size: 0.7rem; padding: 2px 7px;">Full Bundle</span>
                 </h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
-                  Select a gaming preset template or upload your custom artwork
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin: 2px 0 0;">
+                  Equips matching Cover Banner, Neon Border Laser, Ambient Background & Chat Icon.
                 </p>
               </div>
             </div>
-            <button id="close-customize-banner-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s ease;">✕</button>
+            <button id="close-change-skin-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s ease;">✕</button>
           </div>
 
-          <!-- 1. LIVE BANNER PREVIEW -->
-          <div style="margin-bottom: 20px;">
+          <!-- 1. MULTI-ELEMENT LIVE PREVIEW -->
+          <div style="margin-bottom: 22px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">Live Preview</span>
-              <span class="badge badge-gold" style="font-size: 0.72rem; padding: 2px 8px; font-weight: 700;">Active Look</span>
+              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Live Skin Preview</span>
+              <span id="modal-preview-skin-tag" style="font-size: 0.8rem; font-weight: 800; color: ${selectedSkin.accent};">
+                ${selectedSkin.tag}
+              </span>
             </div>
             
-            <div id="modal-banner-live-preview" class="banner-preview-wrapper" style="background-image: url('${encodeURI(selectedBanner)}');">
+            <div id="modal-skin-live-banner" class="banner-preview-wrapper" style="height: 180px; background-image: url('${encodeURI(selectedBanner)}');">
               <div class="profile-banner-ambient"></div>
               <div class="profile-banner-grid"></div>
               
-              <!-- Mini Overlay on Preview -->
-              <div style="position: absolute; left: 16px; bottom: 12px; z-index: 10; display: flex; align-items: center; gap: 12px;">
-                <div style="width: 44px; height: 44px; border-radius: 10px; background: #ffffff; border: 2px solid #ffffff; box-shadow: 0 4px 14px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-                  ${user.avatar || '👑'}
+              <!-- Mini Rectangular Avatar with Live SVG Neon Laser Path -->
+              <div style="position: absolute; left: 20px; bottom: 14px; z-index: 15; display: flex; align-items: center; gap: 16px;">
+                <div style="position: relative; width: 62px; height: 80px; border-radius: 12px; background: #0a0307; display: flex; align-items: center; justify-content: center;">
+                  <!-- Mini SVG Traveling Border Laser -->
+                  <svg style="position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); overflow: visible; pointer-events: none;" viewBox="0 0 62 80">
+                    <rect id="modal-preview-neon-track" x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${selectedSkin.accent}33" stroke-width="2.5" />
+                    <rect id="modal-preview-neon-glow" x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${selectedSkin.borderGlow}" stroke-width="5" stroke-linecap="round" stroke-dasharray="220 280 220 280" style="animation: neonBorderPathTravel 3.2s linear infinite; filter: blur(3px);" />
+                    <rect id="modal-preview-neon-traveler" x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${selectedSkin.borderColor}" stroke-width="3" stroke-linecap="round" stroke-dasharray="180 320 180 320" style="animation: neonBorderPathTravel 3.2s linear infinite;" />
+                    <rect id="modal-preview-neon-head" x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${selectedSkin.borderHead}" stroke-width="3" stroke-linecap="round" stroke-dasharray="55 445 55 445" style="animation: neonBorderPathTravel 3.2s linear infinite;" />
+                  </svg>
+                  <span style="font-size: 1.8rem; z-index: 10;">${user.avatar || '👑'}</span>
                 </div>
+
                 <div>
-                  <div style="font-family: var(--font-header); font-size: 1.15rem; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.9); line-height: 1.2;">
+                  <div style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 900; color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.95); line-height: 1.2;">
                     ${user.displayName || user.username}
                   </div>
-                  <div style="font-size: 0.75rem; color: rgba(255,255,255,0.9); font-style: italic; text-shadow: 0 1px 4px rgba(0,0,0,0.9); max-width: 360px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  <div style="font-size: 0.78rem; color: rgba(255,255,255,0.9); font-style: italic; text-shadow: 0 1px 4px rgba(0,0,0,0.9); max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
                     “${user.quote || 'The path to victory is paved with courage...'}”
                   </div>
                 </div>
               </div>
+
+              <!-- Mini Floating Chat Trigger Preview in Bottom Right of Preview -->
+              <div style="position: absolute; right: 16px; bottom: 14px; z-index: 15; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                <span style="font-size: 0.68rem; font-weight: 700; color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.9);">Chat Icon Preview</span>
+                <div id="modal-preview-chat-btn" style="width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #1e293b 0%, #0f172a 70%, #060913 100%); border: 2px solid ${selectedSkin.accent}; box-shadow: 0 0 16px ${selectedSkin.accent}66; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                  <span id="modal-preview-chat-badge">${selectedSkin.chatBadge}</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="modal-preview-skin-desc" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px; font-style: italic;">
+              ${selectedSkin.desc}
             </div>
           </div>
 
-          <!-- 2. PRESET TEMPLATES SECTION -->
+          <!-- 2. SKIN BUNDLES SELECTOR -->
           <div style="margin-bottom: 20px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">Preset Templates</span>
-              <span style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 600;">4 High-Definition Themes</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Hero Skin Collections</span>
+              <span style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 700;">5 Signature Skins</span>
             </div>
 
-            <div class="banner-template-grid">
-              ${BANNER_TEMPLATES.map(tpl => {
-                const isSelected = selectedBanner === tpl.file;
+            <div class="banner-template-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+              ${SKIN_BUNDLES.map(s => {
+                const isSelected = selectedSkinId === s.id;
                 return `
-                  <div class="banner-template-card ${isSelected ? 'selected' : ''}" data-file="${tpl.file}" id="tpl-card-${tpl.id}">
-                    <div class="banner-card-thumb-wrap">
-                      <img src="${encodeURI(tpl.src)}" alt="${tpl.name}" class="banner-card-thumb-img" loading="lazy" />
-                      <div class="banner-card-check-badge">✓</div>
+                  <div class="banner-template-card ${isSelected ? 'selected' : ''}" data-skin-id="${s.id}" id="skin-card-${s.id}" style="${isSelected ? `border-color: ${s.accent} !important; box-shadow: 0 0 0 2px ${s.accent}, 0 10px 28px -4px ${s.accent}66 !important;` : ''}">
+                    <div class="banner-card-thumb-wrap" style="height: 95px;">
+                      <img src="${encodeURI(s.banner)}" alt="${s.name}" class="banner-card-thumb-img" loading="lazy" />
+                      <div class="banner-card-check-badge" style="background: ${s.accent}; color: #ffffff;">✓</div>
+                      <div style="position: absolute; bottom: 6px; left: 8px; font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: rgba(0,0,0,0.75); color: ${s.accent}; backdrop-filter: blur(4px);">
+                        ${s.chatBadge} ${s.hero}
+                      </div>
                     </div>
-                    <div class="banner-card-meta">
-                      <div class="banner-card-title" title="${tpl.name}">${tpl.name}</div>
-                      <div class="banner-card-tag">${tpl.tag}</div>
+                    <div class="banner-card-meta" style="padding: 8px 10px;">
+                      <div class="banner-card-title" title="${s.name}" style="font-size: 0.85rem; font-weight: 800;">${s.name}</div>
+                      <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px;">
+                        <span style="font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,0.08); color: var(--text-muted);">🖼️ Banner</span>
+                        <span style="font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,0.08); color: var(--text-muted);">⚡ Neon Laser</span>
+                        <span style="font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,0.08); color: var(--text-muted);">🌌 Background</span>
+                        <span style="font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,0.08); color: var(--text-muted);">💬 ${s.chatBadge} Icon</span>
+                      </div>
                     </div>
                   </div>
                 `;
@@ -1669,23 +1854,23 @@
             </div>
           </div>
 
-          <!-- 3. UPLOAD CUSTOM BANNER SECTION -->
+          <!-- 3. CUSTOM ARTWORK UPLOAD -->
           <div style="margin-bottom: 22px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">Or Upload Custom Banner</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Or Upload Custom Artwork</span>
               <span style="font-size: 0.76rem; color: var(--text-muted);">JPG, PNG, WebP (Max 10MB)</span>
             </div>
 
-            <div id="banner-upload-dropzone" class="banner-upload-dropzone">
+            <div id="banner-upload-dropzone" class="banner-upload-dropzone" style="padding: 16px;">
               <input type="file" id="banner-file-input" accept="image/jpeg,image/png,image/webp,image/gif" style="display: none;" />
               
-              <div id="upload-idle-state" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+              <div id="upload-idle-state" style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
                   📤
                 </div>
                 <div>
-                  <strong style="color: var(--text-primary); font-size: 0.88rem; display: block;">Click to browse or drag & drop custom banner</strong>
-                  <span style="font-size: 0.76rem; color: var(--text-muted);">Recommended: 1920×340 or 16:9 ratio high-resolution image</span>
+                  <strong style="color: var(--text-primary); font-size: 0.85rem; display: block;">Click to browse or drag & drop custom wallpaper</strong>
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Adapts with your active skin's neon border laser and chat icon</span>
                 </div>
               </div>
 
@@ -1696,7 +1881,7 @@
                   </div>
                   <div style="text-align: left;">
                     <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);" id="upload-file-name">custom-banner.png</div>
-                    <div style="font-size: 0.74rem; color: #16a34a; font-weight: 600;">✓ Ready to apply</div>
+                    <div style="font-size: 0.74rem; color: #16a34a; font-weight: 600;">✓ Custom artwork ready</div>
                   </div>
                 </div>
                 <button type="button" id="remove-upload-banner-btn" class="btn btn-secondary" style="padding: 5px 12px; font-size: 0.78rem; color: #ef4444; border-color: rgba(239,68,68,0.3);">
@@ -1708,15 +1893,15 @@
 
           <!-- Actions Footer -->
           <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
-            <button type="button" id="reset-banner-default-btn" class="btn btn-secondary" style="font-size: 0.82rem; padding: 8px 14px;">
-              Reset Default
+            <button type="button" id="reset-skin-default-btn" class="btn btn-secondary" style="font-size: 0.82rem; padding: 8px 14px;">
+              Reset Default (Shadow Fiend)
             </button>
             <div style="display: flex; gap: 10px;">
-              <button type="button" id="cancel-customize-banner-btn" class="btn btn-secondary" style="padding: 8px 18px;">
+              <button type="button" id="cancel-change-skin-btn" class="btn btn-secondary" style="padding: 8px 18px;">
                 Cancel
               </button>
-              <button type="button" id="save-customize-banner-btn" class="btn btn-primary" style="padding: 8px 22px; font-weight: 700; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);">
-                Save & Apply Banner
+              <button type="button" id="save-change-skin-btn" class="btn btn-primary" style="padding: 8px 22px; font-weight: 800; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.35);">
+                🎭 Equip & Apply Skin
               </button>
             </div>
           </div>
@@ -1726,33 +1911,43 @@
     `;
 
     document.body.insertAdjacentHTML('beforeend', modalHtml);
-    const modal = document.getElementById('customize-banner-modal');
+    const modal = document.getElementById('change-skin-modal');
     const close = () => modal?.remove();
 
     // Close handlers
-    document.getElementById('close-customize-banner-btn')?.addEventListener('click', close);
-    document.getElementById('cancel-customize-banner-btn')?.addEventListener('click', close);
+    document.getElementById('close-change-skin-btn')?.addEventListener('click', close);
+    document.getElementById('cancel-change-skin-btn')?.addEventListener('click', close);
     modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
 
-    // Template selection handlers
+    // Skin card selection handlers
     const cards = modal.querySelectorAll('.banner-template-card');
     cards.forEach(card => {
       card.addEventListener('click', () => {
-        const file = card.getAttribute('data-file');
-        if (!file) return;
-        selectedBanner = file;
+        const skinId = card.getAttribute('data-skin-id');
+        const found = SKIN_BUNDLES.find(s => s.id === skinId);
+        if (!found) return;
+
+        selectedSkinId = found.id;
+        selectedSkin = found;
+        selectedBanner = found.banner;
         tempUploadedBanner = null;
 
-        cards.forEach(c => c.classList.remove('selected'));
+        cards.forEach(c => {
+          c.classList.remove('selected');
+          c.style.borderColor = '';
+          c.style.boxShadow = '';
+        });
         card.classList.add('selected');
+        card.style.borderColor = `${found.accent} !important`;
+        card.style.boxShadow = `0 0 0 2px ${found.accent}, 0 10px 28px -4px ${found.accent}66 !important`;
 
-        // Hide upload success state
+        // Hide upload state
         const idleState = document.getElementById('upload-idle-state');
         const successState = document.getElementById('upload-success-state');
         if (idleState) idleState.style.display = 'flex';
         if (successState) successState.style.display = 'none';
 
-        renderPreview(selectedBanner);
+        renderPreview();
         if (window.Sound) window.Sound.playClick();
       });
     });
@@ -1811,7 +2006,11 @@
         tempUploadedBanner = dataUrl;
 
         // Deselect template cards
-        cards.forEach(c => c.classList.remove('selected'));
+        cards.forEach(c => {
+          c.classList.remove('selected');
+          c.style.borderColor = '';
+          c.style.boxShadow = '';
+        });
 
         // Show upload success state
         if (idleState) idleState.style.display = 'none';
@@ -1819,8 +2018,8 @@
         if (uploadThumb) uploadThumb.src = dataUrl;
         if (uploadFileName) uploadFileName.textContent = file.name;
 
-        renderPreview(dataUrl);
-        Toast.success('Image Loaded', 'Custom banner preview ready.');
+        renderPreview();
+        Toast.success('Image Loaded', 'Custom artwork ready.');
       };
       reader.readAsDataURL(file);
     }
@@ -1829,49 +2028,64 @@
     document.getElementById('remove-upload-banner-btn')?.addEventListener('click', (e) => {
       e.stopPropagation();
       tempUploadedBanner = null;
-      selectedBanner = 'Purple Galaxy Over Alien Worlds.jpg';
+      selectedBanner = selectedSkin.banner;
       if (idleState) idleState.style.display = 'flex';
       if (successState) successState.style.display = 'none';
       if (fileInput) fileInput.value = '';
 
       cards.forEach(c => {
-        if (c.getAttribute('data-file') === selectedBanner) c.classList.add('selected');
-        else c.classList.remove('selected');
+        if (c.getAttribute('data-skin-id') === selectedSkinId) {
+          c.classList.add('selected');
+          c.style.borderColor = `${selectedSkin.accent} !important`;
+          c.style.boxShadow = `0 0 0 2px ${selectedSkin.accent}, 0 10px 28px -4px ${selectedSkin.accent}66 !important`;
+        } else {
+          c.classList.remove('selected');
+          c.style.borderColor = '';
+          c.style.boxShadow = '';
+        }
       });
 
-      renderPreview(selectedBanner);
+      renderPreview();
     });
 
     // Reset default button
-    document.getElementById('reset-banner-default-btn')?.addEventListener('click', () => {
-      selectedBanner = 'Purple Galaxy Over Alien Worlds.jpg';
+    document.getElementById('reset-skin-default-btn')?.addEventListener('click', () => {
+      const defaultSkin = SKIN_BUNDLES[0]; // Shadow Fiend
+      selectedSkinId = defaultSkin.id;
+      selectedSkin = defaultSkin;
+      selectedBanner = defaultSkin.banner;
       tempUploadedBanner = null;
+
       if (idleState) idleState.style.display = 'flex';
       if (successState) successState.style.display = 'none';
       if (fileInput) fileInput.value = '';
 
       cards.forEach(c => {
-        if (c.getAttribute('data-file') === selectedBanner) c.classList.add('selected');
-        else c.classList.remove('selected');
+        if (c.getAttribute('data-skin-id') === defaultSkin.id) {
+          c.classList.add('selected');
+          c.style.borderColor = `${defaultSkin.accent} !important`;
+          c.style.boxShadow = `0 0 0 2px ${defaultSkin.accent}, 0 10px 28px -4px ${defaultSkin.accent}66 !important`;
+        } else {
+          c.classList.remove('selected');
+          c.style.borderColor = '';
+          c.style.boxShadow = '';
+        }
       });
 
-      renderPreview(selectedBanner);
-      Toast.success('Reset to Default', 'Purple Galaxy theme selected.');
+      renderPreview();
+      Toast.success('Reset to Default', 'Shadow Fiend — Requiem of Souls skin selected.');
     });
 
     // Save & Apply
-    document.getElementById('save-customize-banner-btn')?.addEventListener('click', () => {
+    document.getElementById('save-change-skin-btn')?.addEventListener('click', () => {
+      user.skin = selectedSkinId;
       user.banner = selectedBanner;
       Store.save();
 
-      // Instantly update live banner on current page if present
-      const liveBanner = document.querySelector('.profile-fullwidth-banner');
-      if (liveBanner) {
-        liveBanner.style.backgroundImage = `url("${encodeURI(user.banner)}")`;
-      }
+      applySkinToUI(user.skin, user.banner);
 
-      if (window.Sound) window.Sound.playClick();
-      Toast.success('Banner Updated!', 'Your profile banner has been customized.');
+      if (window.Sound) window.Sound.playVictory();
+      Toast.success('Skin Equipped!', `Equipped ${selectedSkin.name} bundle.`);
       close();
     });
   }
@@ -1893,17 +2107,17 @@
             <button id="close-edit-profile-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
           </div>
 
-          <!-- Quick Banner Customization Link inside Edit Profile -->
-          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 10px; margin-bottom: 14px;">
+          <!-- Quick Skin Vault Link inside Edit Profile -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: rgba(255, 34, 0, 0.08); border: 1px solid rgba(255, 34, 0, 0.25); border-radius: 10px; margin-bottom: 14px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-              <div style="font-size: 1.25rem;">🎨</div>
+              <div style="font-size: 1.25rem;">🎭</div>
               <div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Profile Banner</div>
-                <div style="font-size: 0.74rem; color: var(--text-muted);">Preset templates & custom upload</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Hero & Aesthetic Skin</div>
+                <div style="font-size: 0.74rem; color: var(--text-muted);">Banner, Neon Laser, Background & Chat Icon</div>
               </div>
             </div>
-            <button type="button" id="edit-profile-change-banner-btn" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px; font-weight: 700; border-color: var(--accent-gold); color: #b45309; background: #ffffff;">
-              Customize Banner
+            <button type="button" id="edit-profile-change-banner-btn" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px; font-weight: 700; border-color: #ff2200; color: #ff2200; background: #ffffff;">
+              Change Skin
             </button>
           </div>
 
@@ -1980,7 +2194,7 @@
 
     document.getElementById('edit-profile-change-banner-btn')?.addEventListener('click', () => {
       close();
-      openCustomizeBannerModal();
+      openChangeSkinModal();
     });
 
     document.getElementById('close-edit-profile-btn')?.addEventListener('click', close);
@@ -2479,17 +2693,20 @@
     const container = document.getElementById('view-container');
     if (!container) return;
 
+    const activeSkin = SKIN_BUNDLES.find(s => s.id === (user.skin || 'shadow-fiend')) || SKIN_BUNDLES[0];
+    const activeBanner = user.banner || activeSkin.banner;
+
     container.innerHTML = `
-      <div class="animate-fade-in profile-fullwidth-wrapper">
+      <div class="animate-fade-in profile-fullwidth-wrapper" data-skin="${activeSkin.id}">
         <!-- 1. FULL-WIDTH TOP COVER BANNER (100% Edge-to-Edge) -->
-        <div class="profile-fullwidth-banner" style="background-image: url('${encodeURI(user.banner || 'Purple Galaxy Over Alien Worlds.jpg')}');">
+        <div class="profile-fullwidth-banner" style="background-image: url('${encodeURI(activeBanner)}');">
           <div class="profile-banner-ambient"></div>
           <div class="profile-banner-grid"></div>
           <div class="hud-corner-accent hud-corner-tl"></div>
           <div class="hud-corner-accent hud-corner-tr"></div>
 
-          <!-- Floating Customize Banner Button -->
-          <button type="button" id="profile-customize-banner-btn" class="customize-banner-btn" style="
+          <!-- Floating Change Skin Button -->
+          <button type="button" id="profile-change-skin-btn" class="customize-banner-btn" style="
             position: absolute;
             right: 24px;
             bottom: 18px;
@@ -2497,19 +2714,19 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 9px 16px;
+            padding: 9px 18px;
             border-radius: 10px;
-            background: rgba(15, 23, 42, 0.82);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(245, 158, 11, 0.45);
+            border: 1.5px solid ${activeSkin.accent};
             color: #ffffff;
-            font-size: 0.86rem;
-            font-weight: 700;
+            font-size: 0.88rem;
+            font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px ${activeSkin.accent}66;
           ">
-            <span>🎨</span>
-            <span>Customize Banner</span>
+            <span>🎭</span>
+            <span>Change Skin</span>
           </button>
         </div>
 
@@ -2528,18 +2745,18 @@
               align-self: flex-start;
               z-index: 40;
             ">
-              <!-- Rectangle Profile Image with Red Neon Border Travel Path Animation -->
+              <!-- Rectangle Profile Image with Neon Border Travel Path Animation -->
               <div class="profile-avatar-anchor">
                 <!-- SVG Traveling Neon Border Line (Traces the Exact Perimeter) -->
                 <svg class="profile-neon-svg" viewBox="0 0 260 350" preserveAspectRatio="none">
                   <!-- Base Track Line -->
-                  <rect class="neon-border-track" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" />
+                  <rect class="neon-border-track" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" style="stroke: ${activeSkin.accent}33;" />
                   <!-- Glowing Neon Laser Trail (Dual pulses traveling around border) -->
-                  <rect class="neon-border-glow" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" />
+                  <rect class="neon-border-glow" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" style="stroke: ${activeSkin.borderGlow};" />
                   <!-- Sharp Traveling Red Laser Beam -->
-                  <rect class="neon-border-traveler" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" />
+                  <rect class="neon-border-traveler" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" style="stroke: ${activeSkin.borderColor};" />
                   <!-- White-Hot Leading Laser Head Tip -->
-                  <rect class="neon-border-head" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" />
+                  <rect class="neon-border-head" x="3" y="3" width="254" height="344" rx="24" ry="24" pathLength="1000" style="stroke: ${activeSkin.borderHead};" />
                 </svg>
 
                 <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
@@ -3507,9 +3724,9 @@
       renderHomePartyList();
     });
 
-    // Customize Banner Listener
-    document.getElementById('profile-customize-banner-btn')?.addEventListener('click', () => {
-      openCustomizeBannerModal();
+    // Change Skin Vault Listener
+    document.getElementById('profile-change-skin-btn')?.addEventListener('click', () => {
+      openChangeSkinModal();
     });
 
     // Privacy Policy and Terms & Conditions button listeners
@@ -4062,18 +4279,18 @@
         </h1>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
-          <!-- 1. Profile Banner Customizer Panel -->
+          <!-- 1. Hero & Aesthetic Skin Vault Panel -->
           <div class="hud-panel" style="padding: 24px;">
-            <div class="hud-panel-title" style="margin-bottom: 14px;">🖼️ Profile Cover Banner</div>
+            <div class="hud-panel-title" style="margin-bottom: 14px;">🎭 Hero & Aesthetic Skin Vault</div>
             <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 16px;">
-              Personalize your full-width profile header with gaming themes or your own art.
+              Equip synchronized hero themes (Cover Banner, Neon Border Laser, Ambient Background & Chat Icon).
             </p>
-            <div class="banner-preview-wrapper" id="hud-settings-banner-preview" style="height: 120px; margin-bottom: 16px; background-image: url('${encodeURI(user.banner || 'Purple Galaxy Over Alien Worlds.jpg')}');">
+            <div class="banner-preview-wrapper" id="hud-settings-banner-preview" style="height: 120px; margin-bottom: 16px; background-image: url('${encodeURI(user.banner || 'Shadow Fiend Requiem.jpg')}');">
               <div class="profile-banner-ambient"></div>
               <div class="profile-banner-grid"></div>
             </div>
-            <button class="btn btn-primary btn-block" id="hud-open-banner-modal-btn">
-              🎨 Customize Profile Banner
+            <button class="btn btn-primary btn-block" id="hud-open-skin-modal-btn" style="background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; font-weight: 800;">
+              🎭 Open Skin Vault
             </button>
           </div>
 
@@ -4100,8 +4317,8 @@
       </div>
     `;
 
-    document.getElementById('hud-open-banner-modal-btn')?.addEventListener('click', () => {
-      openCustomizeBannerModal();
+    document.getElementById('hud-open-skin-modal-btn')?.addEventListener('click', () => {
+      openChangeSkinModal();
     });
 
     document.querySelectorAll('.theme-btn').forEach(b => {
@@ -4136,6 +4353,11 @@
     AppRouter.register('members', () => renderMembers());
     AppRouter.register('profile', () => renderProfile());
     AppRouter.register('hud-settings', () => renderHudSettings());
+
+    // Initialize active hero skin
+    if (Store.state.currentUser) {
+      applySkinToUI(Store.state.currentUser.skin || 'shadow-fiend', Store.state.currentUser.banner);
+    }
 
     // Instant zero-blocking render
     AppRouter.handle();
