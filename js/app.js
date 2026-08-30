@@ -95,6 +95,7 @@
       name: 'Shadow Fiend — Abyssal Soulfire',
       hero: 'Shadow Fiend (Nevermore)',
       banner: 'assets/banner-shadow-fiend.jpg',
+      cardBg: 'assets/sf-container-bg.jpg',
       tag: '🔥 Abyssal Soulfire',
       accent: '#ff2200',
       borderColor: '#ff5522',
@@ -104,7 +105,7 @@
       chatBadge: '🔥',
       chatIconSvg: SHADOW_FIEND_CHAT_ICON_SVG,
       chatIconName: 'Abyssal Soulfire Crest',
-      desc: 'Exclusive Nevermore theme. Synchronizes full-bleed Requiem artwork, red soulfire laser border travel path, atmospheric ember particles, and blazing Netherflame soul crest.'
+      desc: 'Exclusive Nevermore theme. Synchronizes full-bleed Requiem artwork, red soulfire laser border travel path, obsidian demonic container backdrop, atmospheric ember particles, and blazing Netherflame soul crest.'
     }
   ];
 
@@ -1710,7 +1711,13 @@
     if (traveler) traveler.style.stroke = skin.borderColor;
     if (head) head.style.stroke = skin.borderHead;
 
-    // 5. Update Floating Chat Trigger Button
+    // 5. Update Profile Left Column Container Background (Gender/SEA/Address/Rank/Tabs)
+    const profileContainer = document.querySelector('.profile-vertical-details');
+    if (profileContainer) {
+      profileContainer.style.backgroundImage = `url("${encodeURI(skin.cardBg || 'assets/sf-container-bg.jpg')}")`;
+    }
+
+    // 6. Update Floating Chat Trigger Button
     renderFloatingChat();
   }
 
@@ -1740,7 +1747,7 @@
                   <span class="badge" style="font-size: 0.7rem; padding: 2px 7px; background: #ff2200; color: #ffffff; font-weight: 800;">SIGNATURE</span>
                 </h3>
                 <p style="font-size: 0.82rem; color: #94a3b8; margin: 2px 0 0;">
-                  Synchronizes Cover Banner, Neon Border Laser, Ambient Background & Chat Icon.
+                  Synchronizes Cover Banner, Neon Border Laser, Obsidian Armor Container, Ambient Background & Chat Icon.
                 </p>
               </div>
             </div>
@@ -1810,7 +1817,7 @@
                 <span style="font-size: 1.25rem;">🖼️</span>
                 <div>
                   <strong style="display: block; font-size: 0.85rem; color: #ffffff; font-weight: 800;">Requiem Cover Banner</strong>
-                  <span style="font-size: 0.74rem; color: #94a3b8;">1920×340 demonic artwork</span>
+                  <span style="font-size: 0.74rem; color: #94a3b8;">1920×360 demonic artwork</span>
                 </div>
               </div>
 
@@ -1835,6 +1842,14 @@
                 <div>
                   <strong style="display: block; font-size: 0.85rem; color: #ffffff; font-weight: 800;">Demonic Soul Chat Crest</strong>
                   <span style="font-size: 0.74rem; color: #94a3b8;">Custom chat trigger & halo</span>
+                </div>
+              </div>
+
+              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.08); border: 1px solid rgba(255, 34, 0, 0.25); display: flex; align-items: flex-start; gap: 10px; grid-column: 1 / -1;">
+                <span style="font-size: 1.25rem;">👹</span>
+                <div>
+                  <strong style="display: block; font-size: 0.85rem; color: #ffffff; font-weight: 800;">Nevermore Obsidian Armor Panel</strong>
+                  <span style="font-size: 0.74rem; color: #94a3b8;">Themed container backdrop for Gender, SEA Region, Address, Rank & Tabs</span>
                 </div>
               </div>
             </div>
