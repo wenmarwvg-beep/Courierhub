@@ -803,11 +803,6 @@
 
               <!-- Action Menu Items -->
               <div style="display: flex; flex-direction: column; gap: 6px;">
-                <button type="button" class="dropdown-item-btn" id="dropdown-change-skin-btn">
-                  <span style="font-size: 1.05rem;">🎭</span>
-                  <span>Change Skin</span>
-                </button>
-
                 <button type="button" class="dropdown-item-btn" id="dropdown-edit-profile-btn">
                   <span style="font-size: 1.05rem;">✏️</span>
                   <span>Edit Profile</span>
@@ -857,12 +852,6 @@
     }
 
     // Dropdown Actions
-    document.getElementById('dropdown-change-skin-btn')?.addEventListener('click', () => {
-      dropdown?.classList.remove('show');
-      trigger?.classList.remove('active');
-      openChangeSkinModal();
-    });
-
     document.getElementById('dropdown-edit-profile-btn')?.addEventListener('click', () => {
       dropdown?.classList.remove('show');
       trigger?.classList.remove('active');
@@ -1893,45 +1882,85 @@
   }
 
   /* --- MODAL: EDIT PROFILE --- */
+  /* --- MODAL: EDIT PROFILE --- */
   function openEditProfileModal() {
     const user = Store.state.currentUser;
     if (!user) return;
 
     document.getElementById('edit-profile-modal')?.remove();
 
-    const modalHtml = `
-      <div id="edit-profile-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.75); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;">
-        <div class="hud-panel" style="width: 100%; max-width: 500px; padding: 26px; border-radius: var(--radius-lg); background: rgba(13, 19, 33, 0.96); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 34, 0, 0.4); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 34, 0, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
-            <div style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: #ff2200;">
-              ✏️ Edit Profile
-            </div>
-            <button id="close-edit-profile-btn" style="background: transparent; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer;">✕</button>
-          </div>
+    const avatarPresets = ['👑', '🔥', '👹', '⚔️', '🛡️', '⚡', '🏹', '🧙', '🐉', '💀', '🦅', '❄️', '🗡️', '🏆', '💎', '🎯', '🦁', '🐺'];
+    let currentSelectedAvatar = user.avatar || '👑';
 
-          <!-- Quick Skin Vault Link inside Edit Profile -->
-          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: rgba(255, 34, 0, 0.08); border: 1px solid rgba(255, 34, 0, 0.25); border-radius: 10px; margin-bottom: 14px;">
+    const modalHtml = `
+      <div id="edit-profile-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.8); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; padding: 26px 28px; border-radius: var(--radius-lg); background: rgba(13, 19, 33, 0.98); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 34, 0, 0.45); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 34, 0, 0.25); position: relative; animation: fadeInDown 0.25s ease;">
+          
+          <!-- Header -->
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-              <div style="font-size: 1.25rem;">🎭</div>
-              <div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: #ffffff;">Hero & Aesthetic Skin</div>
-                <div style="font-size: 0.74rem; color: #94a3b8;">Banner, Neon Laser, Background & Chat Icon</div>
-              </div>
+              <span style="font-size: 1.3rem;">✏️</span>
+              <h3 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 900; color: #ffffff; margin: 0;">
+                Edit Profile
+              </h3>
             </div>
-            <button type="button" id="edit-profile-change-banner-btn" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px; font-weight: 700; border-color: #ff2200; color: #ff5522; background: rgba(15, 23, 42, 0.8);">
-              Change Skin
-            </button>
+            <button id="close-edit-profile-btn" style="background: transparent; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s ease;">✕</button>
           </div>
 
           <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 14px;">
+            
+            <!-- 1. PROFILE PICTURE / AVATAR SELECTOR -->
             <div>
-              <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Display Name</label>
-              <input type="text" id="edit-profile-name" class="input-control" value="${user.displayName || user.username}" required style="width: 100%;">
+              <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
+                Profile Picture / Avatar
+              </label>
+              
+              <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
+                <!-- Live Avatar Preview Frame -->
+                <div style="position: relative; width: 64px; height: 78px; border-radius: 12px; background: #0c0204; border: 2px solid #ff2200; box-shadow: 0 0 16px rgba(255, 34, 0, 0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <span id="edit-avatar-preview" style="font-size: 2.2rem;">${currentSelectedAvatar}</span>
+                </div>
+                
+                <!-- Quick Avatar Presets Grid -->
+                <div style="flex: 1;">
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    ${avatarPresets.map(av => `
+                      <button type="button" class="avatar-preset-btn ${av === currentSelectedAvatar ? 'active' : ''}" data-avatar="${av}" style="
+                        width: 34px;
+                        height: 34px;
+                        border-radius: 8px;
+                        background: ${av === currentSelectedAvatar ? 'rgba(255, 34, 0, 0.25)' : 'rgba(255, 255, 255, 0.05)'};
+                        border: 1.5px solid ${av === currentSelectedAvatar ? '#ff2200' : 'rgba(255, 255, 255, 0.12)'};
+                        font-size: 1.15rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: all 0.15s ease;
+                      ">${av}</button>
+                    `).join('')}
+                  </div>
+                  
+                  <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 0.74rem; color: #94a3b8;">Custom:</span>
+                    <input type="text" id="edit-profile-custom-avatar" class="input-control" placeholder="Type emoji/symbol" maxlength="4" value="${avatarPresets.includes(currentSelectedAvatar) ? '' : currentSelectedAvatar}" style="padding: 4px 8px; font-size: 0.85rem; width: 130px;">
+                  </div>
+                </div>
+              </div>
             </div>
 
+            <!-- 2. DISPLAY NAME (Preserves user exact casing format) -->
+            <div>
+              <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
+                Display Name <span style="font-size: 0.74rem; color: #94a3b8; font-weight: normal;">(Letter casing is preserved exactly)</span>
+              </label>
+              <input type="text" id="edit-profile-name" class="input-control" value="${user.displayName || user.username}" required style="width: 100%; font-weight: 700; font-size: 0.95rem;">
+            </div>
+
+            <!-- 3. GENDER & RANK TIER -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
               <div>
-                <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Gender</label>
+                <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Gender</label>
                 <select id="edit-profile-gender" class="input-control" style="width: 100%;">
                   <option value="Male" ${(user.gender || 'Male') === 'Male' ? 'selected' : ''}>Male</option>
                   <option value="Female" ${(user.gender || '') === 'Female' ? 'selected' : ''}>Female</option>
@@ -1940,49 +1969,56 @@
               </div>
 
               <div>
-                <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Rank Tier</label>
+                <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Rank Tier</label>
                 <select id="edit-profile-rank" class="input-control" style="width: 100%;">
-                  ${['Herald', 'Guardian', 'Crusader', 'Archon', 'Legend', 'Ancient', 'Divine V', 'Immortal'].map(r => `
+                  ${['Herald', 'Guardian', 'Crusader', 'Archon', 'Legend', 'Ancient', 'Divine I', 'Divine II', 'Divine III', 'Divine IV', 'Divine V', 'Immortal'].map(r => `
                     <option value="${r}" ${(user.rank || 'Divine V') === r ? 'selected' : ''}>${r}</option>
                   `).join('')}
                 </select>
               </div>
             </div>
 
-            <div>
-              <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Address</label>
-              <input type="text" id="edit-profile-address" class="input-control" value="${user.address || 'Philippines, Metro Manila'}" style="width: 100%;">
-            </div>
-
+            <!-- 4. REGION & DOTA FRIEND ID -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
               <div>
-                <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Region</label>
+                <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Region</label>
                 <select id="edit-profile-region" class="input-control" style="width: 100%;">
-                  ${['SEA', 'US East', 'US West', 'Europe West', 'Europe East', 'China', 'South America'].map(reg => `
+                  ${['SEA', 'US East', 'US West', 'Europe West', 'Europe East', 'China', 'South America', 'Japan', 'Australia'].map(reg => `
                     <option value="${reg}" ${(user.region || 'SEA') === reg ? 'selected' : ''}>${reg}</option>
                   `).join('')}
                 </select>
               </div>
 
               <div>
-                <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Dota Friend ID</label>
-                <input type="text" id="edit-profile-dotaid" class="input-control" value="${user.dotaId || '782910432'}" style="width: 100%;">
+                <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Dota Friend ID</label>
+                <input type="text" id="edit-profile-dotaid" class="input-control" value="${user.dotaId || '782910432'}" placeholder="e.g. 782910432" style="width: 100%;">
               </div>
             </div>
 
+            <!-- 5. ADDRESS / LOCATION -->
             <div>
-              <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Custom Quote / Motto</label>
-              <input type="text" id="edit-profile-quote" class="input-control" value="${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}" style="width: 100%;">
+              <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Address / Location</label>
+              <input type="text" id="edit-profile-address" class="input-control" value="${user.address || 'Philippines, Metro Manila'}" placeholder="e.g. Philippines, Metro Manila" style="width: 100%;">
             </div>
 
+            <!-- 6. CUSTOM QUOTE -->
             <div>
-              <label style="display: block; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Bio / Biography</label>
-              <textarea id="edit-profile-bio" class="input-control" rows="2" style="width: 100%; resize: vertical;">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</textarea>
+              <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Custom Quote / Motto</label>
+              <input type="text" id="edit-profile-quote" class="input-control" value="${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}" placeholder="Your signature quote on the banner" style="width: 100%;">
             </div>
 
-            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;">
-              <button type="button" class="btn btn-secondary" id="cancel-edit-profile-btn">Cancel</button>
-              <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.4);">Save Changes</button>
+            <!-- 7. PLAYER BIOGRAPHY -->
+            <div>
+              <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Biography / Bio</label>
+              <textarea id="edit-profile-bio" class="input-control" rows="2" placeholder="Tell the community about yourself..." style="width: 100%; resize: vertical;">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</textarea>
+            </div>
+
+            <!-- Footer Buttons -->
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
+              <button type="button" class="btn btn-secondary" id="cancel-edit-profile-btn" style="padding: 8px 18px;">Cancel</button>
+              <button type="submit" class="btn btn-primary" style="padding: 9px 24px; font-weight: 800; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.4);">
+                💾 Save Changes
+              </button>
             </div>
           </form>
         </div>
@@ -1993,10 +2029,36 @@
 
     const modal = document.getElementById('edit-profile-modal');
     const close = () => modal?.remove();
+    const previewEl = document.getElementById('edit-avatar-preview');
+    const customInput = document.getElementById('edit-profile-custom-avatar');
 
-    document.getElementById('edit-profile-change-banner-btn')?.addEventListener('click', () => {
-      close();
-      openChangeSkinModal();
+    // Preset avatar click events
+    modal.querySelectorAll('.avatar-preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const av = btn.getAttribute('data-avatar');
+        currentSelectedAvatar = av;
+        if (previewEl) previewEl.innerText = av;
+        if (customInput) customInput.value = '';
+        modal.querySelectorAll('.avatar-preset-btn').forEach(b => {
+          b.style.background = 'rgba(255, 255, 255, 0.05)';
+          b.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+        });
+        btn.style.background = 'rgba(255, 34, 0, 0.25)';
+        btn.style.borderColor = '#ff2200';
+      });
+    });
+
+    // Custom avatar input event
+    customInput?.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      if (val) {
+        currentSelectedAvatar = val;
+        if (previewEl) previewEl.innerText = val;
+        modal.querySelectorAll('.avatar-preset-btn').forEach(b => {
+          b.style.background = 'rgba(255, 255, 255, 0.05)';
+          b.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+        });
+      }
     });
 
     document.getElementById('close-edit-profile-btn')?.addEventListener('click', close);
@@ -2014,6 +2076,7 @@
       const newDotaId = document.getElementById('edit-profile-dotaid').value.trim();
       const newRegion = document.getElementById('edit-profile-region').value;
 
+      user.avatar = currentSelectedAvatar || user.avatar || '👑';
       user.displayName = newName || user.username;
       user.gender = newGender;
       user.address = newAddress;
@@ -2027,10 +2090,14 @@
       const sb = getSupabase();
       if (sb && user.id) {
         await sb.from('profiles').update({
+          avatar: user.avatar,
           display_name: user.displayName,
+          gender: user.gender,
           rank: user.rank,
           region: user.region,
+          address: user.address,
           dota_id: user.dotaId,
+          quote: user.quote,
           bio: user.bio
         }).eq('id', user.id).catch(() => {});
       }

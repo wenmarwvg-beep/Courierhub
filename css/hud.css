@@ -503,6 +503,7 @@
   margin: 0;
   letter-spacing: 0.02em;
   line-height: 1.2;
+  text-transform: none !important;
 }
 
 .profile-headline-text {
