@@ -164,8 +164,10 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- 10. Enable Supabase Realtime for Chat and Lobbies
+-- 10. Enable Supabase Realtime for Chat, Lobbies, and Profiles
 ALTER PUBLICATION supabase_realtime ADD TABLE public.community_messages;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.direct_messages;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.profiles;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.lobbies;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.lobby_members;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.party_finder;

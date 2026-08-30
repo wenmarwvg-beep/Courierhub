@@ -727,8 +727,173 @@
       AppRouter.navigate('login');
     });
 
-    // Mount Floating Chat System
+    // Mount Floating Chat System & Connect Supabase Realtime
     renderFloatingChat();
+    initRealtimeChat();
+  }
+
+  /* ==========================================================================
+     SUPABASE REALTIME LIVE CHAT & PRESENCE ENGINE
+     ========================================================================== */
+  let activeRealtimeChatChannel = null;
+
+  function initRealtimeChat() {
+    const user = Store.state.currentUser;
+    const sb = getSupabase();
+    if (!sb || !user) return;
+
+    if (activeRealtimeChatChannel) {
+      try {
+        sb.removeChannel(activeRealtimeChatChannel);
+      } catch (e) {}
+    }
+
+    try {
+      const myId = user.id || user.username;
+      activeRealtimeChatChannel = sb.channel('courierhub_realtime_chat', {
+        config: {
+          presence: { key: myId },
+          broadcast: { self: false }
+        }
+      });
+
+      // 1. Realtime Broadcast DM Delivery (Cross-device instant messaging)
+      activeRealtimeChatChannel.on('broadcast', { event: 'dm_message' }, ({ payload }) => {
+        if (!payload) return;
+        const { senderId, receiverId, senderName, senderAvatar, senderRank, text, timestamp } = payload;
+        
+        if (receiverId === myId || receiverId === user.username || receiverId === user.id) {
+          if (!Store.state.chatMessages) Store.state.chatMessages = {};
+          if (!Store.state.chatMessages[senderId]) Store.state.chatMessages[senderId] = [];
+
+          Store.state.chatMessages[senderId].push({
+            sender: 'friend',
+            text: text,
+            timestamp: timestamp || 'Just now'
+          });
+
+          // Ensure sender is in friends list
+          if (!Store.state.friends) Store.state.friends = [];
+          let friendObj = Store.state.friends.find(f => f.id === senderId || f.name === senderName);
+          if (!friendObj) {
+            friendObj = {
+              id: senderId,
+              name: senderName || 'Hero Player',
+              avatar: senderAvatar || '👑',
+              rank: senderRank || 'Divine V',
+              role: 'Online Player',
+              status: 'online',
+              statusText: '🟢 Online Live',
+              lastMessage: text
+            };
+            Store.state.friends.unshift(friendObj);
+          } else {
+            friendObj.lastMessage = text;
+            friendObj.status = 'online';
+          }
+
+          // Pin circular chat head above chat icon
+          if (!Store.state.activeChatHeads) Store.state.activeChatHeads = [];
+          if (!Store.state.activeChatHeads.includes(senderId)) {
+            Store.state.activeChatHeads.push(senderId);
+          }
+
+          Store.save();
+          if (window.Sound) window.Sound.playMessage();
+
+          if (Store.state.openChatFriendId !== senderId) {
+            Toast.success(`💬 ${senderName}`, text.length > 45 ? text.substring(0, 45) + '...' : text);
+          }
+
+          renderFloatingChat();
+
+          setTimeout(() => {
+            const body = document.getElementById('chat-messages-body');
+            if (body) body.scrollTop = body.scrollHeight;
+          }, 50);
+        }
+      });
+
+      // 2. Realtime Postgres Changes Listener
+      activeRealtimeChatChannel.on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'direct_messages'
+      }, (payload) => {
+        const newMsg = payload.new;
+        if (!newMsg) return;
+        if (newMsg.receiver_id === user.id && newMsg.sender_id !== user.id) {
+          const senderId = newMsg.sender_id;
+          if (!Store.state.chatMessages) Store.state.chatMessages = {};
+          if (!Store.state.chatMessages[senderId]) Store.state.chatMessages[senderId] = [];
+
+          const isDuplicate = Store.state.chatMessages[senderId].some(m => m.text === newMsg.text && (Date.now() - (m.receivedAt || 0) < 4000));
+          if (!isDuplicate) {
+            Store.state.chatMessages[senderId].push({
+              sender: 'friend',
+              text: newMsg.text,
+              timestamp: new Date(newMsg.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              receivedAt: Date.now()
+            });
+
+            if (!Store.state.activeChatHeads) Store.state.activeChatHeads = [];
+            if (!Store.state.activeChatHeads.includes(senderId)) {
+              Store.state.activeChatHeads.push(senderId);
+            }
+
+            Store.save();
+            if (window.Sound) window.Sound.playMessage();
+            renderFloatingChat();
+          }
+        }
+      });
+
+      // 3. Supabase Realtime Presence (Live Online Tracking)
+      activeRealtimeChatChannel.on('presence', { event: 'sync' }, () => {
+        const state = activeRealtimeChatChannel.presenceState();
+        for (const key in state) {
+          const presences = state[key];
+          if (presences && presences.length) {
+            presences.forEach(p => {
+              if (p.userId && p.userId !== myId) {
+                let friendObj = Store.state.friends.find(f => f.id === p.userId || f.name === p.username);
+                if (friendObj) {
+                  friendObj.status = 'online';
+                  friendObj.statusText = '🟢 Online Live';
+                } else {
+                  Store.state.friends.push({
+                    id: p.userId,
+                    name: p.displayName || p.username,
+                    avatar: p.avatar || '⚔️',
+                    rank: p.rank || 'Divine V',
+                    role: 'Online Player',
+                    status: 'online',
+                    statusText: '🟢 Online Live',
+                    lastMessage: 'Active now on CourierHub'
+                  });
+                }
+              }
+            });
+          }
+        }
+        renderFloatingChat();
+      });
+
+      activeRealtimeChatChannel.subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await activeRealtimeChatChannel.track({
+            userId: myId,
+            username: user.username,
+            displayName: user.displayName || user.username,
+            avatar: user.avatar || '👑',
+            rank: user.rank || 'Divine V',
+            onlineAt: new Date().toISOString()
+          }).catch(() => {});
+        }
+      });
+    } catch (err) {
+      console.warn('Realtime chat channel init notice:', err);
+    }
   }
 
   /* ==========================================================================
@@ -1239,6 +1404,34 @@
       const friendObj = (Store.state.friends || []).find(f => f.id === openFriendId);
       if (friendObj) friendObj.lastMessage = text;
 
+      // Broadcast over Supabase Realtime Channel
+      if (activeRealtimeChatChannel) {
+        activeRealtimeChatChannel.send({
+          type: 'broadcast',
+          event: 'dm_message',
+          payload: {
+            id: 'dm_' + Date.now(),
+            senderId: user.id || user.username,
+            receiverId: openFriendId,
+            senderName: user.displayName || user.username,
+            senderAvatar: user.avatar || '👑',
+            senderRank: user.rank || 'Divine V',
+            text: text,
+            timestamp: timeStr
+          }
+        }).catch(() => {});
+      }
+
+      // Persist to Supabase DB if user is authenticated with UUID
+      const sb = getSupabase();
+      if (sb && user.id && typeof user.id === 'string' && user.id.length > 20) {
+        sb.from('direct_messages').insert({
+          sender_id: user.id,
+          receiver_id: friendObj?.supabaseId || user.id,
+          text: text
+        }).then(() => {}).catch(() => {});
+      }
+
       Store.save();
       if (window.Sound) window.Sound.playMessage();
       if (input) input.value = '';
@@ -1251,35 +1444,38 @@
         document.getElementById('chat-direct-input')?.focus();
       }, 50);
 
-      // Automated Dota response simulation
-      setTimeout(() => {
-        const replies = [
-          "G! Let's party up and queue for ranked.",
-          "Nice! Invite me to party lobby, I'm ready.",
-          "Let's lock in and pick our signature heroes!",
-          "On it! Let's get that MMR win.",
-          "I'm in! Let me just finish this drink."
-        ];
-        const randomReply = replies[Math.floor(Math.random() * replies.length)];
-
-        if (!Store.state.chatMessages[openFriendId]) Store.state.chatMessages[openFriendId] = [];
-        Store.state.chatMessages[openFriendId].push({
-          sender: 'friend',
-          text: randomReply,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        });
-
-        if (friendObj) friendObj.lastMessage = randomReply;
-        Store.save();
-        if (window.Sound) window.Sound.playMessage();
-
-        renderFloatingChat();
-
+      // Automated Dota response simulation for bot/squad friends
+      const isBotFriend = ['friend_topson', 'friend_miracle', 'friend_ana', 'friend_abed', 'friend_kuku', 'friend_yatoro'].includes(openFriendId);
+      if (isBotFriend) {
         setTimeout(() => {
-          const body = document.getElementById('chat-messages-body');
-          if (body) body.scrollTop = body.scrollHeight;
-        }, 50);
-      }, 1200);
+          const replies = [
+            "G! Let's party up and queue for ranked.",
+            "Nice! Invite me to party lobby, I'm ready.",
+            "Let's lock in and pick our signature heroes!",
+            "On it! Let's get that MMR win.",
+            "I'm in! Let me just finish this drink."
+          ];
+          const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+          if (!Store.state.chatMessages[openFriendId]) Store.state.chatMessages[openFriendId] = [];
+          Store.state.chatMessages[openFriendId].push({
+            sender: 'friend',
+            text: randomReply,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          });
+
+          if (friendObj) friendObj.lastMessage = randomReply;
+          Store.save();
+          if (window.Sound) window.Sound.playMessage();
+
+          renderFloatingChat();
+
+          setTimeout(() => {
+            const body = document.getElementById('chat-messages-body');
+            if (body) body.scrollTop = body.scrollHeight;
+          }, 50);
+        }, 1200);
+      }
     };
 
     document.getElementById('chat-direct-send-btn')?.addEventListener('click', () => sendMessage());
