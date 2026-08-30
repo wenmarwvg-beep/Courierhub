@@ -5,15 +5,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700;800&display=swap');
 
 :root, [data-skin="shadow-fiend"], [data-theme="light"], [data-theme="dark"], [data-theme="classic"], [data-theme="abyssal"] {
-  /* Abyssal Soulfire & Dark Atmospheric Background Adaptive Tokens */
+  /* Default Ultra-Premium Frosted Glass & Dark Atmospheric Design Tokens */
   --bg-primary: transparent;
-  --bg-secondary: rgba(13, 19, 33, 0.88);
-  --bg-tertiary: rgba(22, 32, 54, 0.75);
-  --bg-card: rgba(15, 23, 42, 0.82);
-  --bg-card-hover: rgba(24, 36, 62, 0.94);
-  --bg-glass: rgba(15, 23, 42, 0.78);
+  --bg-secondary: rgba(13, 19, 33, 0.55);
+  --bg-tertiary: rgba(22, 32, 54, 0.5);
+  --bg-card: rgba(15, 23, 42, 0.52);
+  --bg-card-hover: rgba(24, 36, 62, 0.68);
+  --bg-glass: rgba(13, 19, 33, 0.45);
 
-  --border-subtle: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.14);
   --border-medium: rgba(255, 255, 255, 0.22);
   --border-bright: rgba(255, 34, 0, 0.65);
   --border-glow: 0 0 20px rgba(255, 34, 0, 0.35);
@@ -33,14 +33,14 @@
   --mana-blue-glow: rgba(14, 165, 233, 0.3);
   --ancient-purple: #a855f7;
 
-  /* Crisp, High-Contrast Typography Adapted for Dark Atmospheric Backdrop */
+  /* Crisp, High-Contrast Typography */
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
   --text-inverse: #0a0e17;
 
-  --card-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
-  --elevated-shadow: 0 25px 55px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 34, 0, 0.28);
+  --card-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
+  --elevated-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 34, 0, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
 
   --font-header: 'Cinzel', 'Inter', serif, sans-serif;
   --font-stats: 'Rajdhani', sans-serif;

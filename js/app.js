@@ -34,13 +34,13 @@
       id: 'shadow-fiend',
       name: 'Shadow Fiend — Abyssal Soulfire',
       hero: 'Shadow Fiend (Nevermore)',
-      banner: 'Shadow Fiend Requiem.jpg',
+      banner: 'assets/banner-shadow-fiend.jpg',
       tag: '🔥 Abyssal Soulfire',
       accent: '#ff2200',
-      borderColor: '#ff1a53',
-      borderGlow: '#ff0033',
+      borderColor: '#ff5522',
+      borderGlow: '#ff2200',
       borderHead: '#ffffff',
-      bgStyle: 'souls-embers',
+      bgStyle: 'shadow-fiend',
       chatBadge: '🔥',
       chatIconName: 'Demonic Soul Flame',
       desc: 'Exclusive Nevermore theme. Synchronizes full-bleed Requiem artwork, red soulfire laser border travel path, atmospheric ember particles, and burning soul crest.'
@@ -2520,24 +2520,9 @@
                 </div>
 
                 <!-- Divider line above navigation tabs -->                <!-- Navigation Tabs below the divider: Your Feed Tab, Community Tab & Party Tab -->
-                <div class="profile-nav-tabs" style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 4px;">
+                <div class="profile-nav-tabs">
                   <!-- Your Feed Tab (Above Community Tab) -->
-                  <button type="button" id="profile-tab-your-feed-btn" class="side-tab-btn active" style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    width: 100%;
-                    padding: 12px 14px;
-                    border-radius: 12px;
-                    background: rgba(255, 34, 0, 0.18);
-                    border: 1px solid rgba(255, 34, 0, 0.45);
-                    color: #ff5522;
-                    font-size: 0.92rem;
-                    font-weight: 700;
-                    cursor: pointer;
-                    box-shadow: 0 4px 14px rgba(255, 34, 0, 0.2);
-                    transition: all 0.2s ease;
-                  ">
+                  <button type="button" id="profile-tab-your-feed-btn" class="side-tab-btn active">
                     <div style="display: flex; align-items: center; gap: 10px;">
                       <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(255, 34, 0, 0.25); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                         📰
@@ -2548,22 +2533,7 @@
                   </button>
 
                   <!-- Community Tab -->
-                  <button type="button" id="profile-tab-community-btn" class="side-tab-btn" style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    width: 100%;
-                    padding: 12px 14px;
-                    border-radius: 12px;
-                    background: rgba(15, 23, 42, 0.85);
-                    border: 1px solid rgba(255, 255, 255, 0.12);
-                    color: #cbd5e1;
-                    font-size: 0.92rem;
-                    font-weight: 700;
-                    cursor: pointer;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-                    transition: all 0.2s ease;
-                  ">
+                  <button type="button" id="profile-tab-community-btn" class="side-tab-btn">
                     <div style="display: flex; align-items: center; gap: 10px;">
                       <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(14, 165, 233, 0.18); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                         💬
@@ -2574,22 +2544,7 @@
                   </button>
 
                   <!-- Party Tab -->
-                  <button type="button" id="profile-tab-party-btn" class="side-tab-btn" style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    width: 100%;
-                    padding: 12px 14px;
-                    border-radius: 12px;
-                    background: rgba(15, 23, 42, 0.85);
-                    border: 1px solid rgba(255, 255, 255, 0.12);
-                    color: #cbd5e1;
-                    font-size: 0.92rem;
-                    font-weight: 700;
-                    cursor: pointer;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-                    transition: all 0.2s ease;
-                  ">
+                  <button type="button" id="profile-tab-party-btn" class="side-tab-btn">
                     <div style="display: flex; align-items: center; gap: 10px;">
                       <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(16, 185, 129, 0.18); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                         ⚔️
@@ -2720,14 +2675,7 @@
                 </div>
 
                 <!-- Your Feed Post Composer Card -->
-                <div class="feed-composer-card" style="
-                  background: rgba(13, 19, 33, 0.88);
-                  backdrop-filter: blur(16px);
-                  border: 1px solid rgba(255, 255, 255, 0.12);
-                  border-radius: var(--radius-lg);
-                  padding: 18px 20px;
-                  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-                ">
+                <div class="feed-composer-card" style="padding: 18px 20px;">
                   <div style="display: flex; gap: 12px; align-items: flex-start;">
                     <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
                       ${user.avatar || '👑'}
@@ -2813,14 +2761,7 @@
                 </div>
 
                 <!-- Feed Post Composer Card -->
-                <div class="feed-composer-card" style="
-                  background: rgba(13, 19, 33, 0.88);
-                  backdrop-filter: blur(16px);
-                  border: 1px solid rgba(255, 255, 255, 0.12);
-                  border-radius: var(--radius-lg);
-                  padding: 18px 20px;
-                  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-                ">
+                <div class="feed-composer-card" style="padding: 18px 20px;">
                   <div style="display: flex; gap: 12px; align-items: flex-start;">
                     <div style="width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid #ff2200; flex-shrink: 0; box-shadow: 0 2px 8px rgba(255, 34, 0, 0.35);">
                       ${user.avatar || '👑'}
@@ -2923,7 +2864,7 @@
       const parties = Store.state.partyFinder || [];
       if (parties.length === 0) {
         partyContainer.innerHTML = `
-          <div style="text-align: center; padding: 40px 20px; background: rgba(13, 19, 33, 0.88); backdrop-filter: blur(16px); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.12);">
+          <div class="glass-container" style="text-align: center; padding: 40px 20px;">
             <div style="font-size: 2.5rem; margin-bottom: 8px;">⚔️</div>
             <div style="font-weight: 700; color: #ffffff;">No active parties right now</div>
             <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">Click "+ Create Party" to recruit players for your stack!</div>
@@ -2934,12 +2875,7 @@
 
       partyContainer.innerHTML = parties.map(party => `
         <div class="party-card" style="
-          background: rgba(13, 19, 33, 0.88);
-          backdrop-filter: blur(16px);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: var(--radius-lg);
           padding: 18px 20px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -3016,15 +2952,9 @@
       [yourFeedTabBtn, communityTabBtn, partyTabBtn].forEach(btn => {
         if (!btn) return;
         if (btn === activeBtn) {
-          btn.style.background = 'rgba(255, 34, 0, 0.18)';
-          btn.style.borderColor = 'rgba(255, 34, 0, 0.45)';
-          btn.style.color = '#ff5522';
-          btn.style.boxShadow = '0 4px 14px rgba(255, 34, 0, 0.2)';
+          btn.classList.add('active');
         } else {
-          btn.style.background = 'rgba(15, 23, 42, 0.85)';
-          btn.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-          btn.style.color = '#cbd5e1';
-          btn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
+          btn.classList.remove('active');
         }
       });
     };
@@ -3067,12 +2997,7 @@
       const commentsCount = (post.comments || []).length;
       return `
         <div class="feed-post-card" style="
-          background: rgba(13, 19, 33, 0.88);
-          backdrop-filter: blur(16px);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: var(--radius-lg);
           padding: 20px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
           display: flex;
           flex-direction: column;
           gap: 14px;

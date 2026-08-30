@@ -2,19 +2,21 @@
    CourierHub — HUD Panels, Dota Cards, Rank Tiers & Gaming Components
    ========================================================================== */
 
-/* HUD Gaming Panels */
+/* HUD Gaming Panels & Default Glass Containers */
 .hud-panel {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   position: relative;
   box-shadow: var(--card-shadow);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   transition: all var(--transition-normal);
 }
 
 .hud-panel:hover {
   border-color: var(--border-medium);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 34, 0, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
 }
 
 .hud-highlight {
@@ -237,50 +239,44 @@
 
 .profile-fullwidth-banner {
   width: 100%;
-  height: 340px;
+  height: 360px;
   position: relative;
   z-index: 1;
-  background-color: #0f172a;
+  background-color: #060911;
   background-size: cover;
-  background-position: center;
+  background-position: center 25%;
   background-repeat: no-repeat;
-  border-bottom: 1px solid rgba(217, 119, 6, 0.25);
+  border-bottom: 2px solid rgba(255, 34, 0, 0.45);
   overflow: hidden;
-  box-shadow: 0 12px 36px -10px rgba(217, 119, 6, 0.15), 0 4px 16px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 16px 45px -10px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 34, 0, 0.3);
   transition: background-image 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: saturate(1.18) contrast(1.12);
 }
 
 .profile-fullwidth-banner::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.15) 0%, rgba(15, 23, 42, 0.45) 55%, rgba(15, 23, 42, 0.88) 100%);
+  background: linear-gradient(to bottom, transparent 65%, rgba(6, 9, 17, 0.82) 100%);
   pointer-events: none;
   z-index: 2;
 }
 
 [data-theme="dark"] .profile-fullwidth-banner {
-  border-bottom: 1px solid var(--border-medium);
+  border-bottom: 2px solid rgba(255, 34, 0, 0.5);
 }
 
 .profile-banner-ambient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 12% 25%, rgba(245, 158, 11, 0.25) 0%, transparent 50%),
-              radial-gradient(circle at 88% 75%, rgba(99, 102, 241, 0.2) 0%, transparent 55%),
-              radial-gradient(circle at 50% 30%, rgba(251, 191, 36, 0.2) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 10%, rgba(255, 34, 0, 0.22) 0%, transparent 65%),
+              radial-gradient(circle at 85% 85%, rgba(255, 34, 0, 0.15) 0%, transparent 50%);
   pointer-events: none;
   z-index: 3;
 }
 
 .profile-banner-grid {
-  position: absolute;
-  inset: 0;
-  opacity: 0.18;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 1px);
-  background-size: 24px 24px;
-  pointer-events: none;
-  z-index: 4;
+  display: none;
 }
 
 .profile-content-container {
@@ -806,6 +802,91 @@
 .customize-banner-btn:active {
   transform: translateY(0);
 }
+
+/* ==========================================================================
+   CourierHub — Default Ultra-Refined Glass Containers & Tabs
+   ========================================================================== */
+
+.glass-container,
+.hud-panel,
+.profile-vertical-details,
+.feed-composer-card,
+.feed-post-card,
+.party-card,
+.user-dropdown-card,
+.modal-box {
+  background: rgba(13, 19, 33, 0.48) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.55), inset 0 1px 0 0 rgba(255, 255, 255, 0.16) !important;
+  border-radius: var(--radius-lg);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-vertical-details {
+  padding: 16px !important;
+  margin-top: 14px !important;
+}
+
+.glass-container:hover,
+.feed-post-card:hover,
+.party-card:hover {
+  background: rgba(18, 26, 46, 0.6) !important;
+  border-color: rgba(255, 34, 0, 0.35) !important;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.65), 0 0 24px rgba(255, 34, 0, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-2px);
+}
+
+/* Glass Navigation Tab Bar & Buttons */
+.profile-nav-tabs {
+  background: rgba(10, 15, 26, 0.4) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 8px !important;
+  border-radius: 16px !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 10px 24px rgba(0, 0, 0, 0.35) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.side-tab-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  color: #cbd5e1 !important;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.side-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  transform: translateX(3px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+.side-tab-btn.active {
+  background: linear-gradient(135deg, rgba(255, 34, 0, 0.28) 0%, rgba(217, 119, 6, 0.15) 100%) !important;
+  border: 1.5px solid rgba(255, 34, 0, 0.65) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 24px rgba(255, 34, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  transform: translateX(3px);
+}
+
 
 
 
