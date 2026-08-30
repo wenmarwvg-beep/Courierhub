@@ -29,6 +29,66 @@
   /* ==========================================================================
      2. SVG ICONS & HERO SKIN BUNDLES REGISTRY (Abyssal Soulfire Signature)
      ========================================================================== */
+  const Icons = {
+    // Navigation & Tabs (Apple SF Symbols style)
+    home: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.182V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9.818a2 2 0 0 0-.663-1.488L13.337 2.694a2 2 0 0 0-2.674 0L3.663 8.694A2 2 0 0 0 3 10.182z"/><path d="M9 22v-7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v7"/></svg>`,
+    feed: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>`,
+    community: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    conversations: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+    chat: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+    lobbies: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M6 12h4m-2-2v4m7-2h.01m3-2h.01m0 4h.01"/></svg>`,
+    party: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M9.5 6.5L21 18v3h-3L6.5 9.5"/></svg>`,
+    members: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>`,
+    
+    // Apple Dropdown & Banner Controls
+    edit: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+    profileCard: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="4"/><circle cx="9" cy="10" r="2.5"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>`,
+    logout: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`,
+    palette: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".75" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".75" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".75" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".75" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2Z"/></svg>`,
+    sparkles: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L14.4 7.6L20 10L14.4 12.4L12 18L9.6 12.4L4 10L9.6 7.6L12 2Z"/></svg>`,
+
+    // Apple-Inspired Interaction Controls
+    search: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+    bell: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
+    plus: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+    check: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    x: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+    
+    // Apple Send Icons
+    send: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>`,
+    sendArrowUp: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`,
+    
+    // Apple Social Interactions
+    heart: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+    heartFilled: `<svg viewBox="0 0 24 24" width="17" height="17" fill="#ef4444" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+    comment: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+    share: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>`,
+    copy: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="3" ry="3"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+    userPlus: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>`,
+    userCheck: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>`,
+    chatBubble: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+    
+    // Profile Card Metadata Icons
+    region: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    location: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    dotaId: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="4"/><circle cx="9" cy="10" r="2.5"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>`,
+    quote: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2H4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c0 4-2 6-4 8z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c0 4-2 6-4 8z"/></svg>`,
+    gender: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="5"/><line x1="19" y1="5" x2="13.6" y2="10.4"/><polyline points="15 5 19 5 19 9"/></svg>`,
+    rankCrown: `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14v2H5v-2z"/></svg>`,
+    id: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="4"/><circle cx="9" cy="10" r="2.5"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>`,
+
+    // Apple-styled Precision Dota Ranks Badges
+    rankHerald: `<svg viewBox="0 0 36 36" width="24" height="24"><defs><linearGradient id="gHerald" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#94a3b8"/><stop offset="100%" stop-color="#475569"/></linearGradient></defs><polygon points="18,3 31,10 31,26 18,33 5,26 5,10" fill="url(#gHerald)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><polygon points="18,8 26,13 26,23 18,28 10,23 10,13" fill="#1e293b" opacity="0.85"/></svg>`,
+    rankGuardian: `<svg viewBox="0 0 36 36" width="24" height="24"><defs><linearGradient id="gGuardian" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4ade80"/><stop offset="100%" stop-color="#16a34a"/></linearGradient></defs><polygon points="18,3 31,10 31,26 18,33 5,26 5,10" fill="url(#gGuardian)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><polygon points="18,8 26,13 26,23 18,28 10,23 10,13" fill="#064e3b" opacity="0.85"/></svg>`,
+    rankCrusader: `<svg viewBox="0 0 36 36" width="24" height="24"><defs><linearGradient id="gCrusader" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#2563eb"/></linearGradient></defs><polygon points="18,3 31,10 31,26 18,33 5,26 5,10" fill="url(#gCrusader)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><polygon points="18,8 26,13 26,23 18,28 10,23 10,13" fill="#0f172a" opacity="0.85"/></svg>`,
+    rankArchon: `<svg viewBox="0 0 36 36" width="24" height="24"><defs><linearGradient id="gArchon" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c084fc"/><stop offset="100%" stop-color="#9333ea"/></linearGradient></defs><polygon points="18,3 31,10 31,26 18,33 5,26 5,10" fill="url(#gArchon)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><polygon points="18,8 26,13 26,23 18,28 10,23 10,13" fill="#3b0764" opacity="0.85"/><circle cx="18" cy="18" r="3.5" fill="#f0abfc"/></svg>`,
+    rankLegend: `<svg viewBox="0 0 36 36" width="24" height="24"><defs><linearGradient id="gLegend" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs><polygon points="18,3 31,10 31,26 18,33 5,26 5,10" fill="url(#gLegend)" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><polygon points="18,8 26,13 26,23 18,28 10,23 10,13" fill="#451a03" opacity="0.85"/><polygon points="18,12 21,17 15,17" fill="#fef08a"/></svg>`,
+    rankAncient: `<svg viewBox="0 0 36 36" width="24" height="24"><defs><linearGradient id="gAncient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2dd4bf"/><stop offset="100%" stop-color="#0d9488"/></linearGradient></defs><polygon points="18,3 31,10 31,26 18,33 5,26 5,10" fill="url(#gAncient)" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><polygon points="18,8 26,13 26,23 18,28 10,23 10,13" fill="#042f2e" opacity="0.85"/><polygon points="18,11 23,18 18,25 13,18" fill="#99f6e4"/></svg>`,
+    rankDivine: `<svg viewBox="0 0 36 36" width="24" height="24"><defs><linearGradient id="gDivine" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f43f5e"/><stop offset="100%" stop-color="#be123c"/></linearGradient></defs><polygon points="18,3 31,10 31,26 18,33 5,26 5,10" fill="url(#gDivine)" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><polygon points="18,8 26,13 26,23 18,28 10,23 10,13" fill="#4c0519" opacity="0.85"/><circle cx="18" cy="18" r="3.5" fill="#ffffff"/></svg>`,
+    rankImmortal: `<svg viewBox="0 0 36 36" width="24" height="24"><defs><linearGradient id="gImmortal" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#f97316"/><stop offset="100%" stop-color="#dc2626"/></linearGradient></defs><polygon points="18,2 32,9 32,27 18,34 4,27 4,9" fill="url(#gImmortal)" stroke="rgba(255,255,255,0.6)" stroke-width="1.8"/><polygon points="18,7 27,13 27,23 18,29 9,23 9,13" fill="#2a0808" opacity="0.9"/><circle cx="18" cy="18" r="4" fill="#ffffff"/></svg>`
+  };
+  window.Icons = Icons;
+
   const SHADOW_FIEND_CHAT_ICON_SVG = `
     <svg class="sf-chat-flame" viewBox="0 0 40 40" width="34" height="34" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -1192,7 +1252,7 @@
 
             ${messages.length === 0 ? `
               <div style="text-align: center; padding: 40px 10px; color: #94a3b8;">
-                <div style="font-size: 2rem; margin-bottom: 6px;">💬</div>
+                <div style="font-size: 2rem; margin-bottom: 6px; display: flex; justify-content: center; color: #38bdf8;">${Icons.chat}</div>
                 <div style="font-size: 0.84rem; font-weight: 600; color: #f8fafc;">No messages yet with ${openFriend.name}</div>
                 <div style="font-size: 0.76rem; margin-top: 2px;">Say hello or invite them to party up!</div>
               </div>
@@ -1258,12 +1318,12 @@
           background: rgba(13, 19, 33, 0.96);
           backdrop-filter: blur(20px);
           border-radius: 18px;
-          border: 1.5px solid rgba(255, 34, 0, 0.4);
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 34, 0, 0.15);
-          overflow: hidden;
+          border: 1px solid rgba(255, 34, 0, 0.4);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 20px rgba(255, 34, 0, 0.25);
           display: flex;
           flex-direction: column;
-          z-index: 1505;
+          overflow: hidden;
+          z-index: 10001;
         ">
           <!-- Friends List Header -->
           <div style="
@@ -1271,11 +1331,11 @@
             align-items: center;
             justify-content: space-between;
             padding: 14px 16px;
-            background: linear-gradient(135deg, rgba(255, 34, 0, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(255, 34, 0, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%);
             border-bottom: 1px solid rgba(255, 34, 0, 0.3);
           ">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 1.2rem;">⚔️</span>
+              <span style="font-size: 1.15rem; filter: drop-shadow(0 0 6px #ff2200);">${activeSkin.chatBadge || '🔥'}</span>
               <div>
                 <h3 style="font-family: var(--font-header); font-size: 1.05rem; font-weight: 800; color: #ffffff; margin: 0;">
                   Dota 2 Friends
@@ -1354,22 +1414,25 @@
                     </div>
                   </div>
 
-                  <!-- Chat Action Icon -->
-                  <button type="button" style="
+                  <!-- Apple Message Icon at right of username -->
+                  <button type="button" class="friend-row-msg-btn" title="Send message to ${f.name}" style="
                     width: 32px;
                     height: 32px;
-                    border-radius: 8px;
-                    background: rgba(255, 34, 0, 0.15);
-                    color: #ff5522;
-                    border: 1px solid rgba(255, 34, 0, 0.35);
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.08);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    color: #38bdf8;
+                    border: 1px solid rgba(255, 255, 255, 0.15);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 0.95rem;
                     cursor: pointer;
                     flex-shrink: 0;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+                    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
                   ">
-                    💬
+                    ${Icons.chat}
                   </button>
                 </div>
               `;
@@ -1401,8 +1464,6 @@
     `;
 
     // 4. MAIN CHAT TRIGGER BUTTON (Skin Themed & Glowing Radar Ping)
-    const activeSkin = SKIN_BUNDLES.find(s => s.id === (user.skin || 'shadow-fiend')) || SKIN_BUNDLES[0];
-    
     html += `
       <button type="button" id="main-chat-trigger-btn" class="main-chat-btn ${isFriendsListOpen ? 'active' : ''}" title="Dota Friends & Chat (${activeSkin.name})" aria-label="Open Dota Friends and Chat">
         <!-- Outer Ambient Halo Glow Ring -->
@@ -1417,10 +1478,10 @@
         <!-- Specular Light Sheen Reflection -->
         <div class="chat-btn-sheen"></div>
 
-        <!-- Apple Messages Chat Icon / Close Morph -->
+        <!-- Glowing Custom Skin Chat Icon / Close Morph (Skin Bundle Icon Preserved) -->
         <div class="chat-btn-icon-wrapper">
-          <div class="chat-custom-skin-icon" style="display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; color: #ffffff;">
-            ${Icons.chat}
+          <div class="chat-custom-skin-icon" style="display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+            ${activeSkin.chatIconSvg || `<span style="font-size: 1.55rem; filter: drop-shadow(0 0 8px ${activeSkin.accent});">${activeSkin.chatBadge}</span>`}
           </div>
           <span class="chat-btn-close-icon">✕</span>
         </div>
