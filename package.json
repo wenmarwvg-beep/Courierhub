@@ -2,23 +2,5 @@
   "name": "courierhub-dota-system",
   "version": "1.0.0",
   "description": "CourierHub — A modern, premium Dota 2 community web application designed for players to find teammates, create match lobbies, chat in real-time, and customize their gaming HUD.",
-  "main": "index.html",
-  "scripts": {
-    "build": "echo build success",
-    "start": "serve ."
-  },
-  "keywords": [
-    "dota2",
-    "gaming",
-    "community",
-    "esports",
-    "matchmaking",
-    "hud"
-  ],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {
-    "serve": "^14.2.4"
-  }
+  "main": "index.html"
 }
