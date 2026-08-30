@@ -245,7 +245,88 @@
             note: 'Chill games and cavern crawl / guild quests.'
           }
         ],
-        statsOverview: { totalMembers: 1, onlineNow: 1, activeLobbies: 0, partyQueue: 0 }
+        statsOverview: { totalMembers: 1, onlineNow: 1, activeLobbies: 0, partyQueue: 0 },
+        friends: [
+          {
+            id: 'friend_topson',
+            name: 'Topson',
+            avatar: '⚡',
+            rank: 'Divine V',
+            role: 'Pos 2 Mid',
+            status: 'online',
+            statusText: 'Online • In Lobby',
+            badge: 'OG',
+            lastMessage: 'Let\'s party up for ranked!'
+          },
+          {
+            id: 'friend_miracle',
+            name: 'Miracle-',
+            avatar: '🦅',
+            rank: 'Immortal #14',
+            role: 'Pos 1 Carry',
+            status: 'in_match',
+            statusText: '⚔️ In Match (18m)',
+            badge: 'Nigma',
+            lastMessage: 'LF Pos 5 for Battle Cup'
+          },
+          {
+            id: 'friend_ana',
+            name: 'Ana',
+            avatar: '👑',
+            rank: 'Divine IV',
+            role: 'Pos 1 Carry',
+            status: 'online',
+            statusText: 'Online • Ready',
+            badge: 'Carry',
+            lastMessage: 'Ready when you are.'
+          },
+          {
+            id: 'friend_abed',
+            name: 'Abed',
+            avatar: '🌪️',
+            rank: 'Immortal #45',
+            role: 'Pos 2 Mid',
+            status: 'online',
+            statusText: 'Online • In Party',
+            badge: 'SEA Mid',
+            lastMessage: 'G for ranked stack tonight?'
+          },
+          {
+            id: 'friend_kuku',
+            name: 'Kuku',
+            avatar: '🛡️',
+            rank: 'Divine III',
+            role: 'Pos 3 Offlane',
+            status: 'away',
+            statusText: '🟡 Away (10m)',
+            badge: 'Offlane',
+            lastMessage: 'Need 1 for 5-stack later'
+          },
+          {
+            id: 'friend_yatoro',
+            name: 'Yatoro',
+            avatar: '🐉',
+            rank: 'Immortal #3',
+            role: 'Pos 1 Carry',
+            status: 'in_match',
+            statusText: '⚔️ In Match (32m)',
+            badge: 'Team Spirit',
+            lastMessage: 'GG WP last match'
+          }
+        ],
+        activeChatHeads: [],
+        openChatFriendId: null,
+        isFriendsListOpen: false,
+        chatMessages: {
+          'friend_topson': [
+            { sender: 'friend', text: 'Hey bro, are you grinding MMR today?', timestamp: '10:14 AM' },
+            { sender: 'user', text: 'Yeah, let\'s assemble a 5-man stack.', timestamp: '10:16 AM' },
+            { sender: 'friend', text: 'Let\'s party up for ranked!', timestamp: '10:18 AM' }
+          ],
+          'friend_ana': [
+            { sender: 'friend', text: 'Ready when you are.', timestamp: 'Yesterday' }
+          ]
+        }
       };
     }
     load() {
@@ -253,7 +334,16 @@
         const saved = localStorage.getItem('courierhub_state_v2');
         if (saved) {
           const parsed = JSON.parse(saved);
-          return { ...this.getDefaults(), ...parsed };
+          const defaults = this.getDefaults();
+          return {
+            ...defaults,
+            ...parsed,
+            friends: parsed.friends && parsed.friends.length ? parsed.friends : defaults.friends,
+            chatMessages: parsed.chatMessages || defaults.chatMessages,
+            activeChatHeads: parsed.activeChatHeads || defaults.activeChatHeads,
+            openChatFriendId: parsed.openChatFriendId || null,
+            isFriendsListOpen: false
+          };
         }
       } catch (e) {}
       return this.getDefaults();
@@ -494,6 +584,8 @@
             el.classList.remove('active');
           }
         });
+
+        if (isAuth) renderFloatingChat();
       } catch (err) {
         console.error('Router navigation error:', err);
       } finally {
@@ -630,8 +722,581 @@
       const sb = getSupabase();
       if (sb) await sb.auth.signOut().catch(() => {});
       Store.logout();
+      document.getElementById('floating-chat-container')?.remove();
       Toast.success('Signed Out', 'See you next match, Hero!');
       AppRouter.navigate('login');
+    });
+
+    // Mount Floating Chat System
+    renderFloatingChat();
+  }
+
+  /* ==========================================================================
+     FLOATING CHAT & ACTIVE CIRCLE FRIENDS CHAT HEADS
+     ========================================================================== */
+  function renderFloatingChat() {
+    const user = Store.state.currentUser;
+    let chatContainer = document.getElementById('floating-chat-container');
+
+    if (!user) {
+      chatContainer?.remove();
+      return;
+    }
+
+    if (!chatContainer) {
+      chatContainer = document.createElement('div');
+      chatContainer.id = 'floating-chat-container';
+      document.body.appendChild(chatContainer);
+    }
+
+    const friends = Store.state.friends || [];
+    const activeHeadIds = Store.state.activeChatHeads || [];
+    const openFriendId = Store.state.openChatFriendId;
+    const isFriendsListOpen = !!Store.state.isFriendsListOpen;
+    const onlineCount = friends.filter(f => f.status !== 'offline').length;
+    const openFriend = friends.find(f => f.id === openFriendId);
+    const messages = openFriendId ? (Store.state.chatMessages?.[openFriendId] || []) : [];
+
+    let html = '';
+
+    // 1. ACTIVE DIRECT CHAT WINDOW
+    if (openFriend) {
+      html += `
+        <div id="active-chat-window" class="hud-panel animate-fade-in" style="
+          position: absolute;
+          bottom: 0;
+          right: 72px;
+          width: 350px;
+          height: 480px;
+          max-height: 82vh;
+          background: #ffffff;
+          border-radius: 18px;
+          border: 1px solid rgba(245, 158, 11, 0.35);
+          box-shadow: 0 25px 60px rgba(15, 23, 42, 0.2);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          z-index: 1510;
+        ">
+          <!-- Chat Window Header -->
+          <div style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+          ">
+            <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+              <div style="position: relative; width: 40px; height: 40px; border-radius: 50%; background: #ffffff; border: 2px solid var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+                <span>${openFriend.avatar}</span>
+                <div class="status-dot status-${openFriend.status || 'online'}" style="position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #ffffff; background: ${openFriend.status === 'in_match' ? '#f59e0b' : '#16a34a'};"></div>
+              </div>
+              <div style="min-width: 0;">
+                <div style="font-weight: 800; font-size: 0.95rem; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px;">
+                  <span>${openFriend.name}</span>
+                  <span class="badge badge-gold" style="font-size: 0.68rem; padding: 1px 6px;">${openFriend.rank}</span>
+                </div>
+                <div style="font-size: 0.72rem; color: #64748b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  ${openFriend.statusText || 'Online'}
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <button type="button" id="chat-window-minimize-btn" title="Minimize" style="background: transparent; border: none; font-size: 1.2rem; color: #64748b; cursor: pointer; padding: 2px 6px; border-radius: 4px; line-height: 1;">–</button>
+              <button type="button" id="chat-window-close-btn" title="Close" style="background: transparent; border: none; font-size: 1rem; color: #64748b; cursor: pointer; padding: 2px 6px; border-radius: 4px; line-height: 1;">✕</button>
+            </div>
+          </div>
+
+          <!-- Quick Dota Quick-Chat Pills -->
+          <div style="
+            display: flex;
+            gap: 6px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            overflow-x: auto;
+            scrollbar-width: none;
+          ">
+            ${['⚔️ Party up?', '🏆 Ready for ranked', 'GG WP!', '🛡️ Need 1 more'].map(qc => `
+              <button type="button" class="chat-quick-pill" data-msg="${qc}" style="
+                font-size: 0.72rem;
+                font-weight: 700;
+                color: #b45309;
+                background: rgba(245, 158, 11, 0.12);
+                border: 1px solid rgba(245, 158, 11, 0.25);
+                border-radius: 12px;
+                padding: 3px 9px;
+                white-space: nowrap;
+                cursor: pointer;
+                transition: all 0.15s ease;
+              " onmouseover="this.style.background='rgba(245, 158, 11, 0.25)';" onmouseout="this.style.background='rgba(245, 158, 11, 0.12)';">
+                ${qc}
+              </button>
+            `).join('')}
+          </div>
+
+          <!-- Chat Messages Body -->
+          <div id="chat-messages-body" style="
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #ffffff;
+          ">
+            <div style="text-align: center; margin: 2px 0 8px;">
+              <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 600; background: #f1f5f9; padding: 2px 10px; border-radius: 10px;">Today</span>
+            </div>
+
+            ${messages.length === 0 ? `
+              <div style="text-align: center; padding: 40px 10px; color: #94a3b8;">
+                <div style="font-size: 2rem; margin-bottom: 6px;">💬</div>
+                <div style="font-size: 0.84rem; font-weight: 600;">No messages yet with ${openFriend.name}</div>
+                <div style="font-size: 0.76rem; margin-top: 2px;">Say hello or invite them to party up!</div>
+              </div>
+            ` : messages.map(msg => {
+              const isMe = msg.sender === 'user';
+              return `
+                <div style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: ${isMe ? 'flex-end' : 'flex-start'};
+                  max-width: 82%;
+                  align-self: ${isMe ? 'flex-end' : 'flex-start'};
+                ">
+                  <div style="
+                    background: ${isMe ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : '#f1f5f9'};
+                    color: ${isMe ? '#ffffff' : '#0f172a'};
+                    border-radius: ${isMe ? '16px 16px 4px 16px' : '16px 16px 16px 4px'};
+                    padding: 9px 13px;
+                    font-size: 0.88rem;
+                    line-height: 1.4;
+                    box-shadow: ${isMe ? '0 3px 10px rgba(217, 119, 6, 0.2)' : '0 1px 3px rgba(15, 23, 42, 0.04)'};
+                    border: ${isMe ? 'none' : '1px solid rgba(226, 232, 240, 0.9)'};
+                    word-break: break-word;
+                  ">
+                    ${msg.text}
+                  </div>
+                  <span style="font-size: 0.68rem; color: #94a3b8; margin-top: 3px; padding: 0 4px;">
+                    ${msg.timestamp || 'Just now'}
+                  </span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Chat Input Footer -->
+          <div style="
+            padding: 10px 14px;
+            background: #f8fafc;
+            border-top: 1px solid rgba(226, 232, 240, 0.95);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+          ">
+            <input type="text" id="chat-direct-input" placeholder="Message ${openFriend.name}..." style="
+              flex: 1;
+              border: 1px solid rgba(226, 232, 240, 0.95);
+              border-radius: 20px;
+              padding: 9px 14px;
+              font-size: 0.88rem;
+              color: var(--text-primary);
+              background: #ffffff;
+              outline: none;
+              font-family: inherit;
+              box-sizing: border-box;
+            " autocomplete="off" />
+
+            <button type="button" id="chat-direct-send-btn" style="
+              width: 36px;
+              height: 36px;
+              border-radius: 50%;
+              background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+              color: #ffffff;
+              border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 1rem;
+              cursor: pointer;
+              box-shadow: 0 3px 8px rgba(217, 119, 6, 0.3);
+              flex-shrink: 0;
+            ">
+              🚀
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 2. FRIENDS LIST WINDOW (When main chat button is clicked)
+    if (isFriendsListOpen) {
+      html += `
+        <div id="friends-list-window" class="hud-panel animate-fade-in" style="
+          position: absolute;
+          bottom: 70px;
+          right: 0;
+          width: 330px;
+          height: 450px;
+          max-height: 80vh;
+          background: #ffffff;
+          border-radius: 18px;
+          border: 1px solid rgba(245, 158, 11, 0.35);
+          box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          z-index: 1505;
+        ">
+          <!-- Friends List Header -->
+          <div style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+          ">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.2rem;">⚔️</span>
+              <div>
+                <h3 style="font-family: var(--font-header); font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">
+                  Dota 2 Friends
+                </h3>
+                <div style="font-size: 0.72rem; color: #16a34a; font-weight: 700;">
+                  🟢 ${onlineCount} Online
+                </div>
+              </div>
+            </div>
+
+            <button type="button" id="friends-list-close-btn" style="
+              background: transparent;
+              border: none;
+              font-size: 1.1rem;
+              color: #64748b;
+              cursor: pointer;
+              padding: 4px 6px;
+            ">✕</button>
+          </div>
+
+          <!-- Search Input -->
+          <div style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid rgba(226, 232, 240, 0.8);">
+            <input type="text" id="friends-search-input" placeholder="🔍 Search friend or rank..." style="
+              width: 100%;
+              border: 1px solid rgba(226, 232, 240, 0.95);
+              border-radius: 8px;
+              padding: 7px 12px;
+              font-size: 0.84rem;
+              color: var(--text-primary);
+              background: #ffffff;
+              outline: none;
+              font-family: inherit;
+              box-sizing: border-box;
+            " />
+          </div>
+
+          <!-- Vertical Friends List -->
+          <div id="friends-vertical-list" style="
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+          ">
+            ${friends.map(f => {
+              const statusColor = f.status === 'in_match' ? '#f59e0b' : (f.status === 'away' ? '#94a3b8' : '#16a34a');
+              return `
+                <div class="friend-list-row" data-friend-id="${f.id}" style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  padding: 8px 10px;
+                  border-radius: 12px;
+                  background: #ffffff;
+                  border: 1px solid rgba(226, 232, 240, 0.8);
+                  cursor: pointer;
+                  transition: all 0.15s ease;
+                " onmouseover="this.style.background='rgba(245, 158, 11, 0.08)'; this.style.borderColor='rgba(245, 158, 11, 0.35)';" onmouseout="this.style.background='#ffffff'; this.style.borderColor='rgba(226, 232, 240, 0.8)';">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <!-- Friend Avatar Circle -->
+                    <div style="position: relative; width: 42px; height: 42px; border-radius: 50%; background: #fef3c7; border: 2px solid var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0;">
+                      <span>${f.avatar}</span>
+                      <div style="position: absolute; bottom: -1px; right: -1px; width: 11px; height: 11px; border-radius: 50%; background: ${statusColor}; border: 2px solid #ffffff;"></div>
+                    </div>
+
+                    <div style="min-width: 0;">
+                      <div style="display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;">
+                        <span style="font-weight: 800; font-size: 0.92rem; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${f.name}</span>
+                        <span class="badge badge-gold" style="font-size: 0.65rem; padding: 1px 5px;">${f.rank}</span>
+                      </div>
+                      <div style="font-size: 0.74rem; color: #64748b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">
+                        ${f.statusText || f.role || 'Online'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Chat Action Icon -->
+                  <button type="button" style="
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 8px;
+                    background: rgba(245, 158, 11, 0.12);
+                    color: #b45309;
+                    border: 1px solid rgba(245, 158, 11, 0.25);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 0.95rem;
+                    cursor: pointer;
+                    flex-shrink: 0;
+                  ">
+                    💬
+                  </button>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 3. CHAT HEADS STACK (Placed vertically ABOVE the main chat icon)
+    html += `
+      <div id="chat-heads-stack">
+        ${activeHeadIds.map(hid => {
+          const friend = friends.find(f => f.id === hid);
+          if (!friend) return '';
+          const isActive = friend.id === openFriendId;
+          const statusClass = `status-${friend.status || 'online'}`;
+          return `
+            <div class="friend-chat-head-wrapper" title="${friend.name} (${friend.rank})">
+              <button type="button" class="friend-chat-head-btn ${isActive ? 'active' : ''}" data-friend-id="${friend.id}">
+                <span>${friend.avatar}</span>
+                <div class="friend-chat-head-status ${statusClass}"></div>
+              </button>
+              <button type="button" class="friend-chat-head-close" data-close-friend-id="${friend.id}" title="Close Chat Head">✕</button>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+
+    // 4. MAIN CHAT TRIGGER BUTTON (Bottom-Right Circle Icon)
+    html += `
+      <button type="button" id="main-chat-trigger-btn" class="main-chat-btn ${isFriendsListOpen ? 'active' : ''}" title="Dota Friends & Chat">
+        <span>💬</span>
+        <div class="chat-online-badge">
+          <span>●</span>
+          <span>${onlineCount}</span>
+        </div>
+      </button>
+    `;
+
+    chatContainer.innerHTML = html;
+
+    // Attach Event Listeners
+    attachFloatingChatEvents();
+  }
+
+  function attachFloatingChatEvents() {
+    const mainBtn = document.getElementById('main-chat-trigger-btn');
+    if (mainBtn) {
+      mainBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        Store.state.isFriendsListOpen = !Store.state.isFriendsListOpen;
+        if (window.Sound) window.Sound.playClick();
+        renderFloatingChat();
+      });
+    }
+
+    document.getElementById('friends-list-close-btn')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      Store.state.isFriendsListOpen = false;
+      renderFloatingChat();
+    });
+
+    // Search filter in friends list
+    const searchInput = document.getElementById('friends-search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        document.querySelectorAll('.friend-list-row').forEach(row => {
+          const friendId = row.getAttribute('data-friend-id');
+          const friend = (Store.state.friends || []).find(f => f.id === friendId);
+          if (friend) {
+            const match = friend.name.toLowerCase().includes(query) || (friend.rank && friend.rank.toLowerCase().includes(query)) || (friend.role && friend.role.toLowerCase().includes(query));
+            row.style.display = match ? 'flex' : 'none';
+          }
+        });
+      });
+    }
+
+    // Click on friend in friends list -> add active chat head & open chat window
+    document.querySelectorAll('.friend-list-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const friendId = row.getAttribute('data-friend-id');
+        if (!friendId) return;
+
+        if (!Store.state.activeChatHeads) Store.state.activeChatHeads = [];
+        if (!Store.state.activeChatHeads.includes(friendId)) {
+          Store.state.activeChatHeads.push(friendId);
+        }
+        Store.state.openChatFriendId = friendId;
+        Store.state.isFriendsListOpen = false;
+        Store.save();
+        if (window.Sound) window.Sound.playClick();
+        renderFloatingChat();
+
+        setTimeout(() => {
+          document.getElementById('chat-direct-input')?.focus();
+          const body = document.getElementById('chat-messages-body');
+          if (body) body.scrollTop = body.scrollHeight;
+        }, 50);
+      });
+    });
+
+    // Click on friend chat head -> toggle/open direct chat window
+    document.querySelectorAll('.friend-chat-head-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const friendId = btn.getAttribute('data-friend-id');
+        if (Store.state.openChatFriendId === friendId) {
+          Store.state.openChatFriendId = null;
+        } else {
+          Store.state.openChatFriendId = friendId;
+          Store.state.isFriendsListOpen = false;
+        }
+        Store.save();
+        if (window.Sound) window.Sound.playClick();
+        renderFloatingChat();
+
+        setTimeout(() => {
+          document.getElementById('chat-direct-input')?.focus();
+          const body = document.getElementById('chat-messages-body');
+          if (body) body.scrollTop = body.scrollHeight;
+        }, 50);
+      });
+    });
+
+    // Close chat head button (✕)
+    document.querySelectorAll('.friend-chat-head-close').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const friendId = btn.getAttribute('data-close-friend-id');
+        Store.state.activeChatHeads = (Store.state.activeChatHeads || []).filter(id => id !== friendId);
+        if (Store.state.openChatFriendId === friendId) {
+          Store.state.openChatFriendId = null;
+        }
+        Store.save();
+        if (window.Sound) window.Sound.playClick();
+        renderFloatingChat();
+      });
+    });
+
+    // Minimize & Close chat window buttons
+    document.getElementById('chat-window-minimize-btn')?.addEventListener('click', () => {
+      Store.state.openChatFriendId = null;
+      Store.save();
+      renderFloatingChat();
+    });
+
+    document.getElementById('chat-window-close-btn')?.addEventListener('click', () => {
+      Store.state.openChatFriendId = null;
+      Store.save();
+      renderFloatingChat();
+    });
+
+    // Send Message Handler
+    const sendMessage = (textToSend) => {
+      const openFriendId = Store.state.openChatFriendId;
+      if (!openFriendId) return;
+      const input = document.getElementById('chat-direct-input');
+      const text = textToSend || (input ? input.value.trim() : '');
+      if (!text) return;
+
+      if (!Store.state.chatMessages) Store.state.chatMessages = {};
+      if (!Store.state.chatMessages[openFriendId]) Store.state.chatMessages[openFriendId] = [];
+
+      // Ensure friend is in active chat heads
+      if (!Store.state.activeChatHeads) Store.state.activeChatHeads = [];
+      if (!Store.state.activeChatHeads.includes(openFriendId)) {
+        Store.state.activeChatHeads.push(openFriendId);
+      }
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      Store.state.chatMessages[openFriendId].push({
+        sender: 'user',
+        text: text,
+        timestamp: timeStr
+      });
+
+      const friendObj = (Store.state.friends || []).find(f => f.id === openFriendId);
+      if (friendObj) friendObj.lastMessage = text;
+
+      Store.save();
+      if (window.Sound) window.Sound.playMessage();
+      if (input) input.value = '';
+
+      renderFloatingChat();
+
+      setTimeout(() => {
+        const body = document.getElementById('chat-messages-body');
+        if (body) body.scrollTop = body.scrollHeight;
+        document.getElementById('chat-direct-input')?.focus();
+      }, 50);
+
+      // Automated Dota response simulation
+      setTimeout(() => {
+        const replies = [
+          "G! Let's party up and queue for ranked.",
+          "Nice! Invite me to party lobby, I'm ready.",
+          "Let's lock in and pick our signature heroes!",
+          "On it! Let's get that MMR win.",
+          "I'm in! Let me just finish this drink."
+        ];
+        const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+        if (!Store.state.chatMessages[openFriendId]) Store.state.chatMessages[openFriendId] = [];
+        Store.state.chatMessages[openFriendId].push({
+          sender: 'friend',
+          text: randomReply,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+
+        if (friendObj) friendObj.lastMessage = randomReply;
+        Store.save();
+        if (window.Sound) window.Sound.playMessage();
+
+        renderFloatingChat();
+
+        setTimeout(() => {
+          const body = document.getElementById('chat-messages-body');
+          if (body) body.scrollTop = body.scrollHeight;
+        }, 50);
+      }, 1200);
+    };
+
+    document.getElementById('chat-direct-send-btn')?.addEventListener('click', () => sendMessage());
+
+    document.getElementById('chat-direct-input')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Quick-chat pills
+    document.querySelectorAll('.chat-quick-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        const msg = pill.getAttribute('data-msg');
+        if (msg) sendMessage(msg);
+      });
     });
   }
 
