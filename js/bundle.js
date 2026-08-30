@@ -2568,42 +2568,45 @@
                 <div class="profile-status-badge" title="Online & Ready" style="z-index: 65;"></div>
               </div>
 
-              <!-- Below the rectangle profile image: Horizontal Info Items with Premium Icons Only -->
-              <div class="profile-vertical-details" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+              <!-- Below the rectangle profile image: Horizontal Info Items with Premium Icons Only (Cardless) -->
+              <div class="profile-vertical-details" style="display: flex; flex-direction: column; gap: 6px; margin-top: 10px;">
                 
                 <!-- Gender (Icon + Value) -->
-                <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                  <div class="profile-icon-badge" title="Gender" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(245, 158, 11, 0.25);">
+                <div class="profile-info-row">
+                  <div class="profile-icon-badge" title="Gender" style="width: 30px; height: 30px; border-radius: 8px; background: rgba(245, 158, 11, 0.12); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(245, 158, 11, 0.25);">
                     ${Icons.gender}
                   </div>
-                  <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); text-transform: capitalize;">${user.gender || 'male'}</span>
+                  <span style="font-size: 0.92rem; font-weight: 600; color: #ffffff; text-transform: capitalize; text-shadow: 0 1px 4px rgba(0,0,0,0.8);">${user.gender || 'male'}</span>
                 </div>
 
                 <!-- Region (Icon + Value) -->
-                <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                  <div class="profile-icon-badge" title="Region" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(2, 132, 199, 0.1); color: var(--mana-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(2, 132, 199, 0.25);">
+                <div class="profile-info-row">
+                  <div class="profile-icon-badge" title="Region" style="width: 30px; height: 30px; border-radius: 8px; background: rgba(2, 132, 199, 0.12); color: var(--mana-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(2, 132, 199, 0.25);">
                     ${Icons.region}
                   </div>
-                  <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);">${user.region || 'Sea'}</span>
+                  <span style="font-size: 0.92rem; font-weight: 600; color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.8);">${user.region || 'Sea'}</span>
                 </div>
 
                 <!-- Address (Icon + Value) -->
-                <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                  <div class="profile-icon-badge" title="Address" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(239, 68, 68, 0.25);">
+                <div class="profile-info-row">
+                  <div class="profile-icon-badge" title="Address" style="width: 30px; height: 30px; border-radius: 8px; background: rgba(239, 68, 68, 0.12); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(239, 68, 68, 0.25);">
                     ${Icons.location}
                   </div>
-                  <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${user.address || 'phillpines metro manila'}">${user.address || 'phillpines metro manila'}</span>
+                  <span style="font-size: 0.92rem; font-weight: 600; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 4px rgba(0,0,0,0.8);" title="${user.address || 'phillpines metro manila'}">${user.address || 'phillpines metro manila'}</span>
                 </div>
 
                 <!-- Rank (Icon + Value) -->
-                <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                  <div class="profile-icon-badge" title="Rank Tier" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(217, 119, 6, 0.12); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(217, 119, 6, 0.3);">
+                <div class="profile-info-row">
+                  <div class="profile-icon-badge" title="Rank Tier" style="width: 30px; height: 30px; border-radius: 8px; background: rgba(217, 119, 6, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(217, 119, 6, 0.35);">
                     ${Icons.rankCrown}
                   </div>
-                  <span style="font-size: 0.95rem; font-weight: 700; color: var(--accent-gold);">${user.rank || 'Divine V'}</span>
+                  <span style="font-size: 0.92rem; font-weight: 800; color: #fde047; text-shadow: 0 1px 6px rgba(0,0,0,0.9);">${user.rank || 'Divine V'}</span>
                 </div>
 
-                <!-- Divider line above navigation tabs -->                <!-- Navigation Tabs below the divider: Your Feed Tab, Community Tab & Party Tab -->
+                <!-- Divider Line below Gender/Region/Address/Rank -->
+                <div class="profile-info-divider"></div>
+
+                <!-- Navigation Tabs below the divider: Your Feed Tab, Community Tab & Party Tab -->
                 <div class="profile-nav-tabs">
                   <!-- Your Feed Tab (Above Community Tab) -->
                   <button type="button" id="profile-tab-your-feed-btn" class="side-tab-btn active">

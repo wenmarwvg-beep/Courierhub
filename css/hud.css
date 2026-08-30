@@ -868,23 +868,32 @@
   z-index: 2;
 }
 
-/* Info rows inside the Shadow Fiend container (Gender, Sea region, Address, Rank) */
+/* Cardless Info rows inside the Shadow Fiend container (Gender, Sea region, Address, Rank) */
 .profile-info-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 7px 10px !important;
-  background: rgba(10, 15, 26, 0.72) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 10px !important;
-  backdrop-filter: blur(8px) !important;
-  transition: all 0.2s ease;
+  padding: 5px 6px !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  transition: transform 0.2s ease;
 }
 
 .profile-info-row:hover {
-  background: rgba(255, 34, 0, 0.14) !important;
-  border-color: rgba(255, 34, 0, 0.4) !important;
-  transform: translateX(2px);
+  background: transparent !important;
+  border: none !important;
+  transform: translateX(3px);
+}
+
+.profile-info-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 34, 0, 0.45) 20%, rgba(255, 85, 0, 0.75) 50%, rgba(255, 34, 0, 0.45) 80%, transparent 100%) !important;
+  box-shadow: 0 0 10px rgba(255, 34, 0, 0.4);
+  margin: 6px 0 10px !important;
 }
 
 .glass-container:hover,
