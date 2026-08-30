@@ -1040,51 +1040,39 @@
               <div class="profile-status-badge" title="Online & Ready"></div>
             </div>
 
-            <!-- Below the rectangle profile image: Horizontal Info Items with Premium Icons -->
+            <!-- Below the rectangle profile image: Horizontal Info Items with Premium Icons Only -->
             <div class="profile-vertical-details" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
               
-              <!-- Gender : male -->
+              <!-- Gender (Icon + Value) -->
               <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                <div class="profile-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(245, 158, 11, 0.25);">
+                <div class="profile-icon-badge" title="Gender" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(245, 158, 11, 0.25);">
                   ${Icons.gender}
                 </div>
-                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.93rem;">
-                  <span style="font-weight: 700; color: var(--text-secondary);">Gender :</span>
-                  <span style="font-weight: 600; color: var(--text-primary); text-transform: capitalize;">${user.gender || 'male'}</span>
-                </div>
+                <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); text-transform: capitalize;">${user.gender || 'male'}</span>
               </div>
 
-              <!-- Region : Sea -->
+              <!-- Region (Icon + Value) -->
               <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                <div class="profile-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(2, 132, 199, 0.1); color: var(--mana-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(2, 132, 199, 0.25);">
+                <div class="profile-icon-badge" title="Region" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(2, 132, 199, 0.1); color: var(--mana-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(2, 132, 199, 0.25);">
                   ${Icons.region}
                 </div>
-                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.93rem;">
-                  <span style="font-weight: 700; color: var(--text-secondary);">Region :</span>
-                  <span style="font-weight: 600; color: var(--text-primary);">${user.region || 'Sea'}</span>
-                </div>
+                <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);">${user.region || 'Sea'}</span>
               </div>
 
-              <!-- Address : phillpines metro manila -->
+              <!-- Address (Icon + Value) -->
               <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                <div class="profile-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(239, 68, 68, 0.25);">
+                <div class="profile-icon-badge" title="Address" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(239, 68, 68, 0.25);">
                   ${Icons.location}
                 </div>
-                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.93rem; min-width: 0;">
-                  <span style="font-weight: 700; color: var(--text-secondary); flex-shrink: 0;">Address :</span>
-                  <span style="font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${user.address || 'phillpines metro manila'}">${user.address || 'phillpines metro manila'}</span>
-                </div>
+                <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${user.address || 'phillpines metro manila'}">${user.address || 'phillpines metro manila'}</span>
               </div>
 
-              <!-- Rank : divine -->
+              <!-- Rank (Icon + Value) -->
               <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                <div class="profile-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(217, 119, 6, 0.12); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(217, 119, 6, 0.3);">
+                <div class="profile-icon-badge" title="Rank Tier" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(217, 119, 6, 0.12); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(217, 119, 6, 0.3);">
                   ${Icons.rankCrown}
                 </div>
-                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.93rem;">
-                  <span style="font-weight: 700; color: var(--text-secondary);">Rank :</span>
-                  <span style="font-weight: 700; color: var(--accent-gold);">${user.rank || 'Divine V'}</span>
-                </div>
+                <span style="font-size: 0.95rem; font-weight: 700; color: var(--accent-gold);">${user.rank || 'Divine V'}</span>
               </div>
 
               <!-- then a view bio button: -->
