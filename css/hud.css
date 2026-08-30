@@ -234,28 +234,33 @@
   width: 100%;
   height: 340px;
   position: relative;
-  background: linear-gradient(135deg, #090d16 0%, #17153b 30%, #2e1065 65%, #0f172a 100%);
+  background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 25%, #fde68a 55%, #e0e7ff 80%, #f8fafc 100%);
   background-size: cover;
   background-position: center;
-  border-bottom: 1px solid var(--border-medium);
+  border-bottom: 1px solid rgba(217, 119, 6, 0.25);
   overflow: hidden;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 36px -10px rgba(217, 119, 6, 0.15), 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+[data-theme="dark"] .profile-fullwidth-banner {
+  background: linear-gradient(135deg, #090d16 0%, #17153b 30%, #2e1065 65%, #0f172a 100%);
+  border-bottom: 1px solid var(--border-medium);
 }
 
 .profile-banner-ambient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.25) 0%, transparent 50%),
-              radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.28) 0%, transparent 55%),
-              radial-gradient(circle at 50% 50%, rgba(2, 132, 199, 0.12) 0%, transparent 60%);
+  background: radial-gradient(circle at 12% 25%, rgba(245, 158, 11, 0.35) 0%, transparent 50%),
+              radial-gradient(circle at 88% 75%, rgba(99, 102, 241, 0.2) 0%, transparent 55%),
+              radial-gradient(circle at 50% 30%, rgba(251, 191, 36, 0.25) 0%, transparent 60%);
   pointer-events: none;
 }
 
 .profile-banner-grid {
   position: absolute;
   inset: 0;
-  opacity: 0.18;
-  background-image: radial-gradient(rgba(245, 158, 11, 0.5) 1px, transparent 1px);
+  opacity: 0.25;
+  background-image: radial-gradient(rgba(217, 119, 6, 0.35) 1px, transparent 1px);
   background-size: 24px 24px;
   pointer-events: none;
 }
@@ -280,16 +285,22 @@
   width: 260px;
   height: 350px;
   border-radius: 26px;
-  border: 6px solid var(--bg-primary);
-  background: var(--bg-secondary);
+  border: 6px solid #ffffff;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 8.5rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 25px 55px -12px rgba(15, 23, 42, 0.15), 0 0 35px rgba(245, 158, 11, 0.22), 0 0 0 1px rgba(15, 23, 42, 0.06);
   position: relative;
   overflow: hidden;
-  transition: transform var(--transition-fast);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+[data-theme="dark"] .profile-large-avatar {
+  border-color: var(--bg-primary);
+  background: var(--bg-secondary);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(245, 158, 11, 0.3);
 }
 
 .profile-avatar-anchor:hover .profile-large-avatar {
@@ -303,9 +314,13 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 4.5px solid var(--bg-primary);
+  border: 4.5px solid #ffffff;
   background: var(--radiant-green);
   box-shadow: 0 0 16px var(--radiant-green-glow);
+}
+
+[data-theme="dark"] .profile-status-badge {
+  border-color: var(--bg-primary);
 }
 
 .profile-info-block {
@@ -359,19 +374,20 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-medium);
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
   cursor: pointer;
-  padding: 4px 12px 4px 16px;
+  padding: 5px 14px 5px 18px;
   border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
   transition: all var(--transition-fast);
 }
 
 .topbar-user-trigger:hover,
 .topbar-user-trigger.active {
-  background: rgba(255, 255, 255, 0.08);
+  background: #ffffff;
   border-color: var(--accent-gold);
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
 }
 
 .topbar-user-name {
@@ -385,14 +401,14 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--bg-secondary);
+  background: #f8fafc;
   border: 2px solid var(--accent-gold);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.3rem;
   position: relative;
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
 }
 
 .topbar-user-chevron {
@@ -411,16 +427,21 @@
   top: calc(100% + 10px);
   right: 0;
   width: 270px;
-  background: rgba(9, 19, 37, 0.95);
-  border: 1px solid var(--border-bright);
+  background: #ffffff;
+  border: 1px solid rgba(245, 158, 11, 0.35);
   border-radius: var(--radius-lg);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(245, 158, 11, 0.15);
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2), 0 0 25px rgba(245, 158, 11, 0.12);
   backdrop-filter: blur(20px);
   padding: 16px;
   z-index: 1000;
   flex-direction: column;
   gap: 12px;
   animation: fadeInDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .user-dropdown-card {
+  background: rgba(9, 19, 37, 0.95);
+  border-color: var(--border-bright);
 }
 
 .user-dropdown-card.show {
