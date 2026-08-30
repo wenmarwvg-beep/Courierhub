@@ -1277,10 +1277,20 @@
             </div>
 
             <!-- Right Column: Banner Overlay (Name & Quote) + Interactive Tab Views Below -->
-            <div class="profile-right-column" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 25;">
+            <div class="profile-right-column" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 0; position: relative; z-index: 25;">
               
-              <!-- Banner Overlay Section (Name & Transparent Quote on the Banner) -->
-              <div class="profile-banner-beside-content" style="padding-top: 20px; min-height: 120px; position: relative; z-index: 30; display: flex; flex-direction: column; gap: 12px;">
+              <!-- Banner Overlay Section (Name & Transparent Quote strictly ON the 160px banner area) -->
+              <div class="profile-banner-beside-content" style="
+                height: 160px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 12px;
+                padding-bottom: 10px;
+                box-sizing: border-box;
+                position: relative;
+                z-index: 30;
+              ">
                 <!-- Name of the User on Banner -->
                 <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
                   <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.6rem; font-weight: 900; color: #0f172a; margin: 0; letter-spacing: 0.01em; line-height: 1.15; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);">
@@ -1309,8 +1319,15 @@
                 </div>
               </div>
 
-              <!-- 1. COMMUNITY TAB VIEW (Completely Below Banner & Beside Left Column) -->
-              <div id="home-community-tab-view" class="community-news-feed-area" style="margin-top: 10px; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 10;">
+              <!-- 1. COMMUNITY TAB VIEW (Strictly BELOW Banner & Beside Left Column) -->
+              <div id="home-community-tab-view" class="community-news-feed-area" style="
+                margin-top: 32px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                position: relative;
+                z-index: 10;
+              ">
                 
                 <!-- Feed Header -->
                 <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
@@ -1395,8 +1412,8 @@
 
               </div>
 
-              <!-- 2. PARTY TAB VIEW (Completely Below Banner & Beside Left Column) -->
-              <div id="home-party-tab-view" style="margin-top: 56px; display: none; flex-direction: column; gap: 20px; position: relative; z-index: 5;">
+              <!-- 2. PARTY TAB VIEW (Strictly BELOW Banner & Beside Left Column) -->
+              <div id="home-party-tab-view" style="margin-top: 32px; display: none; flex-direction: column; gap: 20px; position: relative; z-index: 10;">
                 
                 <!-- Party Finder Header -->
                 <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
