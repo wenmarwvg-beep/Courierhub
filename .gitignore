@@ -3,3 +3,9 @@ node_modules/
 .DS_Store
 *.log
 scratch/
+.env
+.env.local
+.env.*
+*.pem
+*.key
+credentials.json
