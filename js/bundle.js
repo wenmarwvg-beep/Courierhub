@@ -505,8 +505,8 @@
               <div class="hud-panel-body" style="padding: 12px 32px 28px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
                 <form id="login-form">
                   <div class="form-group">
-                    <label class="form-label">${Icons.user} Username or Email</label>
-                    <input type="text" id="login-input-user" class="input-control" placeholder="Enter username or email" required>
+                    <label class="form-label">${Icons.user} Username</label>
+                    <input type="text" id="login-input-user" class="input-control" placeholder="Enter your username" required>
                   </div>
                   <div class="form-group">
                     <label class="form-label">${Icons.lock} Password</label>
