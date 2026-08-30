@@ -803,7 +803,7 @@
       });
     }
 
-  /* --- VIEW: HOME HUD (LINKEDIN-STYLE BANNER & PROFILE) --- */
+  /* --- VIEW: HOME HUD (FULL-WIDTH LINKEDIN BANNER & PROFILE) --- */
   function renderHome() {
     const user = Store.state.currentUser;
     if (!user) { AppRouter.navigate('login'); return; }
@@ -812,43 +812,40 @@
     if (!container) return;
 
     container.innerHTML = `
-      <div class="animate-fade-in content-container" style="max-width: 1120px; margin: 0 auto; padding: 28px 20px;">
-        <!-- LinkedIn-Style Profile Card -->
-        <div class="linkedin-card hud-highlight">
-          <!-- Top Cover Banner -->
-          <div class="linkedin-banner">
-            <div class="linkedin-banner-ambient"></div>
-            <div class="linkedin-banner-pattern"></div>
-            <div class="hud-corner-accent hud-corner-tl"></div>
-            <div class="hud-corner-accent hud-corner-tr"></div>
+      <div class="animate-fade-in profile-fullwidth-wrapper">
+        <!-- 1. FULL-WIDTH TOP COVER BANNER (100% Edge-to-Edge) -->
+        <div class="profile-fullwidth-banner">
+          <div class="profile-banner-ambient"></div>
+          <div class="profile-banner-grid"></div>
+          <div class="hud-corner-accent hud-corner-tl"></div>
+          <div class="hud-corner-accent hud-corner-tr"></div>
+        </div>
+
+        <!-- 2. PROFILE BODY (AVATAR ON THE LEFT OVERLAPPING BANNER) -->
+        <div class="profile-fullwidth-content">
+          <!-- User Profile Image at Left Side -->
+          <div class="profile-avatar-anchor">
+            <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
+              <span>${user.avatar || '👑'}</span>
+            </div>
+            <div class="profile-status-badge" title="Online & Ready"></div>
           </div>
 
-          <!-- Profile Body with Avatar at Left Side -->
-          <div class="linkedin-body">
-            <!-- User Profile Image (Overlapping Banner at Left Side) -->
-            <div class="linkedin-avatar-container">
-              <div class="linkedin-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
-                <span>${user.avatar || '👑'}</span>
-              </div>
-              <div class="linkedin-status-dot" title="Online"></div>
+          <!-- User Details (Left-Aligned) -->
+          <div class="profile-info-block">
+            <div class="profile-name-row">
+              <h1 class="profile-display-name">${user.displayName || user.username}</h1>
+              <span class="badge badge-gold" style="font-size: 0.85rem; padding: 4px 12px;">👑 ${user.rank || 'Divine V'}</span>
             </div>
 
-            <!-- Profile Info on the Left -->
-            <div class="linkedin-info">
-              <div class="linkedin-name-row">
-                <h1 class="linkedin-name">${user.displayName || user.username}</h1>
-                <span class="badge badge-gold" style="font-size: 0.78rem; padding: 3px 10px;">👑 ${user.rank || 'Divine V'}</span>
-              </div>
+            <p class="profile-headline-text">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</p>
 
-              <p class="linkedin-headline">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</p>
-
-              <div class="linkedin-meta-row">
-                <span>🌐 Region: <strong style="color: var(--text-primary);">${user.region || 'SEA'}</strong></span>
-                <span>•</span>
-                <span>🆔 Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats); font-size: 0.95rem;">${user.dotaId || '782910432'}</strong></span>
-                <span>•</span>
-                <span>✉️ <strong style="color: var(--text-secondary);">${user.email || 'wenmar.wvg@gmail.com'}</strong></span>
-              </div>
+            <div class="profile-meta-pills">
+              <span>🌐 Region: <strong style="color: var(--text-primary);">${user.region || 'SEA'}</strong></span>
+              <span>•</span>
+              <span>🆔 Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats); font-size: 1.05rem;">${user.dotaId || '782910432'}</strong></span>
+              <span>•</span>
+              <span>✉️ <strong style="color: var(--text-secondary);">${user.email || 'wenmar.wvg@gmail.com'}</strong></span>
             </div>
           </div>
         </div>

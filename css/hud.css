@@ -222,125 +222,129 @@
 }
 
 /* ==========================================================================
-   LinkedIn-Style Profile Banner & Dashboard System
+   Full-Width LinkedIn-Style Profile Banner System
    ========================================================================== */
-.linkedin-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--card-shadow);
+.profile-fullwidth-wrapper {
+  width: 100%;
+  min-height: 100%;
   position: relative;
 }
 
-.linkedin-banner {
-  height: 220px;
+.profile-fullwidth-banner {
   width: 100%;
+  height: 280px;
   position: relative;
-  background: linear-gradient(135deg, #090d16 0%, #1e1b4b 35%, #2e1065 70%, #0f172a 100%);
+  background: linear-gradient(135deg, #090d16 0%, #17153b 30%, #2e1065 65%, #0f172a 100%);
   background-size: cover;
   background-position: center;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-medium);
   overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
 }
 
-.linkedin-banner-ambient {
+.profile-banner-ambient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 15% 30%, rgba(245, 158, 11, 0.22) 0%, transparent 55%),
-              radial-gradient(circle at 85% 70%, rgba(139, 92, 246, 0.25) 0%, transparent 60%);
+  background: radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.25) 0%, transparent 50%),
+              radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.28) 0%, transparent 55%),
+              radial-gradient(circle at 50% 50%, rgba(2, 132, 199, 0.12) 0%, transparent 60%);
   pointer-events: none;
 }
 
-.linkedin-banner-pattern {
+.profile-banner-grid {
   position: absolute;
   inset: 0;
-  opacity: 0.15;
-  background-image: radial-gradient(rgba(245, 158, 11, 0.4) 1px, transparent 1px);
-  background-size: 20px 20px;
+  opacity: 0.18;
+  background-image: radial-gradient(rgba(245, 158, 11, 0.5) 1px, transparent 1px);
+  background-size: 24px 24px;
   pointer-events: none;
 }
 
-.linkedin-body {
-  padding: 0 32px 32px;
+.profile-fullwidth-content {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 40px 48px;
   position: relative;
 }
 
-.linkedin-avatar-container {
+.profile-avatar-anchor {
   position: relative;
-  margin-top: -65px;
-  margin-bottom: 16px;
+  margin-top: -75px;
+  margin-bottom: 18px;
   display: inline-block;
   z-index: 10;
 }
 
-.linkedin-avatar {
-  width: 130px;
-  height: 130px;
+.profile-large-avatar {
+  width: 145px;
+  height: 145px;
   border-radius: 50%;
-  border: 4.5px solid var(--bg-card);
+  border: 5px solid var(--bg-primary);
   background: var(--bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 4rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  font-size: 4.5rem;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(245, 158, 11, 0.25);
   position: relative;
   transition: transform var(--transition-fast);
 }
 
-.linkedin-avatar-container:hover .linkedin-avatar {
+.profile-avatar-anchor:hover .profile-large-avatar {
   transform: scale(1.03);
 }
 
-.linkedin-status-dot {
+.profile-status-badge {
   position: absolute;
-  bottom: 6px;
-  right: 6px;
-  width: 22px;
-  height: 22px;
+  bottom: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 3.5px solid var(--bg-card);
+  border: 3.5px solid var(--bg-primary);
   background: var(--radiant-green);
-  box-shadow: 0 0 10px var(--radiant-green-glow);
+  box-shadow: 0 0 12px var(--radiant-green-glow);
 }
 
-.linkedin-info {
+.profile-info-block {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
-.linkedin-name-row {
+.profile-name-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
-.linkedin-name {
+.profile-display-name {
   font-family: var(--font-header);
-  font-size: 1.9rem;
+  font-size: 2.2rem;
   font-weight: 900;
   color: var(--text-primary);
   margin: 0;
   letter-spacing: 0.02em;
+  line-height: 1.2;
 }
 
-.linkedin-headline {
-  font-size: 1.05rem;
+.profile-headline-text {
+  font-size: 1.1rem;
   color: var(--text-secondary);
   margin: 2px 0 8px;
   font-weight: 500;
 }
 
-.linkedin-meta-row {
+.profile-meta-pills {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   flex-wrap: wrap;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   color: var(--text-muted);
   margin-top: 4px;
 }
+
 
