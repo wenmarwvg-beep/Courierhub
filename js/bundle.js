@@ -504,24 +504,16 @@
 
               <div class="hud-panel-body" style="padding: 12px 32px 28px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
                 <form id="login-form">
-                  <div class="form-group">
-                    <label class="form-label">${Icons.user} Username</label>
-                    <input type="text" id="login-input-user" class="input-control" placeholder="Enter your username" required>
+                  <div class="floating-field">
+                    <input type="text" id="login-input-user" class="floating-input" placeholder=" " required>
+                    <label for="login-input-user" class="floating-label">${Icons.user} Username</label>
                   </div>
-                  <div class="form-group">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                      <label class="form-label" style="margin-bottom: 0;">${Icons.lock} Password</label>
-                      <button type="button" class="pw-toggle-btn" data-target="login-input-pw" style="background: none; border: none; font-size: 0.76rem; color: var(--accent-primary); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px;">
-                        <span class="pw-icon-span">${Icons.eye}</span>
-                        <span class="pw-text-span">Show</span>
-                      </button>
-                    </div>
-                    <div style="position: relative;">
-                      <input type="password" id="login-input-pw" class="input-control" placeholder="Enter password" required style="padding-right: 42px;">
-                      <button type="button" class="pw-toggle-icon-btn" data-target="login-input-pw" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); padding: 4px;" title="Toggle password visibility">
-                        ${Icons.eye}
-                      </button>
-                    </div>
+                  <div class="floating-field">
+                    <input type="password" id="login-input-pw" class="floating-input" placeholder=" " required style="padding-right: 46px;">
+                    <label for="login-input-pw" class="floating-label">${Icons.lock} Password</label>
+                    <button type="button" class="pw-toggle-icon-btn" data-target="login-input-pw" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); padding: 4px; z-index: 3;" title="Toggle password visibility">
+                      ${Icons.eye}
+                    </button>
                   </div>
                   <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 8px;">
                     <span>Sign In to CourierHub</span>
@@ -554,28 +546,20 @@
                 <!-- 1. SIGNUP INPUT FORM PANEL -->
                 <div id="signup-form-panel" class="hud-panel-body" style="padding: 10px 32px 24px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
                   <form id="signup-form">
-                    <div class="form-group" style="margin-bottom: 12px;">
-                      <label class="form-label">${Icons.user} Desired Username</label>
-                      <input type="text" id="signup-input-user" class="input-control" placeholder="e.g. ShadowBlade" required>
+                    <div class="floating-field" style="margin-bottom: 16px;">
+                      <input type="text" id="signup-input-user" class="floating-input" placeholder=" " required>
+                      <label for="signup-input-user" class="floating-label">${Icons.user} Desired Username</label>
                     </div>
-                    <div class="form-group" style="margin-bottom: 12px;">
-                      <label class="form-label">${Icons.mail} Email Address</label>
-                      <input type="email" id="signup-input-email" class="input-control" placeholder="name@domain.com" required>
+                    <div class="floating-field" style="margin-bottom: 16px;">
+                      <input type="email" id="signup-input-email" class="floating-input" placeholder=" " required>
+                      <label for="signup-input-email" class="floating-label">${Icons.mail} Email Address</label>
                     </div>
-                    <div class="form-group" style="margin-bottom: 14px;">
-                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <label class="form-label" style="margin-bottom: 0;">${Icons.lock} Password (min 6 chars)</label>
-                        <button type="button" class="pw-toggle-btn" data-target="signup-input-pw" style="background: none; border: none; font-size: 0.76rem; color: var(--accent-primary); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px;">
-                          <span class="pw-icon-span">${Icons.eye}</span>
-                          <span class="pw-text-span">Show</span>
-                        </button>
-                      </div>
-                      <div style="position: relative;">
-                        <input type="password" id="signup-input-pw" class="input-control" minlength="6" placeholder="Create password" required style="padding-right: 42px;">
-                        <button type="button" class="pw-toggle-icon-btn" data-target="signup-input-pw" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); padding: 4px;" title="Toggle password visibility">
-                          ${Icons.eye}
-                        </button>
-                      </div>
+                    <div class="floating-field" style="margin-bottom: 16px;">
+                      <input type="password" id="signup-input-pw" class="floating-input" minlength="6" placeholder=" " required style="padding-right: 46px;">
+                      <label for="signup-input-pw" class="floating-label">${Icons.lock} Password (min 6 chars)</label>
+                      <button type="button" class="pw-toggle-icon-btn" data-target="signup-input-pw" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); padding: 4px; z-index: 3;" title="Toggle password visibility">
+                        ${Icons.eye}
+                      </button>
                     </div>
                     <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-block btn-lg">
                       <span>Create Account</span>

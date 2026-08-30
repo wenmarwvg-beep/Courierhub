@@ -78,9 +78,66 @@
   border-color: var(--accent-primary);
 }
 
-/* Form Controls */
+/* Form Controls & Floating Labels */
 .form-group {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+}
+
+.floating-field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.floating-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent;
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-input:hover {
+  border-color: var(--accent-primary);
+}
+
+.floating-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+.floating-label {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffffff;
+  padding: 0 6px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* Float label to top border on hover, focus, or when populated */
+.floating-field:hover .floating-label,
+.floating-input:focus ~ .floating-label,
+.floating-input:not(:placeholder-shown) ~ .floating-label {
+  top: 0;
+  transform: translateY(-50%) scale(0.85);
+  font-weight: 800;
+  color: var(--accent-primary);
+  letter-spacing: 0.02em;
 }
 
 .form-label {
