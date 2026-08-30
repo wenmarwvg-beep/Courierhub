@@ -144,6 +144,7 @@
             region: 'SEA',
             avatar: '👑',
             avatarFrame: 'avatar-frame-immortal',
+            quote: 'The path to victory is paved with courage, patience, and unbreakable teamwork.',
             bio: 'CourierHub Founder & Dota 2 Captain',
             winRate: 64.2,
             gamesPlayed: 1540,
@@ -608,6 +609,11 @@
             </div>
 
             <div>
+              <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Custom Quote / Motto</label>
+              <input type="text" id="edit-profile-quote" class="input-control" value="${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}" style="width: 100%;">
+            </div>
+
+            <div>
               <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Bio / Biography</label>
               <textarea id="edit-profile-bio" class="input-control" rows="2" style="width: 100%; resize: vertical;">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</textarea>
             </div>
@@ -635,6 +641,7 @@
       const newName = document.getElementById('edit-profile-name').value.trim();
       const newGender = document.getElementById('edit-profile-gender').value;
       const newAddress = document.getElementById('edit-profile-address').value.trim();
+      const newQuote = document.getElementById('edit-profile-quote').value.trim();
       const newBio = document.getElementById('edit-profile-bio').value.trim();
       const newRank = document.getElementById('edit-profile-rank').value;
       const newDotaId = document.getElementById('edit-profile-dotaid').value.trim();
@@ -643,6 +650,7 @@
       user.displayName = newName || user.username;
       user.gender = newGender;
       user.address = newAddress;
+      user.quote = newQuote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.';
       user.bio = newBio;
       user.rank = newRank;
       user.dotaId = newDotaId;
@@ -931,6 +939,7 @@
               region: 'SEA',
               avatar: '👑',
               avatarFrame: 'avatar-frame-immortal',
+              quote: 'The path to victory is paved with courage, patience, and unbreakable teamwork.',
               bio: 'CourierHub Founder & Dota 2 Captain',
               winRate: 64.2,
               gamesPlayed: 1540
@@ -948,6 +957,7 @@
               region: 'SEA',
               avatar: '🔥',
               avatarFrame: 'avatar-frame-immortal',
+              quote: 'Ready to battle on Ancient grounds!',
               bio: 'Ready to party on CourierHub!'
             };
           }
@@ -1030,83 +1040,136 @@
 
         <!-- 2. CONSTRAINED PROFILE CONTAINER -->
         <div class="profile-content-container">
-          <!-- Left Column (Rectangle Avatar + Horizontal Info Rows Stacked Below) -->
-          <div class="profile-left-column" style="width: 260px; max-width: 100%;">
-            <!-- Rectangle Profile Image at Left Side -->
-            <div class="profile-avatar-anchor">
-              <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
-                <span>${user.avatar || '👑'}</span>
+          <div class="profile-main-layout" style="display: flex; gap: 36px; align-items: flex-start; flex-wrap: wrap;">
+            
+            <!-- Left Column (Rectangle Avatar + Horizontal Info Rows Stacked Below) -->
+            <div class="profile-left-column" style="width: 260px; max-width: 100%; flex-shrink: 0;">
+              <!-- Rectangle Profile Image at Left Side -->
+              <div class="profile-avatar-anchor">
+                <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
+                  <span>${user.avatar || '👑'}</span>
+                </div>
+                <div class="profile-status-badge" title="Online & Ready"></div>
               </div>
-              <div class="profile-status-badge" title="Online & Ready"></div>
+
+              <!-- Below the rectangle profile image: Horizontal Info Items with Premium Icons Only -->
+              <div class="profile-vertical-details" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                
+                <!-- Gender (Icon + Value) -->
+                <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                  <div class="profile-icon-badge" title="Gender" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(245, 158, 11, 0.25);">
+                    ${Icons.gender}
+                  </div>
+                  <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); text-transform: capitalize;">${user.gender || 'male'}</span>
+                </div>
+
+                <!-- Region (Icon + Value) -->
+                <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                  <div class="profile-icon-badge" title="Region" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(2, 132, 199, 0.1); color: var(--mana-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(2, 132, 199, 0.25);">
+                    ${Icons.region}
+                  </div>
+                  <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);">${user.region || 'Sea'}</span>
+                </div>
+
+                <!-- Address (Icon + Value) -->
+                <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                  <div class="profile-icon-badge" title="Address" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(239, 68, 68, 0.25);">
+                    ${Icons.location}
+                  </div>
+                  <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${user.address || 'phillpines metro manila'}">${user.address || 'phillpines metro manila'}</span>
+                </div>
+
+                <!-- Rank (Icon + Value) -->
+                <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                  <div class="profile-icon-badge" title="Rank Tier" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(217, 119, 6, 0.12); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(217, 119, 6, 0.3);">
+                    ${Icons.rankCrown}
+                  </div>
+                  <span style="font-size: 0.95rem; font-weight: 700; color: var(--accent-gold);">${user.rank || 'Divine V'}</span>
+                </div>
+
+                <!-- then a view bio button: -->
+                <button type="button" id="profile-view-bio-btn" class="btn btn-secondary btn-block" style="
+                  margin-top: 8px;
+                  padding: 10px 16px;
+                  font-size: 0.9rem;
+                  font-weight: 700;
+                  border-color: rgba(217, 119, 6, 0.35);
+                  background: #ffffff;
+                  color: var(--text-primary);
+                  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+                  cursor: pointer;
+                ">
+                  📄 View Bio
+                </button>
+
+                <!-- Bio Expandable Box (Toggled by View Bio button) -->
+                <div id="profile-bio-box" style="display: none; background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.95); border-radius: var(--radius-md); padding: 14px; margin-top: 2px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); animation: fadeInDown 0.2s ease;">
+                  <div style="font-size: 0.78rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 4px;">Player Biography</div>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                    ${user.bio || 'CourierHub Founder & Dota 2 Captain • Active Competitive Player'}
+                  </p>
+                </div>
+
+                <!-- then a divider line that has the same weight above. -->
+                <div class="profile-section-divider" style="
+                  width: 100%;
+                  height: 1px;
+                  background: rgba(217, 119, 6, 0.25);
+                  margin: 16px 0 8px;
+                  border: none;
+                "></div>
+              </div>
             </div>
 
-            <!-- Below the rectangle profile image: Horizontal Info Items with Premium Icons Only -->
-            <div class="profile-vertical-details" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
-              
-              <!-- Gender (Icon + Value) -->
-              <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                <div class="profile-icon-badge" title="Gender" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(245, 158, 11, 0.25);">
-                  ${Icons.gender}
-                </div>
-                <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); text-transform: capitalize;">${user.gender || 'male'}</span>
+            <!-- Right Column Beside the Rectangle Avatar: Name and Customizable Quote -->
+            <div class="profile-beside-content" style="flex: 1; min-width: 280px; padding-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+              <!-- Name of the User -->
+              <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.3rem; font-weight: 900; color: var(--text-primary); margin: 0; letter-spacing: 0.02em; line-height: 1.15;">
+                  ${user.displayName || user.username}
+                </h1>
+                <span class="badge badge-gold" style="font-size: 0.85rem; padding: 4px 12px; font-weight: 700;">👑 ${user.rank || 'Divine V'}</span>
               </div>
 
-              <!-- Region (Icon + Value) -->
-              <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                <div class="profile-icon-badge" title="Region" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(2, 132, 199, 0.1); color: var(--mana-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(2, 132, 199, 0.25);">
-                  ${Icons.region}
-                </div>
-                <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);">${user.region || 'Sea'}</span>
-              </div>
-
-              <!-- Address (Icon + Value) -->
-              <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                <div class="profile-icon-badge" title="Address" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(239, 68, 68, 0.25);">
-                  ${Icons.location}
-                </div>
-                <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${user.address || 'phillpines metro manila'}">${user.address || 'phillpines metro manila'}</span>
-              </div>
-
-              <!-- Rank (Icon + Value) -->
-              <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
-                <div class="profile-icon-badge" title="Rank Tier" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(217, 119, 6, 0.12); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(217, 119, 6, 0.3);">
-                  ${Icons.rankCrown}
-                </div>
-                <span style="font-size: 0.95rem; font-weight: 700; color: var(--accent-gold);">${user.rank || 'Divine V'}</span>
-              </div>
-
-              <!-- then a view bio button: -->
-              <button type="button" id="profile-view-bio-btn" class="btn btn-secondary btn-block" style="
-                margin-top: 8px;
-                padding: 10px 16px;
-                font-size: 0.9rem;
-                font-weight: 700;
-                border-color: rgba(217, 119, 6, 0.35);
+              <!-- Customizable Quote Below Name -->
+              <div class="profile-quote-card" style="
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
                 background: #ffffff;
-                color: var(--text-primary);
-                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
-                cursor: pointer;
+                border: 1px solid rgba(226, 232, 240, 0.95);
+                border-radius: var(--radius-md);
+                padding: 16px 20px;
+                max-width: 680px;
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+                position: relative;
               ">
-                📄 View Bio
-              </button>
-
-              <!-- Bio Expandable Box (Toggled by View Bio button) -->
-              <div id="profile-bio-box" style="display: none; background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.95); border-radius: var(--radius-md); padding: 14px; margin-top: 2px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); animation: fadeInDown 0.2s ease;">
-                <div style="font-size: 0.78rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 4px;">Player Biography</div>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
-                  ${user.bio || 'CourierHub Founder & Dota 2 Captain • Active Competitive Player'}
-                </p>
+                <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none;">“</span>
+                <div style="flex: 1;">
+                  <p id="profile-quote-display" style="font-size: 1.02rem; font-style: italic; color: var(--text-secondary); line-height: 1.55; margin: 0; font-weight: 500;">
+                    ${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}
+                  </p>
+                </div>
+                <button type="button" id="edit-quote-quick-btn" title="Customize Quote" style="
+                  background: rgba(245, 158, 11, 0.1);
+                  border: 1px solid rgba(245, 158, 11, 0.25);
+                  color: var(--accent-gold);
+                  padding: 5px 10px;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  font-size: 0.82rem;
+                  font-weight: 700;
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  flex-shrink: 0;
+                  transition: all 0.15s ease;
+                ">
+                  ✏️ Edit Quote
+                </button>
               </div>
-
-              <!-- then a divider line that has the same weight above. -->
-              <div class="profile-section-divider" style="
-                width: 100%;
-                height: 1px;
-                background: rgba(217, 119, 6, 0.25);
-                margin: 16px 0 8px;
-                border: none;
-              "></div>
             </div>
+
           </div>
         </div>
       </div>
@@ -1123,6 +1186,24 @@
         if (window.Sound) window.Sound.playClick();
       });
     }
+
+    // Interactive Quick Edit Quote button logic
+    document.getElementById('edit-quote-quick-btn')?.addEventListener('click', () => {
+      const currentQuote = user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.';
+      const newQuote = prompt('Customize your personal quote / motto:', currentQuote);
+      if (newQuote !== null && newQuote.trim() !== '') {
+        user.quote = newQuote.trim();
+        Store.save();
+        const quoteDisplay = document.getElementById('profile-quote-display');
+        if (quoteDisplay) quoteDisplay.innerText = user.quote;
+        const sb = getSupabase();
+        if (sb && user.id) {
+          sb.from('profiles').update({ bio: user.bio }).eq('id', user.id).catch(() => {});
+        }
+        if (window.Sound) window.Sound.playClick();
+        Toast.success('Quote Updated!', 'Your personal quote has been saved.');
+      }
+    });
   }
 
   /* --- VIEW: LOBBIES --- */
