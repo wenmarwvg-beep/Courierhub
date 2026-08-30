@@ -448,13 +448,8 @@
               <span class="topbar-user-chevron" id="user-menu-chevron">▼</span>
             </button>
 
-            <!-- Dropdown Card -->
-            <div id="user-dropdown-card" class="hud-panel user-dropdown-card">
-              <div class="hud-corner-accent hud-corner-tl"></div>
-              <div class="hud-corner-accent hud-corner-tr"></div>
-              <div class="hud-corner-accent hud-corner-bl"></div>
-              <div class="hud-corner-accent hud-corner-br"></div>
-
+            <!-- Dropdown Card (Clean Rounded Card with No Sharp Dark Corner Accents) -->
+            <div id="user-dropdown-card" class="user-dropdown-card">
               <!-- User Preview Header -->
               <div style="display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle);">
                 <div class="player-avatar-frame ${user.avatarFrame || 'avatar-frame-immortal'}" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; border: 2px solid var(--accent-gold); flex-shrink: 0; background: var(--bg-secondary);">

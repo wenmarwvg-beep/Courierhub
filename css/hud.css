@@ -424,24 +424,25 @@
 .user-dropdown-card {
   display: none;
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 12px);
   right: 0;
   width: 270px;
   background: #ffffff;
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2), 0 0 25px rgba(245, 158, 11, 0.12);
-  backdrop-filter: blur(20px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(15, 23, 42, 0.04);
   padding: 16px;
   z-index: 1000;
   flex-direction: column;
   gap: 12px;
+  outline: none;
   animation: fadeInDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="dark"] .user-dropdown-card {
-  background: rgba(9, 19, 37, 0.95);
-  border-color: var(--border-bright);
+  background: #0f1523;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
 }
 
 .user-dropdown-card.show {
