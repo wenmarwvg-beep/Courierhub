@@ -1383,51 +1383,41 @@
                   border: none;
                 "></div>
 
-                <!-- Privacy & Policy and Terms & Conditions Links -->
-                <div class="profile-legal-links" style="display: flex; flex-direction: column; gap: 4px; width: 100%; padding: 0 2px 4px;">
+                <!-- Privacy Policy & Terms & Conditions in One Line -->
+                <div class="profile-legal-links" style="display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 4px 0 2px; flex-wrap: nowrap;">
                   <button type="button" id="profile-privacy-policy-btn" style="
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
                     background: transparent;
                     border: none;
-                    font-size: 0.82rem;
+                    font-size: 0.76rem;
                     font-weight: 600;
                     color: var(--text-secondary);
-                    text-align: left;
-                    padding: 5px 8px;
-                    border-radius: 6px;
+                    padding: 2px 4px;
                     cursor: pointer;
-                    transition: all 0.15s ease;
-                    width: 100%;
-                  " onmouseover="this.style.color='var(--accent-gold)'; this.style.background='rgba(245, 158, 11, 0.08)';" onmouseout="this.style.color='var(--text-secondary)'; this.style.background='transparent';">
-                    <span style="font-size: 0.95rem;">🔒</span>
-                    <span>Privacy Policy</span>
+                    transition: color 0.15s ease;
+                    white-space: nowrap;
+                    text-decoration: underline;
+                    text-underline-offset: 2px;
+                  " onmouseover="this.style.color='var(--accent-gold)';" onmouseout="this.style.color='var(--text-secondary)';">
+                    Privacy Policy
                   </button>
+
+                  <span style="color: rgba(148, 163, 184, 0.6); font-size: 0.72rem; user-select: none;">•</span>
 
                   <button type="button" id="profile-terms-conditions-btn" style="
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
                     background: transparent;
                     border: none;
-                    font-size: 0.82rem;
+                    font-size: 0.76rem;
                     font-weight: 600;
                     color: var(--text-secondary);
-                    text-align: left;
-                    padding: 5px 8px;
-                    border-radius: 6px;
+                    padding: 2px 4px;
                     cursor: pointer;
-                    transition: all 0.15s ease;
-                    width: 100%;
-                  " onmouseover="this.style.color='var(--accent-gold)'; this.style.background='rgba(245, 158, 11, 0.08)';" onmouseout="this.style.color='var(--text-secondary)'; this.style.background='transparent';">
-                    <span style="font-size: 0.95rem;">📜</span>
-                    <span>Terms & Conditions</span>
+                    transition: color 0.15s ease;
+                    white-space: nowrap;
+                    text-decoration: underline;
+                    text-underline-offset: 2px;
+                  " onmouseover="this.style.color='var(--accent-gold)';" onmouseout="this.style.color='var(--text-secondary)';">
+                    Terms & Conditions
                   </button>
-
-                  <div style="font-size: 0.7rem; color: var(--text-muted); padding: 4px 8px 0; line-height: 1.3;">
-                    © 2026 CourierHub Gaming
-                  </div>
                 </div>
 
               </div>
