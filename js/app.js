@@ -706,7 +706,7 @@
           try {
             const redirectUrl = (window.location.origin && !window.location.origin.includes('file://'))
               ? window.location.origin
-              : 'https://courierhb.vercel.app';
+              : 'https://couriershub.vercel.app';
 
             const { data, error } = await sb.auth.signUp({
               email, password: pVal,
