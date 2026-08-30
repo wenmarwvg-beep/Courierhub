@@ -2528,9 +2528,10 @@
               align-self: flex-start;
               z-index: 40;
             ">
-              <!-- Rectangle Profile Image at Left Side (In Front of Banner) -->
-              <div class="profile-avatar-anchor" style="position: relative; margin-top: 0; margin-bottom: 16px; display: inline-block; z-index: 50;">
-                <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}" style="position: relative; z-index: 50; border: 6px solid #ffffff; box-shadow: 0 25px 55px -12px rgba(15, 23, 42, 0.22), 0 0 35px rgba(245, 158, 11, 0.28), 0 0 0 1px rgba(15, 23, 42, 0.08);">
+              <!-- Rectangle Profile Image at Left Side (In Front of Banner) with Red Neon Border Animation -->
+              <div class="profile-avatar-anchor">
+                <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
+                  <div class="profile-avatar-glow-overlay"></div>
                   <span>${user.avatar || '👑'}</span>
                 </div>
                 <div class="profile-status-badge" title="Online & Ready" style="z-index: 55;"></div>

@@ -314,39 +314,154 @@
   z-index: 40;
 }
 
+/* ==========================================================================
+   Red Neon Profile Picture Rectangle Border Animation
+   ========================================================================== */
+@keyframes redNeonRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes redNeonPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 18px rgba(255, 26, 70, 0.85),
+      0 0 38px rgba(239, 68, 68, 0.6),
+      0 0 65px rgba(220, 38, 38, 0.38),
+      0 20px 45px rgba(15, 23, 42, 0.4),
+      inset 0 0 22px rgba(255, 26, 70, 0.3);
+    border-color: #ff1a4a;
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(255, 26, 70, 1),
+      0 0 60px rgba(239, 68, 68, 0.85),
+      0 0 95px rgba(220, 38, 38, 0.6),
+      0 25px 55px rgba(15, 23, 42, 0.5),
+      inset 0 0 38px rgba(255, 26, 70, 0.5);
+    border-color: #ff4d79;
+  }
+}
+
+@keyframes redNeonFlare {
+  0%, 100% {
+    opacity: 0.75;
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(16px);
+  }
+}
+
 .profile-avatar-anchor {
   position: relative;
   margin-top: 0;
   margin-bottom: 16px;
   display: inline-block;
   z-index: 50;
+  border-radius: 28px;
+}
+
+/* Ambient Red Neon Outer Blur Halo */
+.profile-avatar-anchor::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 32px;
+  background: conic-gradient(
+    from 0deg,
+    #ff003c 0deg,
+    #ff3366 45deg,
+    #ff0055 90deg,
+    #990022 135deg,
+    #ff003c 180deg,
+    #ff3366 225deg,
+    #ff0055 270deg,
+    #990022 315deg,
+    #ff003c 360deg
+  );
+  animation: redNeonRotate 4s linear infinite, redNeonFlare 3s ease-in-out infinite;
+  z-index: 48;
+  pointer-events: none;
+}
+
+/* Sharp Traveling Laser Beam around the Rectangle Border */
+.profile-avatar-anchor::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 29px;
+  background: conic-gradient(
+    from 0deg,
+    #ff003c 0deg,
+    #ffffff 30deg,
+    #ff2a5f 70deg,
+    transparent 120deg,
+    #ff003c 180deg,
+    #ffffff 210deg,
+    #ff2a5f 250deg,
+    transparent 300deg,
+    #ff003c 360deg
+  );
+  animation: redNeonRotate 3.5s linear infinite;
+  z-index: 49;
+  pointer-events: none;
 }
 
 .profile-large-avatar {
   width: 260px;
   height: 350px;
   border-radius: 26px;
-  border: 6px solid #ffffff;
-  background: #ffffff;
+  border: 4.5px solid #ff1a4a;
+  background: linear-gradient(165deg, #180a12 0%, #12060d 45%, #0a0307 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 8.5rem;
-  box-shadow: 0 25px 55px -12px rgba(15, 23, 42, 0.2), 0 0 35px rgba(245, 158, 11, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.08);
   position: relative;
   z-index: 50;
   overflow: hidden;
+  animation: redNeonPulse 2.6s ease-in-out infinite;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
+.profile-large-avatar span {
+  position: relative;
+  z-index: 52;
+  filter: drop-shadow(0 0 20px rgba(255, 26, 70, 0.65)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
+  transition: transform 0.25s ease;
+}
+
+.profile-avatar-glow-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 26, 70, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 51;
+}
+
 [data-theme="dark"] .profile-large-avatar {
-  border-color: var(--bg-primary);
-  background: var(--bg-secondary);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(245, 158, 11, 0.3);
+  background: linear-gradient(165deg, #180a12 0%, #12060d 45%, #0a0307 100%);
+  border-color: #ff1a4a;
 }
 
 .profile-avatar-anchor:hover .profile-large-avatar {
-  transform: scale(1.02);
+  transform: scale(1.025);
+  box-shadow: 
+    0 0 35px rgba(255, 26, 70, 1),
+    0 0 70px rgba(239, 68, 68, 0.85),
+    0 0 110px rgba(220, 38, 38, 0.65),
+    0 30px 65px rgba(15, 23, 42, 0.6),
+    inset 0 0 45px rgba(255, 26, 70, 0.55);
+}
+
+.profile-avatar-anchor:hover .profile-large-avatar span {
+  transform: scale(1.06);
 }
 
 .profile-status-badge {
