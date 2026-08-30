@@ -2057,20 +2057,7 @@
               <input type="text" id="edit-profile-address" class="input-control" value="${user.address || 'Philippines, Metro Manila'}" placeholder="e.g. Philippines, Metro Manila" style="width: 100%;">
             </div>
 
-            <!-- 6. FOLLOWERS & FOLLOWING COUNTS -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <div>
-                <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Followers Count</label>
-                <input type="text" id="edit-profile-followers" class="input-control" value="${user.followersCount || '100k'}" placeholder="e.g. 100k or 1.2M" style="width: 100%;">
-              </div>
-
-              <div>
-                <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Following Count</label>
-                <input type="text" id="edit-profile-following" class="input-control" value="${user.followingCount || '10'}" placeholder="e.g. 10" style="width: 100%;">
-              </div>
-            </div>
-
-            <!-- 7. CUSTOM QUOTE -->
+            <!-- 6. CUSTOM QUOTE -->
             <div>
               <label style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Custom Quote / Motto</label>
               <input type="text" id="edit-profile-quote" class="input-control" value="${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}" placeholder="Your signature quote on the banner" style="width: 100%;">
@@ -2158,8 +2145,6 @@
       const newName = document.getElementById('edit-profile-name').value.trim();
       const newGender = document.getElementById('edit-profile-gender').value;
       const newAddress = document.getElementById('edit-profile-address').value.trim();
-      const newFollowers = document.getElementById('edit-profile-followers').value.trim();
-      const newFollowing = document.getElementById('edit-profile-following').value.trim();
       const newQuote = document.getElementById('edit-profile-quote').value.trim();
       const newRank = document.getElementById('edit-profile-rank').value;
       const newDotaId = document.getElementById('edit-profile-dotaid').value.trim();
@@ -2169,8 +2154,6 @@
       user.displayName = newName || user.username;
       user.gender = newGender;
       user.address = newAddress;
-      user.followersCount = newFollowers || '100k';
-      user.followingCount = newFollowing || '10';
       user.quote = newQuote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.';
       user.rank = newRank;
       user.dotaId = newDotaId;
@@ -2866,7 +2849,7 @@
                   <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.6rem; font-weight: 900; color: #ffffff; margin: 0; letter-spacing: 0.01em; line-height: 1.15; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 24px rgba(0, 0, 0, 0.65);">
                     ${user.displayName || user.username}
                   </h1>
-                  <div class="profile-banner-followers" style="
+                  <div class="profile-banner-followers" title="👤 Followers: ${user.followersCount || '100k'} people who follow your public posts | ➡️ Following: ${user.followingCount || '10'} players you follow" style="
                     display: inline-flex;
                     align-items: center;
                     gap: 8px;
@@ -2878,6 +2861,7 @@
                     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 16px rgba(255, 34, 0, 0.25);
                     font-size: 0.92rem;
                     line-height: 1;
+                    cursor: default;
                   ">
                     <span style="font-weight: 800; color: #ffffff; letter-spacing: 0.02em;">
                       ${user.followersCount || '100k'} <span style="font-weight: 600; color: rgba(255, 255, 255, 0.78);">followers</span>
