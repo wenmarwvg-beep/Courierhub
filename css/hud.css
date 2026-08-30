@@ -436,60 +436,19 @@
   z-index: 51;
 }
 
-/* Skin Themes for Avatar Background & Glowing Core */
-[data-skin="shadow-fiend"] .profile-large-avatar {
+/* Skin Theme: Shadow Fiend Abyssal Soulfire Avatar Background & Glowing Core */
+[data-skin="shadow-fiend"] .profile-large-avatar,
+.profile-large-avatar {
   background: linear-gradient(165deg, #180505 0%, #120303 45%, #080203 100%);
   border-color: rgba(255, 34, 0, 0.45);
 }
-[data-skin="shadow-fiend"] .profile-avatar-glow-overlay {
+[data-skin="shadow-fiend"] .profile-avatar-glow-overlay,
+.profile-avatar-glow-overlay {
   background: radial-gradient(circle at 50% 35%, rgba(255, 34, 0, 0.35) 0%, transparent 70%);
 }
-[data-skin="shadow-fiend"] .profile-large-avatar span {
+[data-skin="shadow-fiend"] .profile-large-avatar span,
+.profile-large-avatar span {
   filter: drop-shadow(0 0 22px rgba(255, 34, 0, 0.85)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.7));
-}
-
-[data-skin="purple-galaxy"] .profile-large-avatar {
-  background: linear-gradient(165deg, #130a24 0%, #0d0617 45%, #07030c 100%);
-  border-color: rgba(168, 85, 247, 0.4);
-}
-[data-skin="purple-galaxy"] .profile-avatar-glow-overlay {
-  background: radial-gradient(circle at 50% 35%, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
-}
-[data-skin="purple-galaxy"] .profile-large-avatar span {
-  filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.7)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
-}
-
-[data-skin="neon-shardscape"] .profile-large-avatar {
-  background: linear-gradient(165deg, #061923 0%, #041017 45%, #02080c 100%);
-  border-color: rgba(6, 182, 212, 0.4);
-}
-[data-skin="neon-shardscape"] .profile-avatar-glow-overlay {
-  background: radial-gradient(circle at 50% 35%, rgba(6, 182, 212, 0.3) 0%, transparent 70%);
-}
-[data-skin="neon-shardscape"] .profile-large-avatar span {
-  filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.7)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
-}
-
-[data-skin="crimson-red"] .profile-large-avatar {
-  background: linear-gradient(165deg, #1f0707 0%, #140404 45%, #0a0202 100%);
-  border-color: rgba(239, 68, 68, 0.4);
-}
-[data-skin="crimson-red"] .profile-avatar-glow-overlay {
-  background: radial-gradient(circle at 50% 35%, rgba(239, 68, 68, 0.3) 0%, transparent 70%);
-}
-[data-skin="crimson-red"] .profile-large-avatar span {
-  filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.7)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
-}
-
-[data-skin="neon-cyberpunk"] .profile-large-avatar {
-  background: linear-gradient(165deg, #1f0717 0%, #14040f 45%, #0a0208 100%);
-  border-color: rgba(236, 72, 153, 0.4);
-}
-[data-skin="neon-cyberpunk"] .profile-avatar-glow-overlay {
-  background: radial-gradient(circle at 50% 35%, rgba(236, 72, 153, 0.3) 0%, transparent 70%);
-}
-[data-skin="neon-cyberpunk"] .profile-large-avatar span {
-  filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.7)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
 }
 
 .profile-avatar-anchor:hover .profile-large-avatar {

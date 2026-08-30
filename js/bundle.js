@@ -27,83 +27,23 @@
   }
 
   /* ==========================================================================
-     2. SVG ICONS & HERO SKIN BUNDLES REGISTRY
+     2. SVG ICONS & HERO SKIN BUNDLES REGISTRY (Abyssal Soulfire Signature)
      ========================================================================== */
   const SKIN_BUNDLES = [
     {
       id: 'shadow-fiend',
-      name: 'Shadow Fiend — Requiem of Souls',
+      name: 'Shadow Fiend — Abyssal Soulfire',
       hero: 'Shadow Fiend (Nevermore)',
       banner: 'Shadow Fiend Requiem.jpg',
       tag: '🔥 Abyssal Soulfire',
       accent: '#ff2200',
-      borderColor: '#ff2200',
+      borderColor: '#ff1a53',
       borderGlow: '#ff0033',
       borderHead: '#ffffff',
       bgStyle: 'souls-embers',
       chatBadge: '🔥',
       chatIconName: 'Demonic Soul Flame',
-      desc: 'Demonic underworld theme with rising soul embers, netherflame laser, and soul chat head.'
-    },
-    {
-      id: 'purple-galaxy',
-      name: 'Purple Galaxy Over Alien Worlds',
-      hero: 'Enigma / Cosmic Void',
-      banner: 'Purple Galaxy Over Alien Worlds.jpg',
-      tag: '🌌 Cosmic Nebula',
-      accent: '#a855f7',
-      borderColor: '#a855f7',
-      borderGlow: '#c084fc',
-      borderHead: '#ffffff',
-      bgStyle: 'starlight-cosmic',
-      chatBadge: '🌌',
-      chatIconName: 'Cosmic Void',
-      desc: 'Deep cosmic void with drifting purple stardust and ultraviolet laser path.'
-    },
-    {
-      id: 'neon-shardscape',
-      name: 'Neon Shardscape Cyberpunk Horizon',
-      hero: 'Tinker / Cyber Matrix',
-      banner: 'Neon Shardscape Cyberpunk Horizon.jpg',
-      tag: '⚡ Cyber Synth',
-      accent: '#06b6d4',
-      borderColor: '#06b6d4',
-      borderGlow: '#38bdf8',
-      borderHead: '#ffffff',
-      bgStyle: 'digital-grid',
-      chatBadge: '⚡',
-      chatIconName: 'Cyber Pulse',
-      desc: 'Futuristic synthwave grid with floating data sparks and neon cyan laser.'
-    },
-    {
-      id: 'crimson-red',
-      name: 'Crimson Red',
-      hero: 'Bloodseeker / Dire War',
-      banner: 'Crimson Red.jpg',
-      tag: '🩸 Blood War',
-      accent: '#ef4444',
-      borderColor: '#ef4444',
-      borderGlow: '#dc2626',
-      borderHead: '#ffffff',
-      bgStyle: 'blood-embers',
-      chatBadge: '🩸',
-      chatIconName: 'Crimson Fury',
-      desc: 'Fierce crimson warrior energy with dark red atmospheric mist.'
-    },
-    {
-      id: 'neon-cyberpunk',
-      name: 'Neon Cyberpunk Gaming Banner',
-      hero: 'Arc Warden / Neon Spark',
-      banner: 'Neon Cyberpunk Gaming Banner.jpg',
-      tag: '🎮 Neon Arcade',
-      accent: '#ec4899',
-      borderColor: '#ec4899',
-      borderGlow: '#f43f5e',
-      borderHead: '#ffffff',
-      bgStyle: 'arcade-sparks',
-      chatBadge: '🎮',
-      chatIconName: 'Neon Spark',
-      desc: 'Vibrant neon esports theme with pink laser flow and electric particles.'
+      desc: 'Exclusive Nevermore theme. Synchronizes full-bleed Requiem artwork, red soulfire laser border travel path, atmospheric ember particles, and burning soul crest.'
     }
   ];
 
@@ -1712,74 +1652,41 @@
     document.getElementById('change-skin-modal')?.remove();
     if (window.Sound) window.Sound.playClick();
 
-    let selectedSkinId = user.skin || 'shadow-fiend';
-    let selectedSkin = SKIN_BUNDLES.find(s => s.id === selectedSkinId) || SKIN_BUNDLES[0];
-    let selectedBanner = user.banner || selectedSkin.banner;
-    let tempUploadedBanner = null;
-
-    const renderPreview = () => {
-      const bannerEl = document.getElementById('modal-skin-live-banner');
-      const trackEl = document.getElementById('modal-preview-neon-track');
-      const glowEl = document.getElementById('modal-preview-neon-glow');
-      const travelerEl = document.getElementById('modal-preview-neon-traveler');
-      const headEl = document.getElementById('modal-preview-neon-head');
-      const chatBadgeEl = document.getElementById('modal-preview-chat-badge');
-      const chatBtnEl = document.getElementById('modal-preview-chat-btn');
-      const skinDescEl = document.getElementById('modal-preview-skin-desc');
-      const skinTagEl = document.getElementById('modal-preview-skin-tag');
-
-      if (bannerEl) {
-        bannerEl.style.backgroundImage = `url("${encodeURI(selectedBanner)}")`;
-      }
-      if (trackEl) trackEl.style.stroke = `${selectedSkin.accent}33`;
-      if (glowEl) glowEl.style.stroke = selectedSkin.borderGlow;
-      if (travelerEl) travelerEl.style.stroke = selectedSkin.borderColor;
-      if (headEl) headEl.style.stroke = selectedSkin.borderHead;
-      if (chatBadgeEl) chatBadgeEl.textContent = selectedSkin.chatBadge;
-      if (chatBtnEl) {
-        chatBtnEl.style.borderColor = selectedSkin.accent;
-        chatBtnEl.style.boxShadow = `0 0 16px ${selectedSkin.accent}66`;
-      }
-      if (skinDescEl) skinDescEl.textContent = selectedSkin.desc;
-      if (skinTagEl) {
-        skinTagEl.textContent = selectedSkin.tag;
-        skinTagEl.style.color = selectedSkin.accent;
-      }
-    };
+    const skin = SKIN_BUNDLES[0]; // Shadow Fiend — Abyssal Soulfire
 
     const modalHtml = `
-      <div id="change-skin-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
-        <div class="hud-panel" style="width: 100%; max-width: 720px; max-height: 92vh; overflow-y: auto; padding: 26px 30px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.4); position: relative; animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div id="change-skin-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.75); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 680px; max-height: 92vh; overflow-y: auto; padding: 26px 30px; border-radius: var(--radius-lg); background: #ffffff; border: 1.5px solid rgba(255, 34, 0, 0.4); box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 34, 0, 0.2); position: relative; animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
           
           <!-- Modal Header -->
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-              <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, rgba(255, 34, 0, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%); color: #ff2200; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid rgba(255, 34, 0, 0.35); box-shadow: 0 0 15px rgba(255, 34, 0, 0.25);">
+              <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, rgba(255, 34, 0, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%); color: #ff2200; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 1px solid rgba(255, 34, 0, 0.35); box-shadow: 0 0 16px rgba(255, 34, 0, 0.25);">
                 🎭
               </div>
               <div>
                 <h3 style="font-family: var(--font-header); font-size: 1.35rem; font-weight: 900; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 8px;">
-                  <span>Hero & Aesthetic Skin Vault</span>
-                  <span class="badge badge-gold" style="font-size: 0.7rem; padding: 2px 7px;">Full Bundle</span>
+                  <span>Hero Skin: Abyssal Soulfire</span>
+                  <span class="badge" style="font-size: 0.7rem; padding: 2px 7px; background: #ff2200; color: #ffffff; font-weight: 800;">SIGNATURE</span>
                 </h3>
                 <p style="font-size: 0.82rem; color: var(--text-muted); margin: 2px 0 0;">
-                  Equips matching Cover Banner, Neon Border Laser, Ambient Background & Chat Icon.
+                  Synchronizes Cover Banner, Neon Border Laser, Ambient Background & Chat Icon.
                 </p>
               </div>
             </div>
             <button id="close-change-skin-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s ease;">✕</button>
           </div>
 
-          <!-- 1. MULTI-ELEMENT LIVE PREVIEW -->
+          <!-- 1. LIVE MULTI-ELEMENT PREVIEW -->
           <div style="margin-bottom: 22px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Live Skin Preview</span>
-              <span id="modal-preview-skin-tag" style="font-size: 0.8rem; font-weight: 800; color: ${selectedSkin.accent};">
-                ${selectedSkin.tag}
+              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Active Skin Preview</span>
+              <span style="font-size: 0.8rem; font-weight: 800; color: ${skin.accent};">
+                ${skin.tag}
               </span>
             </div>
             
-            <div id="modal-skin-live-banner" class="banner-preview-wrapper" style="height: 180px; background-image: url('${encodeURI(selectedBanner)}');">
+            <div id="modal-skin-live-banner" class="banner-preview-wrapper" style="height: 180px; background-image: url('${encodeURI(skin.banner)}');">
               <div class="profile-banner-ambient"></div>
               <div class="profile-banner-grid"></div>
               
@@ -1788,10 +1695,10 @@
                 <div style="position: relative; width: 62px; height: 80px; border-radius: 12px; background: #0a0307; display: flex; align-items: center; justify-content: center;">
                   <!-- Mini SVG Traveling Border Laser -->
                   <svg style="position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); overflow: visible; pointer-events: none;" viewBox="0 0 62 80">
-                    <rect id="modal-preview-neon-track" x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${selectedSkin.accent}33" stroke-width="2.5" />
-                    <rect id="modal-preview-neon-glow" x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${selectedSkin.borderGlow}" stroke-width="5" stroke-linecap="round" stroke-dasharray="220 280 220 280" style="animation: neonBorderPathTravel 3.2s linear infinite; filter: blur(3px);" />
-                    <rect id="modal-preview-neon-traveler" x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${selectedSkin.borderColor}" stroke-width="3" stroke-linecap="round" stroke-dasharray="180 320 180 320" style="animation: neonBorderPathTravel 3.2s linear infinite;" />
-                    <rect id="modal-preview-neon-head" x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${selectedSkin.borderHead}" stroke-width="3" stroke-linecap="round" stroke-dasharray="55 445 55 445" style="animation: neonBorderPathTravel 3.2s linear infinite;" />
+                    <rect x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${skin.accent}33" stroke-width="2.5" />
+                    <rect x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${skin.borderGlow}" stroke-width="5" stroke-linecap="round" stroke-dasharray="220 280 220 280" style="animation: neonBorderPathTravel 3.2s linear infinite; filter: blur(3px);" />
+                    <rect x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${skin.borderColor}" stroke-width="3" stroke-linecap="round" stroke-dasharray="180 320 180 320" style="animation: neonBorderPathTravel 3.2s linear infinite;" />
+                    <rect x="2" y="2" width="58" height="76" rx="10" ry="10" pathLength="1000" fill="none" stroke="${skin.borderHead}" stroke-width="3" stroke-linecap="round" stroke-dasharray="55 445 55 445" style="animation: neonBorderPathTravel 3.2s linear infinite;" />
                   </svg>
                   <span style="font-size: 1.8rem; z-index: 10;">${user.avatar || '👑'}</span>
                 </div>
@@ -1806,104 +1713,69 @@
                 </div>
               </div>
 
-              <!-- Mini Floating Chat Trigger Preview in Bottom Right of Preview -->
+              <!-- Mini Floating Chat Trigger Preview -->
               <div style="position: absolute; right: 16px; bottom: 14px; z-index: 15; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
                 <span style="font-size: 0.68rem; font-weight: 700; color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.9);">Chat Icon Preview</span>
-                <div id="modal-preview-chat-btn" style="width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #1e293b 0%, #0f172a 70%, #060913 100%); border: 2px solid ${selectedSkin.accent}; box-shadow: 0 0 16px ${selectedSkin.accent}66; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-                  <span id="modal-preview-chat-badge">${selectedSkin.chatBadge}</span>
+                <div style="width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #1e293b 0%, #0f172a 70%, #060913 100%); border: 2px solid ${skin.accent}; box-shadow: 0 0 16px ${skin.accent}66; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                  <span>${skin.chatBadge}</span>
                 </div>
               </div>
             </div>
 
-            <div id="modal-preview-skin-desc" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px; font-style: italic;">
-              ${selectedSkin.desc}
+            <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 10px; font-style: italic;">
+              ${skin.desc}
             </div>
           </div>
 
-          <!-- 2. SKIN BUNDLES SELECTOR -->
-          <div style="margin-bottom: 20px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Hero Skin Collections</span>
-              <span style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 700;">5 Signature Skins</span>
+          <!-- 2. SYNCHRONIZED THEME BUNDLE BREAKDOWN -->
+          <div style="margin-bottom: 24px;">
+            <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+              Included Theme Components
             </div>
 
-            <div class="banner-template-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
-              ${SKIN_BUNDLES.map(s => {
-                const isSelected = selectedSkinId === s.id;
-                return `
-                  <div class="banner-template-card ${isSelected ? 'selected' : ''}" data-skin-id="${s.id}" id="skin-card-${s.id}" style="${isSelected ? `border-color: ${s.accent} !important; box-shadow: 0 0 0 2px ${s.accent}, 0 10px 28px -4px ${s.accent}66 !important;` : ''}">
-                    <div class="banner-card-thumb-wrap" style="height: 95px;">
-                      <img src="${encodeURI(s.banner)}" alt="${s.name}" class="banner-card-thumb-img" loading="lazy" />
-                      <div class="banner-card-check-badge" style="background: ${s.accent}; color: #ffffff;">✓</div>
-                      <div style="position: absolute; bottom: 6px; left: 8px; font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: rgba(0,0,0,0.75); color: ${s.accent}; backdrop-filter: blur(4px);">
-                        ${s.chatBadge} ${s.hero}
-                      </div>
-                    </div>
-                    <div class="banner-card-meta" style="padding: 8px 10px;">
-                      <div class="banner-card-title" title="${s.name}" style="font-size: 0.85rem; font-weight: 800;">${s.name}</div>
-                      <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px;">
-                        <span style="font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,0.08); color: var(--text-muted);">🖼️ Banner</span>
-                        <span style="font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,0.08); color: var(--text-muted);">⚡ Neon Laser</span>
-                        <span style="font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,0.08); color: var(--text-muted);">🌌 Background</span>
-                        <span style="font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,0.08); color: var(--text-muted);">💬 ${s.chatBadge} Icon</span>
-                      </div>
-                    </div>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-          </div>
-
-          <!-- 3. CUSTOM ARTWORK UPLOAD -->
-          <div style="margin-bottom: 22px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Or Upload Custom Artwork</span>
-              <span style="font-size: 0.76rem; color: var(--text-muted);">JPG, PNG, WebP (Max 10MB)</span>
-            </div>
-
-            <div id="banner-upload-dropzone" class="banner-upload-dropzone" style="padding: 16px;">
-              <input type="file" id="banner-file-input" accept="image/jpeg,image/png,image/webp,image/gif" style="display: none;" />
-              
-              <div id="upload-idle-state" style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
-                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
-                  📤
-                </div>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.05); border: 1px solid rgba(255, 34, 0, 0.2); display: flex; align-items: flex-start; gap: 10px;">
+                <span style="font-size: 1.25rem;">🖼️</span>
                 <div>
-                  <strong style="color: var(--text-primary); font-size: 0.85rem; display: block;">Click to browse or drag & drop custom wallpaper</strong>
-                  <span style="font-size: 0.74rem; color: var(--text-muted);">Adapts with your active skin's neon border laser and chat icon</span>
+                  <strong style="display: block; font-size: 0.85rem; color: var(--text-primary); font-weight: 800;">Requiem Cover Banner</strong>
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">1920×340 demonic artwork</span>
                 </div>
               </div>
 
-              <div id="upload-success-state" style="display: none; align-items: center; justify-content: space-between; padding: 4px 8px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <div style="width: 38px; height: 38px; border-radius: 8px; overflow: hidden; border: 1px solid var(--accent-gold);">
-                    <img id="upload-preview-thumb" src="" style="width: 100%; height: 100%; object-fit: cover;" />
-                  </div>
-                  <div style="text-align: left;">
-                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);" id="upload-file-name">custom-banner.png</div>
-                    <div style="font-size: 0.74rem; color: #16a34a; font-weight: 600;">✓ Custom artwork ready</div>
-                  </div>
+              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.05); border: 1px solid rgba(255, 34, 0, 0.2); display: flex; align-items: flex-start; gap: 10px;">
+                <span style="font-size: 1.25rem;">⚡</span>
+                <div>
+                  <strong style="display: block; font-size: 0.85rem; color: var(--text-primary); font-weight: 800;">Netherflame Border Laser</strong>
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Continuous perimeter orbit</span>
                 </div>
-                <button type="button" id="remove-upload-banner-btn" class="btn btn-secondary" style="padding: 5px 12px; font-size: 0.78rem; color: #ef4444; border-color: rgba(239,68,68,0.3);">
-                  Remove
-                </button>
+              </div>
+
+              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.05); border: 1px solid rgba(255, 34, 0, 0.2); display: flex; align-items: flex-start; gap: 10px;">
+                <span style="font-size: 1.25rem;">🌌</span>
+                <div>
+                  <strong style="display: block; font-size: 0.85rem; color: var(--text-primary); font-weight: 800;">Atmospheric Background</strong>
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Abyssal battlefield & rising embers</span>
+                </div>
+              </div>
+
+              <div style="padding: 12px 14px; border-radius: 12px; background: rgba(255, 34, 0, 0.05); border: 1px solid rgba(255, 34, 0, 0.2); display: flex; align-items: flex-start; gap: 10px;">
+                <span style="font-size: 1.25rem;">🔥</span>
+                <div>
+                  <strong style="display: block; font-size: 0.85rem; color: var(--text-primary); font-weight: 800;">Demonic Soul Chat Crest</strong>
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Custom chat trigger & halo</span>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Actions Footer -->
-          <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
-            <button type="button" id="reset-skin-default-btn" class="btn btn-secondary" style="font-size: 0.82rem; padding: 8px 14px;">
-              Reset Default (Shadow Fiend)
+          <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+            <button type="button" id="cancel-change-skin-btn" class="btn btn-secondary" style="padding: 8px 18px;">
+              Close
             </button>
-            <div style="display: flex; gap: 10px;">
-              <button type="button" id="cancel-change-skin-btn" class="btn btn-secondary" style="padding: 8px 18px;">
-                Cancel
-              </button>
-              <button type="button" id="save-change-skin-btn" class="btn btn-primary" style="padding: 8px 22px; font-weight: 800; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.35);">
-                🎭 Equip & Apply Skin
-              </button>
-            </div>
+            <button type="button" id="save-change-skin-btn" class="btn btn-primary" style="padding: 9px 24px; font-weight: 800; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 16px rgba(255, 34, 0, 0.4);">
+              🎭 Equip Abyssal Soulfire
+            </button>
           </div>
 
         </div>
@@ -1919,173 +1791,16 @@
     document.getElementById('cancel-change-skin-btn')?.addEventListener('click', close);
     modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
 
-    // Skin card selection handlers
-    const cards = modal.querySelectorAll('.banner-template-card');
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        const skinId = card.getAttribute('data-skin-id');
-        const found = SKIN_BUNDLES.find(s => s.id === skinId);
-        if (!found) return;
-
-        selectedSkinId = found.id;
-        selectedSkin = found;
-        selectedBanner = found.banner;
-        tempUploadedBanner = null;
-
-        cards.forEach(c => {
-          c.classList.remove('selected');
-          c.style.borderColor = '';
-          c.style.boxShadow = '';
-        });
-        card.classList.add('selected');
-        card.style.borderColor = `${found.accent} !important`;
-        card.style.boxShadow = `0 0 0 2px ${found.accent}, 0 10px 28px -4px ${found.accent}66 !important`;
-
-        // Hide upload state
-        const idleState = document.getElementById('upload-idle-state');
-        const successState = document.getElementById('upload-success-state');
-        if (idleState) idleState.style.display = 'flex';
-        if (successState) successState.style.display = 'none';
-
-        renderPreview();
-        if (window.Sound) window.Sound.playClick();
-      });
-    });
-
-    // File Upload Handler
-    const dropzone = document.getElementById('banner-upload-dropzone');
-    const fileInput = document.getElementById('banner-file-input');
-    const idleState = document.getElementById('upload-idle-state');
-    const successState = document.getElementById('upload-success-state');
-    const uploadThumb = document.getElementById('upload-preview-thumb');
-    const uploadFileName = document.getElementById('upload-file-name');
-
-    dropzone?.addEventListener('click', (e) => {
-      if (e.target.id !== 'remove-upload-banner-btn' && !e.target.closest('#remove-upload-banner-btn')) {
-        fileInput?.click();
-      }
-    });
-
-    dropzone?.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropzone.classList.add('dragover');
-    });
-
-    dropzone?.addEventListener('dragleave', () => {
-      dropzone.classList.remove('dragover');
-    });
-
-    dropzone?.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropzone.classList.remove('dragover');
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        processBannerFile(e.dataTransfer.files[0]);
-      }
-    });
-
-    fileInput?.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) {
-        processBannerFile(e.target.files[0]);
-      }
-    });
-
-    function processBannerFile(file) {
-      if (!file.type.startsWith('image/')) {
-        Toast.error('Invalid File Type', 'Please upload a valid image file (JPG, PNG, WebP).');
-        return;
-      }
-      if (file.size > 10 * 1024 * 1024) {
-        Toast.error('File Too Large', 'Banner image must be under 10MB.');
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const dataUrl = ev.target.result;
-        selectedBanner = dataUrl;
-        tempUploadedBanner = dataUrl;
-
-        // Deselect template cards
-        cards.forEach(c => {
-          c.classList.remove('selected');
-          c.style.borderColor = '';
-          c.style.boxShadow = '';
-        });
-
-        // Show upload success state
-        if (idleState) idleState.style.display = 'none';
-        if (successState) successState.style.display = 'flex';
-        if (uploadThumb) uploadThumb.src = dataUrl;
-        if (uploadFileName) uploadFileName.textContent = file.name;
-
-        renderPreview();
-        Toast.success('Image Loaded', 'Custom artwork ready.');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // Remove custom upload button
-    document.getElementById('remove-upload-banner-btn')?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      tempUploadedBanner = null;
-      selectedBanner = selectedSkin.banner;
-      if (idleState) idleState.style.display = 'flex';
-      if (successState) successState.style.display = 'none';
-      if (fileInput) fileInput.value = '';
-
-      cards.forEach(c => {
-        if (c.getAttribute('data-skin-id') === selectedSkinId) {
-          c.classList.add('selected');
-          c.style.borderColor = `${selectedSkin.accent} !important`;
-          c.style.boxShadow = `0 0 0 2px ${selectedSkin.accent}, 0 10px 28px -4px ${selectedSkin.accent}66 !important`;
-        } else {
-          c.classList.remove('selected');
-          c.style.borderColor = '';
-          c.style.boxShadow = '';
-        }
-      });
-
-      renderPreview();
-    });
-
-    // Reset default button
-    document.getElementById('reset-skin-default-btn')?.addEventListener('click', () => {
-      const defaultSkin = SKIN_BUNDLES[0]; // Shadow Fiend
-      selectedSkinId = defaultSkin.id;
-      selectedSkin = defaultSkin;
-      selectedBanner = defaultSkin.banner;
-      tempUploadedBanner = null;
-
-      if (idleState) idleState.style.display = 'flex';
-      if (successState) successState.style.display = 'none';
-      if (fileInput) fileInput.value = '';
-
-      cards.forEach(c => {
-        if (c.getAttribute('data-skin-id') === defaultSkin.id) {
-          c.classList.add('selected');
-          c.style.borderColor = `${defaultSkin.accent} !important`;
-          c.style.boxShadow = `0 0 0 2px ${defaultSkin.accent}, 0 10px 28px -4px ${defaultSkin.accent}66 !important`;
-        } else {
-          c.classList.remove('selected');
-          c.style.borderColor = '';
-          c.style.boxShadow = '';
-        }
-      });
-
-      renderPreview();
-      Toast.success('Reset to Default', 'Shadow Fiend — Requiem of Souls skin selected.');
-    });
-
     // Save & Apply
     document.getElementById('save-change-skin-btn')?.addEventListener('click', () => {
-      user.skin = selectedSkinId;
-      user.banner = selectedBanner;
+      user.skin = skin.id;
+      user.banner = skin.banner;
       Store.save();
 
       applySkinToUI(user.skin, user.banner);
 
       if (window.Sound) window.Sound.playVictory();
-      Toast.success('Skin Equipped!', `Equipped ${selectedSkin.name} bundle.`);
+      Toast.success('Skin Equipped!', `Equipped ${skin.name} bundle.`);
       close();
     });
   }
