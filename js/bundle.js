@@ -766,6 +766,106 @@
     });
   }
 
+  /* --- MODAL: PRIVACY POLICY --- */
+  function openPrivacyPolicyModal() {
+    document.getElementById('legal-info-modal')?.remove();
+    if (window.Sound) window.Sound.playClick();
+
+    const modalHtml = `
+      <div id="legal-info-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; padding: 28px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid rgba(226, 232, 240, 0.95); padding-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.4rem;">🔒</span>
+              <h2 style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: var(--accent-gold); margin: 0;">Privacy Policy</h2>
+            </div>
+            <button id="close-legal-modal-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+          </div>
+
+          <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; display: flex; flex-direction: column; gap: 14px;">
+            <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Last Updated: August 2026</p>
+            <div>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">1. Information We Collect</h3>
+              <p style="margin: 0;">CourierHub collects your account credentials (display name, username, email), region preference, rank tier, in-game roles, bio, and community posts to deliver our matchmaking and team formation services.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">2. How Your Data is Used</h3>
+              <p style="margin: 0;">Your data is used strictly for lobby organization, party finder coordination, community discussions, and real-time multiplayer notification services.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">3. Security & Data Protection</h3>
+              <p style="margin: 0;">We protect player records using high-grade encrypted authentication pipelines. We will never sell or distribute your personal gaming information to third-party advertisers.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">4. Account Control</h3>
+              <p style="margin: 0;">You can update your personal information or request account deletion at any time by accessing your profile settings.</p>
+            </div>
+          </div>
+
+          <div style="margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(226, 232, 240, 0.95); display: flex; justify-content: flex-end;">
+            <button type="button" id="confirm-legal-modal-btn" class="btn btn-primary" style="padding: 9px 24px; font-weight: 700;">Acknowledge & Close</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = document.getElementById('legal-info-modal');
+    document.getElementById('close-legal-modal-btn')?.addEventListener('click', () => modal?.remove());
+    document.getElementById('confirm-legal-modal-btn')?.addEventListener('click', () => modal?.remove());
+    modal?.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+  }
+
+  /* --- MODAL: TERMS & CONDITIONS --- */
+  function openTermsConditionsModal() {
+    document.getElementById('legal-info-modal')?.remove();
+    if (window.Sound) window.Sound.playClick();
+
+    const modalHtml = `
+      <div id="legal-info-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 2100; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; padding: 28px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid rgba(226, 232, 240, 0.95); padding-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.4rem;">📜</span>
+              <h2 style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: var(--accent-gold); margin: 0;">Terms & Conditions</h2>
+            </div>
+            <button id="close-legal-modal-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+          </div>
+
+          <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; display: flex; flex-direction: column; gap: 14px;">
+            <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Last Updated: August 2026</p>
+            <div>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">1. Acceptance of Community Terms</h3>
+              <p style="margin: 0;">By creating a CourierHub account or participating in lobbies and party matches, you agree to uphold our sportsmanship standards and terms of service.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">2. Fair Play & Competitive Integrity</h3>
+              <p style="margin: 0;">CourierHub strictly prohibits griefing, abusive communications, smurfing, win-trading, and cheating. Violators will face immediate lobby suspensions or permanent account bans.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">3. Party Finder & Match Participation</h3>
+              <p style="margin: 0;">Players who join competitive parties or Battle Cup stacks agree to show up on schedule and treat fellow party members with respect.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">4. Valve & Dota 2 Trademarks</h3>
+              <p style="margin: 0;">Dota 2, Valve Corporation, hero icons, and related game assets are registered trademarks of Valve Corporation. CourierHub is an independent esports community hub.</p>
+            </div>
+          </div>
+
+          <div style="margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(226, 232, 240, 0.95); display: flex; justify-content: flex-end;">
+            <button type="button" id="confirm-legal-modal-btn" class="btn btn-primary" style="padding: 9px 24px; font-weight: 700;">I Agree & Close</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = document.getElementById('legal-info-modal');
+    document.getElementById('close-legal-modal-btn')?.addEventListener('click', () => modal?.remove());
+    document.getElementById('confirm-legal-modal-btn')?.addEventListener('click', () => modal?.remove());
+    modal?.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+  }
+
   /* --- VIEW: AUTH (LOGIN & REGISTRATION) --- */
   function renderAuth(isSignUp = false) {
     renderLayoutShell();
@@ -1273,6 +1373,63 @@
                     <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(34, 197, 94, 0.12); color: #16a34a;">Live</span>
                   </button>
                 </div>
+
+                <!-- Divider line below the Party Tab -->
+                <div class="profile-section-divider" style="
+                  width: 100%;
+                  height: 1px;
+                  background: rgba(217, 119, 6, 0.25);
+                  margin: 14px 0 10px;
+                  border: none;
+                "></div>
+
+                <!-- Privacy & Policy and Terms & Conditions Links -->
+                <div class="profile-legal-links" style="display: flex; flex-direction: column; gap: 4px; width: 100%; padding: 0 2px 4px;">
+                  <button type="button" id="profile-privacy-policy-btn" style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    background: transparent;
+                    border: none;
+                    font-size: 0.82rem;
+                    font-weight: 600;
+                    color: var(--text-secondary);
+                    text-align: left;
+                    padding: 5px 8px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: all 0.15s ease;
+                    width: 100%;
+                  " onmouseover="this.style.color='var(--accent-gold)'; this.style.background='rgba(245, 158, 11, 0.08)';" onmouseout="this.style.color='var(--text-secondary)'; this.style.background='transparent';">
+                    <span style="font-size: 0.95rem;">🔒</span>
+                    <span>Privacy Policy</span>
+                  </button>
+
+                  <button type="button" id="profile-terms-conditions-btn" style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    background: transparent;
+                    border: none;
+                    font-size: 0.82rem;
+                    font-weight: 600;
+                    color: var(--text-secondary);
+                    text-align: left;
+                    padding: 5px 8px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: all 0.15s ease;
+                    width: 100%;
+                  " onmouseover="this.style.color='var(--accent-gold)'; this.style.background='rgba(245, 158, 11, 0.08)';" onmouseout="this.style.color='var(--text-secondary)'; this.style.background='transparent';">
+                    <span style="font-size: 0.95rem;">📜</span>
+                    <span>Terms & Conditions</span>
+                  </button>
+
+                  <div style="font-size: 0.7rem; color: var(--text-muted); padding: 4px 8px 0; line-height: 1.3;">
+                    © 2026 CourierHub Gaming
+                  </div>
+                </div>
+
               </div>
             </div>
 
@@ -1877,6 +2034,15 @@
         if (window.Sound) window.Sound.playClick();
       });
     }
+
+    // Privacy Policy and Terms & Conditions button listeners
+    document.getElementById('profile-privacy-policy-btn')?.addEventListener('click', () => {
+      openPrivacyPolicyModal();
+    });
+
+    document.getElementById('profile-terms-conditions-btn')?.addEventListener('click', () => {
+      openTermsConditionsModal();
+    });
   }
 
   /* --- VIEW: LOBBIES --- */
