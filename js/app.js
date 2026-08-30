@@ -1131,45 +1131,23 @@
                 <span class="badge badge-gold" style="font-size: 0.88rem; padding: 5px 14px; font-weight: 800; box-shadow: 0 2px 10px rgba(217, 119, 6, 0.25);">👑 ${user.rank || 'Divine V'}</span>
               </div>
 
-              <!-- Customizable Quote on Banner -->
+              <!-- Customizable Quote on Banner with Transparent Background -->
               <div class="profile-quote-card" style="
                 display: flex;
                 align-items: flex-start;
-                gap: 12px;
-                background: rgba(255, 255, 255, 0.88);
-                backdrop-filter: blur(14px);
-                -webkit-backdrop-filter: blur(14px);
-                border: 1px solid rgba(245, 158, 11, 0.35);
-                border-radius: var(--radius-md);
-                padding: 16px 20px;
+                gap: 8px;
+                background: transparent;
+                border: none;
+                padding: 2px 0 0;
                 max-width: 660px;
-                box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08), 0 0 20px rgba(245, 158, 11, 0.12);
+                box-shadow: none;
                 position: relative;
               ">
-                <span style="font-size: 2.2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none;">“</span>
-                <div style="flex: 1;">
-                  <p id="profile-quote-display" style="font-size: 1.05rem; font-style: italic; color: #334155; line-height: 1.55; margin: 0; font-weight: 600;">
-                    ${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}
-                  </p>
-                </div>
-                <button type="button" id="edit-quote-quick-btn" title="Customize Quote" style="
-                  background: rgba(245, 158, 11, 0.15);
-                  border: 1px solid rgba(245, 158, 11, 0.35);
-                  color: #b45309;
-                  padding: 6px 12px;
-                  border-radius: 6px;
-                  cursor: pointer;
-                  font-size: 0.84rem;
-                  font-weight: 700;
-                  display: flex;
-                  align-items: center;
-                  gap: 5px;
-                  flex-shrink: 0;
-                  box-shadow: 0 1px 4px rgba(217, 119, 6, 0.15);
-                  transition: all 0.15s ease;
-                ">
-                  ✏️ Edit Quote
-                </button>
+                <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">“</span>
+                <p id="profile-quote-display" style="font-size: 1.08rem; font-style: italic; color: #1e293b; line-height: 1.5; margin: 0; font-weight: 600; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">
+                  ${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}
+                </p>
+                <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none; opacity: 0.95;">”</span>
               </div>
             </div>
 
@@ -1189,24 +1167,6 @@
         if (window.Sound) window.Sound.playClick();
       });
     }
-
-    // Interactive Quick Edit Quote button logic
-    document.getElementById('edit-quote-quick-btn')?.addEventListener('click', () => {
-      const currentQuote = user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.';
-      const newQuote = prompt('Customize your personal quote / motto:', currentQuote);
-      if (newQuote !== null && newQuote.trim() !== '') {
-        user.quote = newQuote.trim();
-        Store.save();
-        const quoteDisplay = document.getElementById('profile-quote-display');
-        if (quoteDisplay) quoteDisplay.innerText = user.quote;
-        const sb = getSupabase();
-        if (sb && user.id) {
-          sb.from('profiles').update({ bio: user.bio }).eq('id', user.id).catch(() => {});
-        }
-        if (window.Sound) window.Sound.playClick();
-        Toast.success('Quote Updated!', 'Your personal quote has been saved.');
-      }
-    });
   }
 
   /* --- VIEW: LOBBIES --- */
