@@ -1130,8 +1130,8 @@
         </div>
 
         <!-- 2. CONSTRAINED PROFILE CONTAINER -->
-        <div class="profile-content-container">
-          <div class="profile-main-layout" style="display: flex; gap: 36px; align-items: flex-start; position: relative;">
+        <div class="profile-content-container" style="position: relative; z-index: 20;">
+          <div class="profile-main-layout" style="display: flex; gap: 36px; align-items: flex-start; position: relative; z-index: 25; margin-top: -160px;">
             
             <!-- Left Column (Rectangle Avatar + Horizontal Info Rows Stacked Below) - Sticky on Scroll -->
             <div class="profile-left-column" style="
@@ -1139,16 +1139,16 @@
               max-width: 100%;
               flex-shrink: 0;
               position: sticky;
-              top: calc(var(--topbar-height, 68px) + 180px);
+              top: 80px;
               align-self: flex-start;
-              z-index: 30;
+              z-index: 40;
             ">
-              <!-- Rectangle Profile Image at Left Side -->
-              <div class="profile-avatar-anchor">
-                <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
+              <!-- Rectangle Profile Image at Left Side (In Front of Banner) -->
+              <div class="profile-avatar-anchor" style="position: relative; margin-top: 0; margin-bottom: 16px; display: inline-block; z-index: 50;">
+                <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}" style="position: relative; z-index: 50; border: 6px solid #ffffff; box-shadow: 0 25px 55px -12px rgba(15, 23, 42, 0.22), 0 0 35px rgba(245, 158, 11, 0.28), 0 0 0 1px rgba(15, 23, 42, 0.08);">
                   <span>${user.avatar || '👑'}</span>
                 </div>
-                <div class="profile-status-badge" title="Online & Ready"></div>
+                <div class="profile-status-badge" title="Online & Ready" style="z-index: 55;"></div>
               </div>
 
               <!-- Below the rectangle profile image: Horizontal Info Items with Premium Icons Only -->
@@ -1276,10 +1276,10 @@
             </div>
 
             <!-- Right Column: Banner Overlay (Name & Quote) + Interactive Tab Views Below -->
-            <div class="profile-right-column" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 24px;">
+            <div class="profile-right-column" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 25;">
               
               <!-- Banner Overlay Section (Name & Transparent Quote on the Banner) -->
-              <div class="profile-banner-beside-content" style="margin-top: -135px; position: relative; z-index: 10; display: flex; flex-direction: column; gap: 12px;">
+              <div class="profile-banner-beside-content" style="padding-top: 20px; min-height: 120px; position: relative; z-index: 30; display: flex; flex-direction: column; gap: 12px;">
                 <!-- Name of the User on Banner -->
                 <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
                   <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.6rem; font-weight: 900; color: #0f172a; margin: 0; letter-spacing: 0.01em; line-height: 1.15; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);">
@@ -1309,7 +1309,7 @@
               </div>
 
               <!-- 1. COMMUNITY TAB VIEW (Completely Below Banner & Beside Left Column) -->
-              <div id="home-community-tab-view" class="community-news-feed-area" style="margin-top: 56px; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 5;">
+              <div id="home-community-tab-view" class="community-news-feed-area" style="margin-top: 10px; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 10;">
                 
                 <!-- Feed Header -->
                 <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
