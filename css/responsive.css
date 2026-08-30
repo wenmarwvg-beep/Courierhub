@@ -59,6 +59,18 @@
   .content-container {
     padding: 16px 16px 32px;
   }
+
+  .profile-main-layout {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .profile-left-column {
+    position: relative !important;
+    top: auto !important;
+    width: 100% !important;
+    max-height: none !important;
+  }
 }
 
 @media (max-width: 640px) {

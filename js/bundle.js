@@ -1131,10 +1131,18 @@
 
         <!-- 2. CONSTRAINED PROFILE CONTAINER -->
         <div class="profile-content-container">
-          <div class="profile-main-layout" style="display: flex; gap: 36px; align-items: flex-start; flex-wrap: wrap;">
+          <div class="profile-main-layout" style="display: flex; gap: 36px; align-items: flex-start; position: relative;">
             
-            <!-- Left Column (Rectangle Avatar + Horizontal Info Rows Stacked Below) -->
-            <div class="profile-left-column" style="width: 260px; max-width: 100%; flex-shrink: 0;">
+            <!-- Left Column (Rectangle Avatar + Horizontal Info Rows Stacked Below) - Sticky on Scroll -->
+            <div class="profile-left-column" style="
+              width: 260px;
+              max-width: 100%;
+              flex-shrink: 0;
+              position: sticky;
+              top: calc(var(--topbar-height, 68px) + 180px);
+              align-self: flex-start;
+              z-index: 30;
+            ">
               <!-- Rectangle Profile Image at Left Side -->
               <div class="profile-avatar-anchor">
                 <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">

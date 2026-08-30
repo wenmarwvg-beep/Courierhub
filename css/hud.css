@@ -267,10 +267,34 @@
 
 .profile-content-container {
   width: 100%;
-  max-width: 1080px;
+  max-width: 1140px;
   margin: 0 auto;
   padding: 0 24px 48px;
   position: relative;
+}
+
+.profile-main-layout {
+  display: flex;
+  gap: 36px;
+  align-items: flex-start;
+  position: relative;
+}
+
+.profile-left-column {
+  width: 260px;
+  max-width: 100%;
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--topbar-height, 68px) + 180px);
+  align-self: flex-start;
+  z-index: 30;
+  max-height: calc(100vh - var(--topbar-height, 68px) - 20px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.profile-left-column::-webkit-scrollbar {
+  display: none;
 }
 
 .profile-avatar-anchor {
