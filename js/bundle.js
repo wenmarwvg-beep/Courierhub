@@ -1121,48 +1121,51 @@
               </div>
             </div>
 
-            <!-- Right Column Beside the Rectangle Avatar: Name and Customizable Quote -->
-            <div class="profile-beside-content" style="flex: 1; min-width: 280px; padding-top: 20px; display: flex; flex-direction: column; gap: 12px;">
-              <!-- Name of the User -->
+            <!-- Right Column ON THE BANNER Beside the Rectangle Avatar: Name and Customizable Quote -->
+            <div class="profile-beside-content" style="flex: 1; min-width: 280px; margin-top: -135px; position: relative; z-index: 10; display: flex; flex-direction: column; gap: 12px;">
+              <!-- Name of the User on Banner -->
               <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
-                <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.3rem; font-weight: 900; color: var(--text-primary); margin: 0; letter-spacing: 0.02em; line-height: 1.15;">
+                <h1 class="profile-display-name" style="font-family: var(--font-header); font-size: 2.6rem; font-weight: 900; color: #0f172a; margin: 0; letter-spacing: 0.01em; line-height: 1.15; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);">
                   ${user.displayName || user.username}
                 </h1>
-                <span class="badge badge-gold" style="font-size: 0.85rem; padding: 4px 12px; font-weight: 700;">👑 ${user.rank || 'Divine V'}</span>
+                <span class="badge badge-gold" style="font-size: 0.88rem; padding: 5px 14px; font-weight: 800; box-shadow: 0 2px 10px rgba(217, 119, 6, 0.25);">👑 ${user.rank || 'Divine V'}</span>
               </div>
 
-              <!-- Customizable Quote Below Name -->
+              <!-- Customizable Quote on Banner -->
               <div class="profile-quote-card" style="
                 display: flex;
                 align-items: flex-start;
                 gap: 12px;
-                background: #ffffff;
-                border: 1px solid rgba(226, 232, 240, 0.95);
+                background: rgba(255, 255, 255, 0.88);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                border: 1px solid rgba(245, 158, 11, 0.35);
                 border-radius: var(--radius-md);
                 padding: 16px 20px;
-                max-width: 680px;
-                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+                max-width: 660px;
+                box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08), 0 0 20px rgba(245, 158, 11, 0.12);
                 position: relative;
               ">
-                <span style="font-size: 2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none;">“</span>
+                <span style="font-size: 2.2rem; line-height: 1; color: var(--accent-gold); font-family: Georgia, serif; user-select: none;">“</span>
                 <div style="flex: 1;">
-                  <p id="profile-quote-display" style="font-size: 1.02rem; font-style: italic; color: var(--text-secondary); line-height: 1.55; margin: 0; font-weight: 500;">
+                  <p id="profile-quote-display" style="font-size: 1.05rem; font-style: italic; color: #334155; line-height: 1.55; margin: 0; font-weight: 600;">
                     ${user.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}
                   </p>
                 </div>
                 <button type="button" id="edit-quote-quick-btn" title="Customize Quote" style="
-                  background: rgba(245, 158, 11, 0.1);
-                  border: 1px solid rgba(245, 158, 11, 0.25);
-                  color: var(--accent-gold);
-                  padding: 5px 10px;
+                  background: rgba(245, 158, 11, 0.15);
+                  border: 1px solid rgba(245, 158, 11, 0.35);
+                  color: #b45309;
+                  padding: 6px 12px;
                   border-radius: 6px;
                   cursor: pointer;
-                  font-size: 0.82rem;
+                  font-size: 0.84rem;
                   font-weight: 700;
                   display: flex;
                   align-items: center;
                   gap: 5px;
                   flex-shrink: 0;
+                  box-shadow: 0 1px 4px rgba(217, 119, 6, 0.15);
                   transition: all 0.15s ease;
                 ">
                   ✏️ Edit Quote
