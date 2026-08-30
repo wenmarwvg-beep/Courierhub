@@ -207,7 +207,44 @@
             ]
           }
         ],
-        partyFinder: [],
+        partyFinder: [
+          {
+            id: 'party_1',
+            leader: 'wenmar',
+            avatar: '👑',
+            rank: 'Divine V',
+            mode: 'Ranked All Pick',
+            region: 'SEA',
+            currentMembers: 3,
+            maxMembers: 5,
+            rolesNeeded: ['Pos 3 Offlane', 'Pos 5 Support'],
+            note: 'Grinding MMR tonight, looking for communicative and PMA teammates.'
+          },
+          {
+            id: 'party_2',
+            leader: 'ShadowFiendPro',
+            avatar: '⚔️',
+            rank: 'Ancient IV',
+            mode: 'SEA Battle Cup (Tier 7)',
+            region: 'SEA',
+            currentMembers: 4,
+            maxMembers: 5,
+            rolesNeeded: ['Pos 1 Hard Carry'],
+            note: 'Tier 7 Battle Cup squad practicing strategies and hero facets.'
+          },
+          {
+            id: 'party_3',
+            leader: 'CrystalMaidenLover',
+            avatar: '❄️',
+            rank: 'Legend III',
+            mode: 'Unranked / Turbo Fun',
+            region: 'SEA',
+            currentMembers: 2,
+            maxMembers: 5,
+            rolesNeeded: ['Any Role Welcome'],
+            note: 'Chill games and cavern crawl / guild quests.'
+          }
+        ],
         statsOverview: { totalMembers: 1, onlineNow: 1, activeLobbies: 0, partyQueue: 0 }
       };
     }
@@ -1169,13 +1206,68 @@
                   width: 100%;
                   height: 1px;
                   background: rgba(217, 119, 6, 0.25);
-                  margin: 16px 0 8px;
+                  margin: 16px 0 12px;
                   border: none;
                 "></div>
+
+                <!-- Navigation Tabs below the divider: Community Tab & Party Tab -->
+                <div class="profile-nav-tabs" style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 4px;">
+                  <!-- Community Tab -->
+                  <button type="button" id="profile-tab-community-btn" class="side-tab-btn active" style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    padding: 12px 14px;
+                    border-radius: 12px;
+                    background: rgba(245, 158, 11, 0.12);
+                    border: 1px solid rgba(245, 158, 11, 0.35);
+                    color: #b45309;
+                    font-size: 0.92rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08);
+                    transition: all 0.2s ease;
+                  ">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(245, 158, 11, 0.2); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                        💬
+                      </div>
+                      <span>Community</span>
+                    </div>
+                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(245, 158, 11, 0.2); color: #b45309;">Feed</span>
+                  </button>
+
+                  <!-- Party Tab -->
+                  <button type="button" id="profile-tab-party-btn" class="side-tab-btn" style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    padding: 12px 14px;
+                    border-radius: 12px;
+                    background: #ffffff;
+                    border: 1px solid rgba(226, 232, 240, 0.95);
+                    color: var(--text-secondary);
+                    font-size: 0.92rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+                    transition: all 0.2s ease;
+                  ">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(34, 197, 94, 0.12); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                        ⚔️
+                      </div>
+                      <span>Party</span>
+                    </div>
+                    <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(34, 197, 94, 0.12); color: #16a34a;">Live</span>
+                  </button>
+                </div>
               </div>
             </div>
 
-            <!-- Right Column: Banner Overlay (Name & Quote) + Community News Feed Below -->
+            <!-- Right Column: Banner Overlay (Name & Quote) + Interactive Tab Views Below -->
             <div class="profile-right-column" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 24px;">
               
               <!-- Banner Overlay Section (Name & Transparent Quote on the Banner) -->
@@ -1208,8 +1300,8 @@
                 </div>
               </div>
 
-              <!-- COMMUNITY NEWS FEED AREA (Completely Below Banner & Beside Left Column) -->
-              <div class="community-news-feed-area" style="margin-top: 56px; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 5;">
+              <!-- 1. COMMUNITY TAB VIEW (Completely Below Banner & Beside Left Column) -->
+              <div id="home-community-tab-view" class="community-news-feed-area" style="margin-top: 56px; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 5;">
                 
                 <!-- Feed Header -->
                 <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
@@ -1294,12 +1386,196 @@
 
               </div>
 
+              <!-- 2. PARTY TAB VIEW (Completely Below Banner & Beside Left Column) -->
+              <div id="home-party-tab-view" style="margin-top: 56px; display: none; flex-direction: column; gap: 20px; position: relative; z-index: 5;">
+                
+                <!-- Party Finder Header -->
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(34, 197, 94, 0.12); color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 1px solid rgba(34, 197, 94, 0.25);">
+                      ⚔️
+                    </div>
+                    <div>
+                      <h2 style="font-family: var(--font-header); font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.2;">
+                        Party Finder & Squad Lobby
+                      </h2>
+                      <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+                        Find competitive teammates, Battle Cup stacks & casual parties
+                      </p>
+                    </div>
+                  </div>
+                  <button type="button" id="create-party-request-btn" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.84rem; font-weight: 700;">
+                    + Create Party
+                  </button>
+                </div>
+
+                <!-- Active Parties List Container -->
+                <div id="home-party-list" style="display: flex; flex-direction: column; gap: 14px;">
+                  <!-- Dynamically populated by renderHomePartyList() -->
+                </div>
+
+              </div>
+
             </div>
 
           </div>
         </div>
       </div>
     `;
+
+    // Function to render party finder list
+    const renderHomePartyList = () => {
+      const partyContainer = document.getElementById('home-party-list');
+      if (!partyContainer) return;
+
+      const parties = Store.state.partyFinder || [];
+      if (parties.length === 0) {
+        partyContainer.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; background: #ffffff; border-radius: var(--radius-lg); border: 1px solid rgba(226, 232, 240, 0.95);">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">⚔️</div>
+            <div style="font-weight: 700; color: var(--text-primary);">No active parties right now</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Click "+ Create Party" to recruit players for your stack!</div>
+          </div>
+        `;
+        return;
+      }
+
+      partyContainer.innerHTML = parties.map(party => `
+        <div class="party-card" style="
+          background: #ffffff;
+          border: 1px solid rgba(226, 232, 240, 0.95);
+          border-radius: var(--radius-lg);
+          padding: 18px 20px;
+          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+        ">
+          <div style="display: flex; align-items: center; gap: 14px; min-width: 240px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid var(--accent-gold); flex-shrink: 0;">
+              ${party.avatar || '👑'}
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <span style="font-weight: 800; color: var(--text-primary); font-size: 1rem;">${party.leader}'s Stack</span>
+                <span class="badge badge-gold" style="font-size: 0.72rem; padding: 2px 7px;">${party.rank || 'Divine'}</span>
+                <span style="font-size: 0.74rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(2, 132, 199, 0.1); color: var(--mana-blue);">${party.region || 'SEA'}</span>
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 2px; font-weight: 600;">
+                Mode: <span style="color: var(--text-primary);">${party.mode}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 200px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Roles Needed:</div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              ${(party.rolesNeeded || ['Any Role']).map(r => `
+                <span style="font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #f1f5f9; color: var(--text-primary); border: 1px solid rgba(226, 232, 240, 0.9);">
+                  ${r}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="text-align: right;">
+              <div style="font-size: 0.95rem; font-weight: 800; color: ${party.currentMembers >= party.maxMembers ? '#ef4444' : '#16a34a'};">
+                ${party.currentMembers}/${party.maxMembers}
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">Slots Filled</div>
+            </div>
+
+            <button type="button" class="join-party-action-btn btn btn-primary" data-party-id="${party.id}" ${party.currentMembers >= party.maxMembers ? 'disabled' : ''} style="padding: 8px 16px; font-size: 0.84rem; font-weight: 700;">
+              ${party.currentMembers >= party.maxMembers ? 'Full' : '🎮 Join Party'}
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Attach join party handlers
+      partyContainer.querySelectorAll('.join-party-action-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const partyId = btn.getAttribute('data-party-id');
+          const party = (Store.state.partyFinder || []).find(p => p.id === partyId);
+          if (party && party.currentMembers < party.maxMembers) {
+            party.currentMembers++;
+            Store.save();
+            if (window.Sound) window.Sound.playVictory();
+            Toast.success('Joined Party!', `You have joined ${party.leader}'s party. Prepare for battle!`);
+            renderHomePartyList();
+          }
+        });
+      });
+    };
+
+    // Attach Tab Switch Handlers (Community vs Party)
+    const communityTabBtn = document.getElementById('profile-tab-community-btn');
+    const partyTabBtn = document.getElementById('profile-tab-party-btn');
+    const communityView = document.getElementById('home-community-tab-view');
+    const partyView = document.getElementById('home-party-tab-view');
+
+    if (communityTabBtn && partyTabBtn && communityView && partyView) {
+      // Switch to Community Tab
+      communityTabBtn.addEventListener('click', () => {
+        communityTabBtn.style.background = 'rgba(245, 158, 11, 0.12)';
+        communityTabBtn.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+        communityTabBtn.style.color = '#b45309';
+
+        partyTabBtn.style.background = '#ffffff';
+        partyTabBtn.style.borderColor = 'rgba(226, 232, 240, 0.95)';
+        partyTabBtn.style.color = 'var(--text-secondary)';
+
+        communityView.style.display = 'flex';
+        partyView.style.display = 'none';
+        if (window.Sound) window.Sound.playClick();
+      });
+
+      // Switch to Party Tab
+      partyTabBtn.addEventListener('click', () => {
+        partyTabBtn.style.background = 'rgba(34, 197, 94, 0.12)';
+        partyTabBtn.style.borderColor = 'rgba(34, 197, 94, 0.35)';
+        partyTabBtn.style.color = '#16a34a';
+
+        communityTabBtn.style.background = '#ffffff';
+        communityTabBtn.style.borderColor = 'rgba(226, 232, 240, 0.95)';
+        communityTabBtn.style.color = 'var(--text-secondary)';
+
+        communityView.style.display = 'none';
+        partyView.style.display = 'flex';
+        renderHomePartyList();
+        if (window.Sound) window.Sound.playClick();
+      });
+    }
+
+    // Attach Create Party button handler
+    document.getElementById('create-party-request-btn')?.addEventListener('click', () => {
+      const mode = prompt('Enter Game Mode (e.g. Ranked All Pick, Battle Cup):', 'Ranked All Pick');
+      if (!mode) return;
+      const roles = prompt('Roles Needed (e.g. Pos 3 Offlane, Pos 5 Support):', 'Pos 3 Offlane, Pos 5 Support');
+
+      const newParty = {
+        id: 'party_' + Date.now(),
+        leader: user.displayName || user.username,
+        avatar: user.avatar || '👑',
+        rank: user.rank || 'Divine V',
+        mode: mode.trim(),
+        region: user.region || 'SEA',
+        currentMembers: 1,
+        maxMembers: 5,
+        rolesNeeded: roles ? roles.split(',').map(s => s.trim()) : ['Any Role'],
+        note: 'Recruiting teammates on CourierHub.'
+      };
+
+      if (!Store.state.partyFinder) Store.state.partyFinder = [];
+      Store.state.partyFinder.unshift(newParty);
+      Store.save();
+      if (window.Sound) window.Sound.playVictory();
+      Toast.success('Party Created!', 'Your party recruitment is now live for other players to join.');
+      renderHomePartyList();
+    });
 
     // Function to render community feed posts
     const renderCommunityFeedPosts = () => {
