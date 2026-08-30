@@ -526,168 +526,212 @@
               </div>
             </div>
 
-            <!-- BACK: CREATE ACCOUNT -->
-            <div class="auth-card-face auth-card-back hud-panel hud-highlight">
-              <div class="hud-corner-accent hud-corner-tl"></div>
-              <div class="hud-corner-accent hud-corner-tr"></div>
-              <div class="hud-corner-accent hud-corner-bl"></div>
-              <div class="hud-corner-accent hud-corner-br"></div>
+              <!-- BACK: CREATE ACCOUNT -->
+              <div class="auth-card-face auth-card-back hud-panel hud-highlight">
+                <div class="hud-corner-accent hud-corner-tl"></div>
+                <div class="hud-corner-accent hud-corner-tr"></div>
+                <div class="hud-corner-accent hud-corner-bl"></div>
+                <div class="hud-corner-accent hud-corner-br"></div>
 
-              <div class="hud-panel-header" style="flex-direction: column; text-align: center; padding: 28px 24px 12px;">
-                <img src="assets/logo.png" alt="CourierHub" style="width: 100px; height: 100px; object-fit: contain; filter: drop-shadow(0 4px 16px rgba(245, 158, 11, 0.4));">
-                <div style="font-family: var(--font-header); font-size: 1.1rem; color: var(--accent-gold); font-weight: 800; letter-spacing: 0.05em; margin-top: 6px;">
-                  JOIN COURIERHUB
+                <div class="hud-panel-header" style="flex-direction: column; text-align: center; padding: 24px 24px 8px;">
+                  <img src="assets/logo.png" alt="CourierHub" style="width: 90px; height: 90px; object-fit: contain; filter: drop-shadow(0 4px 16px rgba(245, 158, 11, 0.4));">
+                  <div style="font-family: var(--font-header); font-size: 1.05rem; color: var(--accent-gold); font-weight: 800; letter-spacing: 0.05em; margin-top: 4px;">
+                    JOIN COURIERHUB
+                  </div>
                 </div>
+
+                <!-- 1. SIGNUP INPUT FORM PANEL -->
+                <div id="signup-form-panel" class="hud-panel-body" style="padding: 10px 32px 24px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                  <form id="signup-form">
+                    <div class="form-group" style="margin-bottom: 12px;">
+                      <label class="form-label">${Icons.user} Desired Username</label>
+                      <input type="text" id="signup-input-user" class="input-control" placeholder="e.g. ShadowBlade" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 12px;">
+                      <label class="form-label">${Icons.mail} Email Address</label>
+                      <input type="email" id="signup-input-email" class="input-control" placeholder="name@domain.com" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 14px;">
+                      <label class="form-label">${Icons.lock} Password (min 6 chars)</label>
+                      <input type="password" id="signup-input-pw" class="input-control" minlength="6" placeholder="Create password" required>
+                    </div>
+                    <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-block btn-lg">
+                      <span>Create Account</span>
+                    </button>
+                  </form>
+
+                  <div style="text-align: center; margin-top: 14px; font-size: 0.86rem; color: var(--text-secondary);">
+                    <span>Already registered?</span>
+                    <button type="button" id="flip-to-login" style="background: none; border: none; color: var(--accent-primary); font-weight: 700; text-decoration: underline; margin-left: 6px; cursor: pointer;">
+                      Sign in here
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 2. CHECK YOUR EMAIL CONFIRMATION PANEL -->
+                <div id="signup-check-email-panel" class="hud-panel-body" style="padding: 16px 28px 24px; flex: 1; display: none; flex-direction: column; justify-content: space-between; text-align: center;">
+                  <div style="margin-top: 8px;">
+                    <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(245, 158, 11, 0.12); border: 2px solid var(--accent-primary); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 14px;">
+                      ✉️
+                    </div>
+                    <h2 style="font-family: var(--font-header); font-size: 1.3rem; color: var(--text-primary); margin-bottom: 6px;">Check Your Email!</h2>
+                    <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.45; margin-bottom: 12px;">
+                      We've sent an activation link to:<br>
+                      <strong id="signup-sent-email-txt" style="color: var(--accent-gold); font-size: 0.92rem; word-break: break-all;"></strong>
+                    </p>
+                    <div style="background: var(--bg-tertiary); border: 1px dashed var(--border-medium); border-radius: var(--radius-md); padding: 10px 14px; font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">
+                      Please click the verification link in your email to activate your account, then sign in with your username!
+                    </div>
+                  </div>
+
+                  <button type="button" id="signup-goto-signin-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 14px;">
+                    Proceed to Sign In →
+                  </button>
+                </div>
+
               </div>
 
-              <div class="hud-panel-body" style="padding: 12px 32px 28px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                <form id="signup-form">
-                  <div class="form-group">
-                    <label class="form-label">${Icons.user} Desired Username</label>
-                    <input type="text" id="signup-input-user" class="input-control" placeholder="e.g. ShadowBlade" required>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">${Icons.mail} Email Address</label>
-                    <input type="email" id="signup-input-email" class="input-control" placeholder="name@domain.com" required>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">${Icons.lock} Password (min 6 chars)</label>
-                    <input type="password" id="signup-input-pw" class="input-control" minlength="6" placeholder="Create password" required>
-                  </div>
-                  <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 8px;">
-                    <span>Create Free Account</span>
-                  </button>
-                </form>
-
-                <div style="text-align: center; margin-top: 16px; font-size: 0.88rem; color: var(--text-secondary);">
-                  <span>Already registered?</span>
-                  <button type="button" id="flip-to-login" style="background: none; border: none; color: var(--accent-primary); font-weight: 700; text-decoration: underline; margin-left: 6px; cursor: pointer;">
-                    Sign in here
-                  </button>
-                </div>
-              </div>
             </div>
-
           </div>
         </div>
-      </div>
-    `;
+      `;
 
-    const card = document.getElementById('auth-card-inner');
-    document.getElementById('flip-to-signup')?.addEventListener('click', () => {
-      if (window.Sound) window.Sound.playHover();
-      card?.classList.add('is-flipped');
-    });
-    document.getElementById('flip-to-login')?.addEventListener('click', () => {
-      if (window.Sound) window.Sound.playHover();
-      card?.classList.remove('is-flipped');
-    });
+      const card = document.getElementById('auth-card-inner');
+      document.getElementById('flip-to-signup')?.addEventListener('click', () => {
+        if (window.Sound) window.Sound.playHover();
+        card?.classList.add('is-flipped');
+      });
+      document.getElementById('flip-to-login')?.addEventListener('click', () => {
+        if (window.Sound) window.Sound.playHover();
+        card?.classList.remove('is-flipped');
+      });
 
-    // Login Form Submit Handler
-    document.getElementById('login-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const uVal = document.getElementById('login-input-user').value.trim();
-      const pVal = document.getElementById('login-input-pw').value;
-      const btn = document.getElementById('login-submit-btn');
+      // Go to sign in from email confirmation panel
+      document.getElementById('signup-goto-signin-btn')?.addEventListener('click', () => {
+        if (window.Sound) window.Sound.playHover();
+        card?.classList.remove('is-flipped');
+        const regUser = document.getElementById('signup-input-user')?.value.trim();
+        const loginInp = document.getElementById('login-input-user');
+        if (loginInp && regUser) loginInp.value = regUser;
+        document.getElementById('login-input-pw')?.focus();
+      });
 
-      if (btn) {
-        btn.disabled = true;
-        btn.innerText = 'Authenticating...';
-      }
+      // Login Form Submit Handler
+      document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const uVal = document.getElementById('login-input-user').value.trim();
+        const pVal = document.getElementById('login-input-pw').value;
+        const btn = document.getElementById('login-submit-btn');
 
-      const sb = getSupabase();
-      let authUser = null;
-
-      if (sb) {
-        try {
-          let email = uVal;
-          if (!uVal.includes('@')) {
-            const { data: prof } = await sb.from('profiles').select('email').eq('username', uVal).maybeSingle();
-            if (prof?.email) email = prof.email;
-          }
-          const { data, error } = await sb.auth.signInWithPassword({ email, password: pVal });
-          if (!error && data?.user) {
-            const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
-            authUser = {
-              id: data.user.id,
-              username: profile?.username || uVal,
-              displayName: profile?.display_name || profile?.username || uVal,
-              email: data.user.email,
-              dotaId: profile?.dota_id || '109283742',
-              rank: profile?.rank || 'Legend I',
-              region: profile?.region || 'SEA',
-              avatar: profile?.avatar || '🔥',
-              avatarFrame: profile?.avatar_frame || 'avatar-frame-immortal',
-              bio: profile?.bio || 'Ready to party on CourierHub!'
-            };
-          }
-        } catch (err) {
-          console.warn('Supabase auth notice:', err);
+        if (btn) {
+          btn.disabled = true;
+          btn.innerText = 'Authenticating...';
         }
-      }
 
-      // Local fallback if offline
-      if (!authUser) {
-        authUser = {
-          id: 'user_' + Date.now(),
-          username: uVal.includes('@') ? uVal.split('@')[0] : uVal,
-          displayName: uVal.includes('@') ? uVal.split('@')[0] : uVal,
-          email: uVal.includes('@') ? uVal : uVal + '@courierhub.gg',
-          dotaId: '109283742',
-          rank: 'Legend I',
-          region: 'SEA',
-          avatar: '🔥',
-          avatarFrame: 'avatar-frame-immortal',
-          bio: 'Ready to party on CourierHub!'
-        };
-      }
+        const sb = getSupabase();
+        let authUser = null;
 
-      Store.loginUser(authUser);
-      Toast.success('Welcome Back!', `Logged in as ${authUser.displayName}`);
-      AppRouter.navigate('home');
-    });
+        if (sb) {
+          try {
+            let email = uVal;
+            if (!uVal.includes('@')) {
+              const { data: prof } = await sb.from('profiles').select('email').eq('username', uVal).maybeSingle();
+              if (prof?.email) email = prof.email;
+            }
+            const { data, error } = await sb.auth.signInWithPassword({ email, password: pVal });
+            if (error) {
+              Toast.error('Login Failed', error.message || 'Invalid username or password.');
+              if (btn) {
+                btn.disabled = false;
+                btn.innerText = 'Sign In to CourierHub';
+              }
+              return;
+            }
+            if (data?.user) {
+              const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
+              authUser = {
+                id: data.user.id,
+                username: profile?.username || uVal,
+                displayName: profile?.display_name || profile?.username || uVal,
+                email: data.user.email,
+                dotaId: profile?.dota_id || '109283742',
+                rank: profile?.rank || 'Legend I',
+                region: profile?.region || 'SEA',
+                avatar: profile?.avatar || '🔥',
+                avatarFrame: profile?.avatar_frame || 'avatar-frame-immortal',
+                bio: profile?.bio || 'Ready to party on CourierHub!'
+              };
+            }
+          } catch (err) {
+            console.warn('Supabase auth notice:', err);
+          }
+        }
 
-    // Registration Form Submit Handler
-    document.getElementById('signup-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const uVal = document.getElementById('signup-input-user').value.trim();
-      const email = document.getElementById('signup-input-email').value.trim().toLowerCase();
-      const pVal = document.getElementById('signup-input-pw').value;
-      const btn = document.getElementById('signup-submit-btn');
+        // Local fallback if offline
+        if (!authUser) {
+          authUser = {
+            id: 'user_' + Date.now(),
+            username: uVal.includes('@') ? uVal.split('@')[0] : uVal,
+            displayName: uVal.includes('@') ? uVal.split('@')[0] : uVal,
+            email: uVal.includes('@') ? uVal : uVal + '@courierhub.gg',
+            dotaId: '109283742',
+            rank: 'Legend I',
+            region: 'SEA',
+            avatar: '🔥',
+            avatarFrame: 'avatar-frame-immortal',
+            bio: 'Ready to party on CourierHub!'
+          };
+        }
 
-      if (btn) {
-        btn.disabled = true;
-        btn.innerText = 'Creating Account...';
-      }
+        Store.loginUser(authUser);
+        Toast.success('Welcome Back!', `Logged in as ${authUser.displayName}`);
+        AppRouter.navigate('home');
+      });
 
-      const sb = getSupabase();
-      if (sb) {
-        try {
-          await sb.auth.signUp({
-            email, password: pVal,
-            options: { data: { username: uVal, display_name: uVal, rank: 'Legend I', region: 'SEA' } }
-          });
-        } catch (err) {}
-      }
+      // Registration Form Submit Handler
+      document.getElementById('signup-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const uVal = document.getElementById('signup-input-user').value.trim();
+        const email = document.getElementById('signup-input-email').value.trim().toLowerCase();
+        const pVal = document.getElementById('signup-input-pw').value;
+        const btn = document.getElementById('signup-submit-btn');
 
-      const newUser = {
-        id: 'user_' + Date.now(),
-        username: uVal,
-        displayName: uVal,
-        email: email,
-        dotaId: Math.floor(100000000 + Math.random() * 900000000).toString(),
-        rank: 'Legend I',
-        region: 'SEA',
-        avatar: '🔥',
-        avatarFrame: 'avatar-frame-immortal',
-        bio: 'Ready to party on CourierHub!'
-      };
+        if (btn) {
+          btn.disabled = true;
+          btn.innerText = 'Creating Account...';
+        }
 
-      Store.loginUser(newUser);
-      Toast.success('Account Created!', `Welcome to CourierHub, ${uVal}!`);
-      AppRouter.navigate('home');
-    });
-  }
+        const sb = getSupabase();
+        if (sb) {
+          try {
+            const { data, error } = await sb.auth.signUp({
+              email, password: pVal,
+              options: { data: { username: uVal, display_name: uVal, rank: 'Legend I', region: 'SEA' } }
+            });
+            if (error) {
+              Toast.error('Registration Notice', error.message || 'Could not complete registration.');
+              if (btn) {
+                btn.disabled = false;
+                btn.innerText = 'Create Account';
+              }
+              return;
+            }
+          } catch (err) {
+            console.warn('Supabase signup notice:', err);
+          }
+        }
+
+        // Show "Check Your Email" panel (Do NOT auto-enter dashboard)
+        document.getElementById('signup-form-panel').style.display = 'none';
+        const checkEmailPanel = document.getElementById('signup-check-email-panel');
+        if (checkEmailPanel) {
+          checkEmailPanel.style.display = 'flex';
+          document.getElementById('signup-sent-email-txt').innerText = email;
+        }
+
+        Toast.success('Check Your Email!', `Activation link sent to ${email}`);
+      });
+    }
 
   /* --- VIEW: HOME HUD --- */
   function renderHome() {
@@ -1404,7 +1448,41 @@
     // Instant zero-blocking render
     AppRouter.handle();
 
-    // Background Supabase Sync
+    // Background Supabase Sync & Email Confirmation Interceptor
+    const sb = getSupabase();
+    if (sb) {
+      // Check if URL has email confirmation token
+      const isEmailConfirm = window.location.hash.includes('access_token') || window.location.href.includes('type=signup');
+      if (isEmailConfirm) {
+        sb.auth.getSession().then(async ({ data: { session } }) => {
+          if (session?.user) {
+            let uname = session.user.user_metadata?.username || session.user.email?.split('@')[0];
+            try {
+              const { data: p } = await sb.from('profiles').select('username').eq('id', session.user.id).maybeSingle();
+              if (p?.username) uname = p.username;
+            } catch (e) {}
+            // Sign out so they must explicitly log in
+            await sb.auth.signOut().catch(() => {});
+            Store.logout();
+            AppRouter.navigate('login');
+            Toast.success('Account Activated!', 'Your email has been verified. Please sign in to continue!');
+            setTimeout(() => {
+              const loginInp = document.getElementById('login-input-user');
+              if (loginInp && uname) loginInp.value = uname;
+              document.getElementById('login-input-pw')?.focus();
+            }, 300);
+          }
+        });
+      }
+
+      sb.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_OUT') {
+          Store.logout();
+          AppRouter.navigate('login');
+        }
+      });
+    }
+
     Store.syncFromSupabase().catch(() => {});
   }
 
