@@ -821,8 +821,8 @@
           <div class="hud-corner-accent hud-corner-tr"></div>
         </div>
 
-        <!-- 2. PROFILE BODY (AVATAR ON THE LEFT OVERLAPPING BANNER) -->
-        <div class="profile-fullwidth-content">
+        <!-- 2. PROFILE BODY (AVATAR ON THE LEFT OVERLAPPING BANNER, CONSTRAINED CONTAINER) -->
+        <div class="profile-content-container">
           <!-- User Profile Image at Left Side -->
           <div class="profile-avatar-anchor">
             <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
