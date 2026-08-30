@@ -34,25 +34,10 @@
   <!-- Global Toast Notifications Container -->
   <div id="toast-container"></div>
 
-  <!-- Supabase Cloud SDK — loaded async so the page never blocks on network -->
-  <script>
-    // Non-blocking Supabase loader: page renders instantly, Supabase connects when ready
-    (function() {
-      var s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-      s.async = true;
-      s.onload = function() {
-        // Signal that Supabase is ready (bundle.js checks window.supabase)
-        window.dispatchEvent(new Event('supabase-ready'));
-      };
-      s.onerror = function() {
-        console.warn('Supabase CDN unavailable — running in offline mode');
-      };
-      document.head.appendChild(s);
-    })();
-  </script>
+  <!-- Supabase Cloud SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Universal High-Performance Engine Bundle -->
-  <script src="js/bundle.js?v=3.1"></script>
+  <script src="js/bundle.js?v=3.2"></script>
 </body>
 </html>
