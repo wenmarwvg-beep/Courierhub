@@ -1208,8 +1208,8 @@
                 </div>
               </div>
 
-              <!-- COMMUNITY NEWS FEED AREA (Below Banner & Beside Left Column) -->
-              <div class="community-news-feed-area" style="margin-top: 8px; display: flex; flex-direction: column; gap: 20px;">
+              <!-- COMMUNITY NEWS FEED AREA (Completely Below Banner & Beside Left Column) -->
+              <div class="community-news-feed-area" style="margin-top: 56px; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 5;">
                 
                 <!-- Feed Header -->
                 <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.95);">
