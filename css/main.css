@@ -4,42 +4,42 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700;800&display=swap');
 
-:root, [data-theme="dark"], [data-theme="classic"] {
-  /* Default: CourierHub Dark Luxury Dota 2 Theme */
-  --bg-primary: #080b11;
-  --bg-secondary: #0f1523;
-  --bg-tertiary: #162035;
-  --bg-card: rgba(15, 21, 35, 0.88);
-  --bg-card-hover: rgba(22, 32, 53, 0.96);
-  --bg-glass: rgba(15, 21, 35, 0.75);
+:root, [data-theme="light"], [data-theme="white"], [data-theme="classic"] {
+  /* Default: CourierHub Clean White & Radiant Gold Theme */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-glass: rgba(255, 255, 255, 0.94);
 
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.16);
-  --border-bright: rgba(245, 158, 11, 0.45);
-  --border-glow: 0 0 16px rgba(245, 158, 11, 0.25);
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-medium: rgba(15, 23, 42, 0.16);
+  --border-bright: rgba(245, 158, 11, 0.5);
+  --border-glow: 0 0 16px rgba(245, 158, 11, 0.2);
 
-  --accent-gold: #f59e0b;
-  --accent-gold-light: #fbbf24;
-  --accent-gold-glow: rgba(245, 158, 11, 0.35);
+  --accent-gold: #d97706;
+  --accent-gold-light: #f59e0b;
+  --accent-gold-glow: rgba(245, 158, 11, 0.25);
 
-  --accent-primary: var(--accent-gold);
+  --accent-primary: var(--accent-gold-light);
   --accent-glow: var(--accent-gold-glow);
 
-  --radiant-green: #10b981;
-  --radiant-green-glow: rgba(16, 185, 129, 0.35);
-  --dire-red: #ef4444;
-  --dire-red-glow: rgba(239, 68, 68, 0.35);
+  --radiant-green: #059669;
+  --radiant-green-glow: rgba(5, 150, 105, 0.25);
+  --dire-red: #dc2626;
+  --dire-red-glow: rgba(220, 38, 38, 0.25);
   --mana-blue: #0284c7;
-  --mana-blue-glow: rgba(2, 132, 199, 0.35);
-  --ancient-purple: #8b5cf6;
+  --mana-blue-glow: rgba(2, 132, 199, 0.25);
+  --ancient-purple: #7c3aed;
 
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --text-muted: #64748b;
-  --text-inverse: #0f172a;
+  --text-inverse: #ffffff;
 
-  --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
-  --elevated-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(245, 158, 11, 0.15);
+  --card-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.06);
+  --elevated-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.14), 0 0 20px rgba(245, 158, 11, 0.12);
 
   --font-header: 'Cinzel', 'Inter', serif, sans-serif;
   --font-stats: 'Rajdhani', sans-serif;
@@ -60,15 +60,29 @@
   --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+[data-theme="dark"] {
+  --bg-primary: #080b11;
+  --bg-secondary: #0f1523;
+  --bg-tertiary: #162035;
+  --bg-card: rgba(15, 21, 35, 0.88);
+  --bg-card-hover: rgba(22, 32, 53, 0.96);
+  --bg-glass: rgba(15, 21, 35, 0.75);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.16);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
+}
+
 [data-theme="crimson"] {
   --bg-primary: #0d0608;
   --bg-secondary: #170b10;
   --bg-tertiary: #25121b;
   --bg-card: rgba(23, 11, 16, 0.9);
-  --bg-card-hover: rgba(37, 18, 27, 0.95);
   --accent-primary: #f43f5e;
-  --accent-glow: rgba(244, 63, 94, 0.4);
-  --border-bright: rgba(244, 63, 94, 0.45);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
 }
 
 [data-theme="diretide"] {
@@ -76,10 +90,9 @@
   --bg-secondary: #0a1712;
   --bg-tertiary: #0f261d;
   --bg-card: rgba(10, 23, 18, 0.9);
-  --bg-card-hover: rgba(15, 38, 29, 0.95);
   --accent-primary: #10b981;
-  --accent-glow: rgba(16, 185, 129, 0.4);
-  --border-bright: rgba(16, 185, 129, 0.45);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
 }
 
 [data-theme="abyssal"] {
@@ -87,28 +100,9 @@
   --bg-secondary: #091325;
   --bg-tertiary: #0f1e3a;
   --bg-card: rgba(9, 19, 37, 0.9);
-  --bg-card-hover: rgba(15, 30, 58, 0.95);
   --accent-primary: #0284c7;
-  --accent-glow: rgba(2, 132, 199, 0.4);
-  --border-bright: rgba(2, 132, 199, 0.45);
-}
-
-[data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f1f5f9;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f8fafc;
-  --bg-glass: rgba(255, 255, 255, 0.92);
-  --border-subtle: rgba(15, 23, 42, 0.08);
-  --border-medium: rgba(15, 23, 42, 0.16);
-  --border-bright: rgba(217, 119, 6, 0.5);
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-muted: #64748b;
-  --text-inverse: #ffffff;
-  --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
-  --elevated-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.09);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
 }
 
 /* Reset & Box Sizing */
@@ -139,7 +133,7 @@ html, body {
   height: 100vh;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.65;
+  opacity: 0.4;
 }
 
 /* App Container Layout */
@@ -187,7 +181,7 @@ html, body {
   flex-direction: column;
   z-index: 100;
   transition: width var(--transition-normal);
-  backdrop-filter: blur(12px);
+  box-shadow: 2px 0 12px rgba(15, 23, 42, 0.04);
 }
 
 .sidebar-brand {
@@ -211,9 +205,7 @@ html, body {
   font-size: 1.15rem;
   font-weight: 800;
   letter-spacing: 0.05em;
-  background: linear-gradient(135deg, #fff 0%, var(--accent-gold) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-primary);
 }
 
 .sidebar-nav {
@@ -246,8 +238,8 @@ html, body {
 
 .nav-link.active {
   color: var(--accent-primary);
-  background: rgba(245, 158, 11, 0.12);
-  border-left: 3px solid var(--accent-primary);
+  background: rgba(245, 158, 11, 0.1);
+  font-weight: 700;
 }
 
 .nav-badge {
@@ -257,7 +249,7 @@ html, body {
   font-size: 0.72rem;
   font-weight: 800;
   background: var(--accent-primary);
-  color: var(--text-inverse);
+  color: #fff;
 }
 
 .sidebar-footer {
@@ -294,18 +286,18 @@ html, body {
   align-items: center;
   gap: 10px;
   padding: 6px 14px 6px 8px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
   border-radius: 30px;
   cursor: pointer;
   transition: all var(--transition-fast);
   text-decoration: none;
   color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
 }
 
 .user-pill:hover {
   border-color: var(--accent-primary);
-  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 /* Animations */
