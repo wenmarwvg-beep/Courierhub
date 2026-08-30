@@ -481,10 +481,6 @@
 
     container.innerHTML = `
       <div class="animate-fade-in" style="min-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: relative;">
-        <!-- Mascots -->
-        <img src="assets/hero-sf.png" alt="Shadow Fiend" class="auth-mascot" style="position: fixed; top: 12px; left: 16px; width: 440px; max-width: 32vw; height: auto; pointer-events: none; z-index: 1; filter: drop-shadow(0 16px 40px rgba(0,0,0,0.5));">
-        <img src="assets/hero-qop.png" alt="Queen of Pain" class="auth-mascot" style="position: fixed; bottom: 12px; right: 16px; width: 420px; max-width: 30vw; height: auto; pointer-events: none; z-index: 1; filter: drop-shadow(0 16px 40px rgba(0,0,0,0.5));">
-
         <div class="auth-flip-container">
           <div id="auth-card-inner" class="auth-flip-card-inner ${isSignUp ? 'is-flipped' : ''}">
             
