@@ -135,6 +135,8 @@
             email: 'wenmar.wvg@gmail.com',
             dotaId: '782910432',
             rank: 'Divine V',
+            gender: 'Male',
+            address: 'Philippines, Metro Manila',
             region: 'SEA',
             avatar: '👑',
             avatarFrame: 'avatar-frame-immortal',
@@ -545,13 +547,8 @@
     document.getElementById('edit-profile-modal')?.remove();
 
     const modalHtml = `
-      <div id="edit-profile-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;">
-        <div class="hud-panel hud-highlight" style="width: 100%; max-width: 500px; padding: 26px; border-radius: var(--radius-lg); position: relative; animation: fadeInDown 0.25s ease;">
-          <div class="hud-corner-accent hud-corner-tl"></div>
-          <div class="hud-corner-accent hud-corner-tr"></div>
-          <div class="hud-corner-accent hud-corner-bl"></div>
-          <div class="hud-corner-accent hud-corner-br"></div>
-
+      <div id="edit-profile-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;">
+        <div class="hud-panel" style="width: 100%; max-width: 500px; padding: 26px; border-radius: var(--radius-lg); background: #ffffff; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2); position: relative; animation: fadeInDown 0.25s ease;">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
             <div style="font-family: var(--font-header); font-size: 1.3rem; font-weight: 800; color: var(--accent-gold);">
               ✏️ Edit Profile
@@ -559,40 +556,56 @@
             <button id="close-edit-profile-btn" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
           </div>
 
-          <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 16px;">
+          <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 14px;">
             <div>
-              <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Display Name</label>
+              <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Display Name</label>
               <input type="text" id="edit-profile-name" class="input-control" value="${user.displayName || user.username}" required style="width: 100%;">
-            </div>
-
-            <div>
-              <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Bio / Headline</label>
-              <input type="text" id="edit-profile-bio" class="input-control" value="${user.bio || 'CourierHub Founder & Dota 2 Captain'}" style="width: 100%;">
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
               <div>
-                <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Rank Tier</label>
+                <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Gender</label>
+                <select id="edit-profile-gender" class="input-control" style="width: 100%;">
+                  <option value="Male" ${(user.gender || 'Male') === 'Male' ? 'selected' : ''}>Male</option>
+                  <option value="Female" ${(user.gender || '') === 'Female' ? 'selected' : ''}>Female</option>
+                  <option value="Other" ${(user.gender || '') === 'Other' ? 'selected' : ''}>Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Rank Tier</label>
                 <select id="edit-profile-rank" class="input-control" style="width: 100%;">
                   ${['Herald', 'Guardian', 'Crusader', 'Archon', 'Legend', 'Ancient', 'Divine V', 'Immortal'].map(r => `
                     <option value="${r}" ${(user.rank || 'Divine V') === r ? 'selected' : ''}>${r}</option>
                   `).join('')}
                 </select>
               </div>
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Address</label>
+              <input type="text" id="edit-profile-address" class="input-control" value="${user.address || 'Philippines, Metro Manila'}" style="width: 100%;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div>
+                <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Region</label>
+                <select id="edit-profile-region" class="input-control" style="width: 100%;">
+                  ${['SEA', 'US East', 'US West', 'Europe West', 'Europe East', 'China', 'South America'].map(reg => `
+                    <option value="${reg}" ${(user.region || 'SEA') === reg ? 'selected' : ''}>${reg}</option>
+                  `).join('')}
+                </select>
+              </div>
 
               <div>
-                <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Dota Friend ID</label>
+                <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Dota Friend ID</label>
                 <input type="text" id="edit-profile-dotaid" class="input-control" value="${user.dotaId || '782910432'}" style="width: 100%;">
               </div>
             </div>
 
             <div>
-              <label style="display: block; font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Region</label>
-              <select id="edit-profile-region" class="input-control" style="width: 100%;">
-                ${['SEA', 'US East', 'US West', 'Europe West', 'Europe East', 'China', 'South America'].map(reg => `
-                  <option value="${reg}" ${(user.region || 'SEA') === reg ? 'selected' : ''}>${reg}</option>
-                `).join('')}
-              </select>
+              <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">Bio / Biography</label>
+              <textarea id="edit-profile-bio" class="input-control" rows="2" style="width: 100%; resize: vertical;">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</textarea>
             </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;">
@@ -616,12 +629,16 @@
     document.getElementById('edit-profile-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const newName = document.getElementById('edit-profile-name').value.trim();
+      const newGender = document.getElementById('edit-profile-gender').value;
+      const newAddress = document.getElementById('edit-profile-address').value.trim();
       const newBio = document.getElementById('edit-profile-bio').value.trim();
       const newRank = document.getElementById('edit-profile-rank').value;
       const newDotaId = document.getElementById('edit-profile-dotaid').value.trim();
       const newRegion = document.getElementById('edit-profile-region').value;
 
       user.displayName = newName || user.username;
+      user.gender = newGender;
+      user.address = newAddress;
       user.bio = newBio;
       user.rank = newRank;
       user.dotaId = newDotaId;
@@ -905,6 +922,8 @@
               email: 'wenmar.wvg@gmail.com',
               dotaId: '782910432',
               rank: 'Divine V',
+              gender: 'Male',
+              address: 'Philippines, Metro Manila',
               region: 'SEA',
               avatar: '👑',
               avatarFrame: 'avatar-frame-immortal',
@@ -920,6 +939,8 @@
               email: uVal.includes('@') ? uVal : uVal + '@courierhub.gg',
               dotaId: '109283742',
               rank: 'Legend I',
+              gender: 'Male',
+              address: 'SEA Server',
               region: 'SEA',
               avatar: '🔥',
               avatarFrame: 'avatar-frame-immortal',
@@ -1003,36 +1024,98 @@
           <div class="hud-corner-accent hud-corner-tr"></div>
         </div>
 
-        <!-- 2. PROFILE BODY (AVATAR ON THE LEFT OVERLAPPING BANNER, CONSTRAINED CONTAINER) -->
+        <!-- 2. CONSTRAINED PROFILE CONTAINER -->
         <div class="profile-content-container">
-          <!-- User Profile Image at Left Side -->
-          <div class="profile-avatar-anchor">
-            <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
-              <span>${user.avatar || '👑'}</span>
-            </div>
-            <div class="profile-status-badge" title="Online & Ready"></div>
-          </div>
-
-          <!-- User Details (Left-Aligned) -->
-          <div class="profile-info-block">
-            <div class="profile-name-row">
-              <h1 class="profile-display-name">${user.displayName || user.username}</h1>
-              <span class="badge badge-gold" style="font-size: 0.85rem; padding: 4px 12px;">👑 ${user.rank || 'Divine V'}</span>
+          <!-- Left Column (Rectangle Avatar + Vertical Profile Details Stack) -->
+          <div class="profile-left-column" style="width: 260px; max-width: 100%;">
+            <!-- Rectangle Profile Image at Left Side -->
+            <div class="profile-avatar-anchor">
+              <div class="profile-large-avatar ${user.avatarFrame || 'avatar-frame-immortal'}">
+                <span>${user.avatar || '👑'}</span>
+              </div>
+              <div class="profile-status-badge" title="Online & Ready"></div>
             </div>
 
-            <p class="profile-headline-text">${user.bio || 'CourierHub Founder & Dota 2 Captain'}</p>
+            <!-- Below the rectangle profile image: Vertical Profile Details -->
+            <div class="profile-vertical-details" style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px;">
+              <h1 class="profile-display-name" style="font-size: 1.75rem; line-height: 1.2; margin: 0 0 2px; color: var(--text-primary);">
+                ${user.displayName || user.username}
+              </h1>
 
-            <div class="profile-meta-pills">
-              <span>🌐 Region: <strong style="color: var(--text-primary);">${user.region || 'SEA'}</strong></span>
-              <span>•</span>
-              <span>🆔 Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats); font-size: 1.05rem;">${user.dotaId || '782910432'}</strong></span>
-              <span>•</span>
-              <span>✉️ <strong style="color: var(--text-secondary);">${user.email || 'wenmar.wvg@gmail.com'}</strong></span>
+              <!-- Gender : -->
+              <div class="profile-detail-field" style="display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Gender :</span>
+                <span style="font-size: 0.98rem; font-weight: 600; color: var(--text-primary);">${user.gender || 'Male'}</span>
+              </div>
+
+              <!-- Region : -->
+              <div class="profile-detail-field" style="display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Region :</span>
+                <span style="font-size: 0.98rem; font-weight: 600; color: var(--text-primary);">${user.region || 'SEA'}</span>
+              </div>
+
+              <!-- address: -->
+              <div class="profile-detail-field" style="display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">address:</span>
+                <span style="font-size: 0.98rem; font-weight: 600; color: var(--text-primary);">${user.address || 'Philippines, Metro Manila'}</span>
+              </div>
+
+              <!-- Rank: -->
+              <div class="profile-detail-field" style="display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Rank:</span>
+                <div>
+                  <span class="badge badge-gold" style="font-size: 0.85rem; padding: 4px 12px; font-weight: 700;">👑 ${user.rank || 'Divine V'}</span>
+                </div>
+              </div>
+
+              <!-- then a view bio button: -->
+              <button type="button" id="profile-view-bio-btn" class="btn btn-secondary btn-block" style="
+                margin-top: 6px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+                font-weight: 700;
+                border-color: rgba(217, 119, 6, 0.35);
+                background: #ffffff;
+                color: var(--text-primary);
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+                cursor: pointer;
+              ">
+                📄 View Bio
+              </button>
+
+              <!-- Bio Expandable Panel (Toggled by View Bio button) -->
+              <div id="profile-bio-box" style="display: none; background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.95); border-radius: var(--radius-md); padding: 14px; margin-top: 2px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); animation: fadeInDown 0.2s ease;">
+                <div style="font-size: 0.78rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 4px;">Player Biography</div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                  ${user.bio || 'CourierHub Founder & Dota 2 Captain • Active Competitive Player'}
+                </p>
+              </div>
+
+              <!-- then a divider line that has the same weight above. -->
+              <div class="profile-section-divider" style="
+                width: 100%;
+                height: 1px;
+                background: rgba(217, 119, 6, 0.25);
+                margin: 16px 0 8px;
+                border: none;
+              "></div>
             </div>
           </div>
         </div>
       </div>
     `;
+
+    // Interactive View Bio button logic
+    const bioBtn = document.getElementById('profile-view-bio-btn');
+    const bioBox = document.getElementById('profile-bio-box');
+    if (bioBtn && bioBox) {
+      bioBtn.addEventListener('click', () => {
+        const isHidden = bioBox.style.display === 'none';
+        bioBox.style.display = isHidden ? 'block' : 'none';
+        bioBtn.innerHTML = isHidden ? '✕ Hide Bio' : '📄 View Bio';
+        if (window.Sound) window.Sound.playClick();
+      });
+    }
   }
 
   /* --- VIEW: LOBBIES --- */
