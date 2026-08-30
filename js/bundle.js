@@ -45,7 +45,11 @@
     mail: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
     eye: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`,
     eyeOff: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>`,
-    x: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`
+    x: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`,
+    gender: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="11" r="5"></circle><path d="M12 16v6"></path><path d="M9 19h6"></path><path d="M16 4l4-4m0 0h-4m4 0v4"></path></svg>`,
+    region: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`,
+    location: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`,
+    rankCrown: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path><path d="M5 20h14"></path></svg>`
   };
 
   /* ==========================================================================
@@ -1026,7 +1030,7 @@
 
         <!-- 2. CONSTRAINED PROFILE CONTAINER -->
         <div class="profile-content-container">
-          <!-- Left Column (Rectangle Avatar + Vertical Profile Details Stack) -->
+          <!-- Left Column (Rectangle Avatar + Horizontal Info Rows Stacked Below) -->
           <div class="profile-left-column" style="width: 260px; max-width: 100%;">
             <!-- Rectangle Profile Image at Left Side -->
             <div class="profile-avatar-anchor">
@@ -1036,41 +1040,56 @@
               <div class="profile-status-badge" title="Online & Ready"></div>
             </div>
 
-            <!-- Below the rectangle profile image: Vertical Profile Details -->
-            <div class="profile-vertical-details" style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px;">
-              <h1 class="profile-display-name" style="font-size: 1.75rem; line-height: 1.2; margin: 0 0 2px; color: var(--text-primary);">
-                ${user.displayName || user.username}
-              </h1>
-
-              <!-- Gender : -->
-              <div class="profile-detail-field" style="display: flex; flex-direction: column; gap: 2px;">
-                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Gender :</span>
-                <span style="font-size: 0.98rem; font-weight: 600; color: var(--text-primary);">${user.gender || 'Male'}</span>
+            <!-- Below the rectangle profile image: Horizontal Info Items with Premium Icons -->
+            <div class="profile-vertical-details" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+              
+              <!-- Gender : male -->
+              <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                <div class="profile-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(245, 158, 11, 0.25);">
+                  ${Icons.gender}
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.93rem;">
+                  <span style="font-weight: 700; color: var(--text-secondary);">Gender :</span>
+                  <span style="font-weight: 600; color: var(--text-primary); text-transform: capitalize;">${user.gender || 'male'}</span>
+                </div>
               </div>
 
-              <!-- Region : -->
-              <div class="profile-detail-field" style="display: flex; flex-direction: column; gap: 2px;">
-                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Region :</span>
-                <span style="font-size: 0.98rem; font-weight: 600; color: var(--text-primary);">${user.region || 'SEA'}</span>
+              <!-- Region : Sea -->
+              <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                <div class="profile-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(2, 132, 199, 0.1); color: var(--mana-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(2, 132, 199, 0.25);">
+                  ${Icons.region}
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.93rem;">
+                  <span style="font-weight: 700; color: var(--text-secondary);">Region :</span>
+                  <span style="font-weight: 600; color: var(--text-primary);">${user.region || 'Sea'}</span>
+                </div>
               </div>
 
-              <!-- address: -->
-              <div class="profile-detail-field" style="display: flex; flex-direction: column; gap: 2px;">
-                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">address:</span>
-                <span style="font-size: 0.98rem; font-weight: 600; color: var(--text-primary);">${user.address || 'Philippines, Metro Manila'}</span>
+              <!-- Address : phillpines metro manila -->
+              <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                <div class="profile-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(239, 68, 68, 0.25);">
+                  ${Icons.location}
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.93rem; min-width: 0;">
+                  <span style="font-weight: 700; color: var(--text-secondary); flex-shrink: 0;">Address :</span>
+                  <span style="font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${user.address || 'phillpines metro manila'}">${user.address || 'phillpines metro manila'}</span>
+                </div>
               </div>
 
-              <!-- Rank: -->
-              <div class="profile-detail-field" style="display: flex; flex-direction: column; gap: 2px;">
-                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Rank:</span>
-                <div>
-                  <span class="badge badge-gold" style="font-size: 0.85rem; padding: 4px 12px; font-weight: 700;">👑 ${user.rank || 'Divine V'}</span>
+              <!-- Rank : divine -->
+              <div class="profile-info-row" style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                <div class="profile-icon-badge" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(217, 119, 6, 0.12); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(217, 119, 6, 0.3);">
+                  ${Icons.rankCrown}
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.93rem;">
+                  <span style="font-weight: 700; color: var(--text-secondary);">Rank :</span>
+                  <span style="font-weight: 700; color: var(--accent-gold);">${user.rank || 'Divine V'}</span>
                 </div>
               </div>
 
               <!-- then a view bio button: -->
               <button type="button" id="profile-view-bio-btn" class="btn btn-secondary btn-block" style="
-                margin-top: 6px;
+                margin-top: 8px;
                 padding: 10px 16px;
                 font-size: 0.9rem;
                 font-weight: 700;
@@ -1083,7 +1102,7 @@
                 📄 View Bio
               </button>
 
-              <!-- Bio Expandable Panel (Toggled by View Bio button) -->
+              <!-- Bio Expandable Box (Toggled by View Bio button) -->
               <div id="profile-bio-box" style="display: none; background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.95); border-radius: var(--radius-md); padding: 14px; margin-top: 2px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); animation: fadeInDown 0.2s ease;">
                 <div style="font-size: 0.78rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 4px;">Player Biography</div>
                 <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
