@@ -197,6 +197,44 @@
         osc.stop(now + 0.5);
       } catch (e) {}
     }
+    playMessage() {
+      if (this.muted) return;
+      this.ensureContext();
+      if (!this.ctx) return;
+      try {
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(784, now);
+        osc.frequency.setValueAtTime(1046.5, now + 0.06);
+        gain.gain.setValueAtTime(this.volume * 0.09, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.22);
+      } catch (e) {}
+    }
+    playError() {
+      if (this.muted) return;
+      this.ensureContext();
+      if (!this.ctx) return;
+      try {
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(330, now);
+        osc.frequency.setValueAtTime(220, now + 0.08);
+        gain.gain.setValueAtTime(this.volume * 0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } catch (e) {}
+    }
   }
   const Sound = new SoundEngine();
 
@@ -299,7 +337,6 @@
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          // If stored state contains old mock users (e.g. u_raven), clear and start fresh
           if (parsed.users && parsed.users.some(u => u.id === 'u_raven' || u.id === 'u_shadow')) {
             localStorage.removeItem('nexus_state_v1');
             return this.getDefaults();
@@ -323,7 +360,9 @@
       };
     }
     save() {
-      localStorage.setItem('nexus_state_v1', JSON.stringify(this.state));
+      try {
+        localStorage.setItem('nexus_state_v1', JSON.stringify(this.state));
+      } catch (e) {}
       this.notify();
     }
     subscribe(cb) {
@@ -331,10 +370,125 @@
       return () => this.subscribers.delete(cb);
     }
     notify() {
-      this.subscribers.forEach(cb => cb(this.state));
+      this.subscribers.forEach(cb => {
+        try { cb(this.state); } catch (e) {}
+      });
+    }
+    async syncFromSupabase() {
+      const sb = getSupabase();
+      if (!sb) return;
+      try {
+        // 1. Fetch profiles
+        const { data: profs } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
+        if (profs && profs.length > 0) {
+          this.state.users = profs.map(p => ({
+            id: p.id,
+            username: p.username || (p.email ? p.email.split('@')[0] : 'Hero'),
+            displayName: p.display_name || p.username || (p.email ? p.email.split('@')[0] : 'Hero'),
+            email: p.email,
+            dotaId: p.dota_id || '109283742',
+            rank: p.rank || 'Legend I',
+            region: p.region || 'SEA',
+            avatar: p.avatar || '🔥',
+            avatarFrame: p.avatar_frame || 'avatar-frame-immortal',
+            bio: p.bio || 'Ready to party on CourierHub!',
+            winRate: p.win_rate || 52.5,
+            gamesPlayed: p.games_played || 120,
+            isOnline: p.is_online !== false,
+            onlineStatus: p.online_status || 'online',
+            stats: {
+              matches: p.games_played || 120,
+              wins: Math.round((p.games_played || 120) * ((p.win_rate || 52.5) / 100)),
+              losses: (p.games_played || 120) - Math.round((p.games_played || 120) * ((p.win_rate || 52.5) / 100)),
+              winRate: p.win_rate || 52.5,
+              hoursPlayed: Math.round((p.games_played || 120) * 0.75)
+            }
+          }));
+          this.state.statsOverview.totalMembers = this.state.users.length;
+          this.state.statsOverview.onlineNow = this.state.users.filter(u => u.onlineStatus === 'online' || u.isOnline).length || (this.state.currentUser ? 1 : 0);
+        }
+
+        // 2. Fetch lobbies
+        const { data: lobs } = await sb.from('lobbies').select('*, lobby_members(*)').order('created_at', { ascending: false });
+        if (lobs && lobs.length > 0) {
+          this.state.lobbies = lobs.map(l => ({
+            id: l.id,
+            name: l.title || l.name,
+            hostId: l.host_id,
+            hostName: l.host_name,
+            hostAvatar: l.host_avatar || '🔥',
+            region: l.region || 'SEA',
+            matchType: l.game_mode || 'Ranked All Pick',
+            maxPlayers: 5,
+            description: l.description || 'Join my party stack!',
+            requiredRank: l.rank_tier || 'Any',
+            status: l.status === 'open' ? 'Waiting' : (l.status || 'Waiting'),
+            createdAt: l.created_at,
+            players: (l.lobby_members && l.lobby_members.length > 0) ? l.lobby_members.map(m => ({
+              userId: m.user_id,
+              name: m.player_name,
+              avatar: m.player_avatar || '🔥',
+              rank: m.player_rank || 'Legend',
+              role: m.player_role || 'Core',
+              ready: m.is_ready !== false,
+              isHost: m.user_id === l.host_id
+            })) : [
+              { userId: l.host_id, name: l.host_name, avatar: l.host_avatar || '🔥', rank: l.rank_tier || 'Legend', role: 'Carry', ready: true, isHost: true }
+            ]
+          }));
+          this.state.statsOverview.activeLobbies = this.state.lobbies.length;
+        }
+
+        // 3. Fetch community messages
+        const { data: msgs } = await sb.from('community_messages').select('*').order('created_at', { ascending: true }).limit(50);
+        if (msgs && msgs.length > 0) {
+          this.state.communityMessages = msgs.map(m => ({
+            id: m.id,
+            userId: m.user_id,
+            userName: m.author_name,
+            userAvatar: m.author_avatar || '⚔️',
+            userRank: m.author_rank || 'Ancient V',
+            content: m.text,
+            createdAt: m.created_at,
+            reactions: m.reactions || {},
+            replyTo: m.reply_to_id,
+            replyPreview: m.reply_preview,
+            lobbyEmbed: m.lobby_embed
+          }));
+        }
+
+        // 4. Fetch party finder queue
+        const { data: parties } = await sb.from('party_finder').select('*').order('created_at', { ascending: false });
+        if (parties && parties.length > 0) {
+          this.state.partyFinder = parties.map(p => ({
+            id: p.id,
+            userId: p.host_id,
+            name: p.host_name,
+            avatar: p.host_avatar || '🔥',
+            rank: p.host_rank || 'Legend',
+            role: (p.roles_needed && p.roles_needed[0]) || 'Core',
+            region: p.region || 'SEA',
+            mode: 'Ranked'
+          }));
+          this.state.statsOverview.playersLookingForParty = this.state.partyFinder.length;
+        }
+
+        this.save();
+      } catch (err) {
+        console.warn('Supabase sync notice:', err);
+      }
     }
     loginUser(user) {
       this.state.currentUser = { ...this.state.currentUser, ...user, onlineStatus: 'online' };
+      // Also update or insert in users list
+      const idx = this.state.users.findIndex(u => u.id === user.id);
+      if (idx !== -1) {
+        this.state.users[idx] = { ...this.state.users[idx], ...user, onlineStatus: 'online' };
+      } else {
+        this.state.users.unshift({ ...user, onlineStatus: 'online' });
+      }
+      this.state.statsOverview.totalMembers = this.state.users.length;
+      this.state.statsOverview.onlineNow = this.state.users.filter(u => u.onlineStatus === 'online' || u.isOnline).length;
       this.save();
       Sound.playNotification();
     }
@@ -353,6 +507,19 @@
       const idx = this.state.users.findIndex(u => u.id === this.state.currentUser.id);
       if (idx !== -1) this.state.users[idx] = { ...this.state.users[idx], ...updates };
       this.save();
+      const sb = getSupabase();
+      if (sb) {
+        sb.from('profiles').update({
+          display_name: updates.displayName || this.state.currentUser.displayName,
+          dota_id: updates.dotaId || this.state.currentUser.dotaId,
+          rank: updates.rank || this.state.currentUser.rank,
+          region: updates.region || this.state.currentUser.region,
+          avatar: updates.avatar || this.state.currentUser.avatar,
+          avatar_frame: updates.avatarFrame || this.state.currentUser.avatarFrame,
+          bio: updates.bio || this.state.currentUser.bio,
+          online_status: updates.onlineStatus || this.state.currentUser.onlineStatus
+        }).eq('id', this.state.currentUser.id).catch(() => {});
+      }
     }
     updateHud(updates) {
       if (!this.state.currentUser) return;
@@ -376,6 +543,18 @@
       this.state.communityMessages.push(msg);
       this.save();
       Sound.playMessage();
+      const sb = getSupabase();
+      if (sb) {
+        sb.from('community_messages').insert({
+          user_id: this.state.currentUser.id,
+          author_name: msg.userName,
+          author_avatar: msg.userAvatar,
+          author_rank: msg.userRank,
+          text: content,
+          reply_to_id: replyTo,
+          lobby_embed: lobbyEmbed
+        }).catch(() => {});
+      }
       return msg;
     }
     reactMsg(msgId, emoji) {
@@ -393,8 +572,13 @@
     deleteCommunityMsg(id) {
       this.state.communityMessages = this.state.communityMessages.filter(m => m.id !== id);
       this.save();
+      const sb = getSupabase();
+      if (sb) {
+        sb.from('community_messages').delete().eq('id', id).catch(() => {});
+      }
     }
     sendPM(recipientId, text) {
+      if (!this.state.currentUser) return;
       let conv = this.state.conversations.find(c => c.participantId === recipientId);
       if (!conv) {
         conv = { id: 'conv_' + recipientId, participantId: recipientId, messages: [], unread: 0 };
@@ -411,6 +595,7 @@
       Sound.playMessage();
     }
     createLobby(data) {
+      if (!this.state.currentUser) return;
       const region = data.region || 'SEA';
       const id = `${region}-${Math.floor(10000 + Math.random() * 90000)}`;
       const newLobby = {
@@ -433,6 +618,20 @@
       this.state.currentUser.currentLobbyId = id;
       this.save();
       Sound.playLobbyJoin();
+      const sb = getSupabase();
+      if (sb) {
+        sb.from('lobbies').insert({
+          id,
+          title: newLobby.name,
+          region: newLobby.region,
+          rank_tier: newLobby.requiredRank,
+          game_mode: newLobby.matchType,
+          host_id: this.state.currentUser.id,
+          host_name: newLobby.hostName,
+          host_avatar: this.state.currentUser.avatar || '🔥',
+          status: 'open'
+        }).catch(() => {});
+      }
       return newLobby;
     }
     joinLobby(lobbyId) {
@@ -467,6 +666,7 @@
       this.save();
     }
     toggleParty(status) {
+      if (!this.state.currentUser) return;
       this.state.currentUser.isLookingForParty = status;
       const uid = this.state.currentUser.id;
       if (status) {
@@ -1628,13 +1828,20 @@
 
   /* --- VIEW: HOME HUD --- */
   function renderHome() {
+    const user = Store.state.currentUser;
+    if (!user) {
+      AppRouter.navigate('login');
+      return;
+    }
     renderLayoutShell();
     const container = document.getElementById('view-container');
-    const user = Store.state.currentUser;
+    if (!container) return;
     const stats = Store.state.statsOverview;
     const lobbies = Store.state.lobbies;
     const feed = Store.state.activityFeed;
     const party = Store.state.partyFinder;
+    const totalMembersCount = Store.state.users.length || 1;
+    const onlineCount = Store.state.users.filter(u => u.onlineStatus === 'online' || u.isOnline).length || 1;
 
     container.innerHTML = `
       <div class="animate-fade-in content-container">
@@ -1656,12 +1863,12 @@
                   📦 CourierHub Command Center
                 </div>
                 <h1 style="font-size: 1.8rem; font-weight: 900; color: var(--text-primary); margin: 2px 0 4px;">
-                  Welcome back, <span style="color: var(--accent-primary);">${user.displayName || user.username}</span>
+                  Welcome back, <span style="color: var(--accent-primary);">${user.displayName || user.username || 'Hero'}</span>
                 </h1>
                 <div style="display: flex; align-items: center; gap: 12px; font-size: 0.8rem; color: var(--text-secondary);">
-                  <span>Rank: <strong style="color: var(--text-primary);">${user.rank}</strong></span> • 
-                  <span>Region: <strong style="color: var(--text-primary);">${user.region}</strong></span> • 
-                  <span>Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats);">${user.dotaId}</strong></span>
+                  <span>Rank: <strong style="color: var(--text-primary);">${user.rank || 'Legend I'}</strong></span> • 
+                  <span>Region: <strong style="color: var(--text-primary);">${user.region || 'SEA'}</strong></span> • 
+                  <span>Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats);">${user.dotaId || '109283742'}</strong></span>
                 </div>
               </div>
             </div>
@@ -1678,7 +1885,7 @@
           <div class="stat-hud-card" style="--card-accent: var(--accent-gold);">
             <div class="stat-info">
               <div class="stat-label">Total Members</div>
-              <div class="stat-value">${stats.totalMembers.toLocaleString()}</div>
+              <div class="stat-value">${totalMembersCount.toLocaleString()}</div>
               <div class="stat-sub">Active platform players</div>
             </div>
             <div class="stat-icon-wrap">👥</div>
@@ -1687,8 +1894,8 @@
           <div class="stat-hud-card" style="--card-accent: var(--radiant-green);">
             <div class="stat-info">
               <div class="stat-label">Online Now</div>
-              <div class="stat-value text-radiant">${stats.onlineNow}</div>
-              <div class="stat-sub">247 Players Ready</div>
+              <div class="stat-value text-radiant">${onlineCount}</div>
+              <div class="stat-sub">${onlineCount} Players Ready</div>
             </div>
             <div class="stat-icon-wrap" style="color: var(--radiant-green);">🟢</div>
           </div>
@@ -2199,10 +2406,18 @@
 
   /* --- VIEW: CONVERSATIONS --- */
   function renderConversations(pid) {
+    const user = Store.state.currentUser;
+    if (!user) {
+      AppRouter.navigate('login');
+      return;
+    }
     renderLayoutShell();
     const container = document.getElementById('view-container');
-    const targetUser = pid ? Store.state.users.find(u => u.id === pid) : Store.state.users[1];
-    const conv = Store.state.conversations.find(c => c.participantId === targetUser?.id);
+    if (!container) return;
+
+    const otherUsers = Store.state.users.filter(u => u.id !== user.id);
+    const targetUser = pid ? (Store.state.users.find(u => u.id === pid) || null) : (otherUsers[0] || null);
+    const conv = targetUser ? Store.state.conversations.find(c => c.participantId === targetUser.id) : null;
 
     container.innerHTML = `
       <div class="animate-fade-in content-container">
@@ -2212,12 +2427,16 @@
               <input type="text" class="input-control" placeholder="Search conversations...">
             </div>
             <div class="conv-list">
-              ${Store.state.users.filter(u => u.id !== Store.state.currentUser?.id).map(u => `
+              ${otherUsers.length === 0 ? `
+                <div style="padding: 24px 16px; text-align: center; color: var(--text-muted); font-size: 0.82rem;">
+                  No other members registered yet.
+                </div>
+              ` : otherUsers.map(u => `
                 <div class="conv-item ${u.id === targetUser?.id ? 'active' : ''}" onclick="window.location.hash='#conversations/${u.id}'">
-                  <div class="player-avatar-frame" style="width: 38px; height: 38px;"><div class="avatar-placeholder">${u.avatar}</div></div>
+                  <div class="player-avatar-frame" style="width: 38px; height: 38px;"><div class="avatar-placeholder">${u.avatar || '🔥'}</div></div>
                   <div class="conv-item-body">
-                    <div class="conv-item-top"><span class="conv-name">${u.displayName}</span></div>
-                    <div class="conv-preview">${u.rank} • ${u.region}</div>
+                    <div class="conv-item-top"><span class="conv-name">${u.displayName || u.username}</span></div>
+                    <div class="conv-preview">${u.rank || 'Legend I'} • ${u.region || 'SEA'}</div>
                   </div>
                 </div>
               `).join('')}
@@ -2225,47 +2444,64 @@
           </div>
 
           <div class="chat-main-area">
-            <div class="chat-header">
-              <div style="font-weight: 700; color: #fff;">${targetUser?.displayName} (${targetUser?.rank})</div>
-              <span class="badge badge-radiant">Online</span>
-            </div>
-            <div class="chat-messages-scroll" id="pm-scroll">
-              ${(conv?.messages || []).map(m => `
-                <div class="chat-message-item ${m.senderId === Store.state.currentUser.id ? 'is-own-message' : ''}">
-                  <div class="chat-msg-body">
-                    <div class="chat-msg-header"><span class="chat-msg-author">${m.senderId === Store.state.currentUser.id ? 'You' : targetUser.displayName}</span></div>
-                    <div class="chat-msg-content">${m.text}</div>
+            ${targetUser ? `
+              <div class="chat-header">
+                <div style="font-weight: 700; color: #fff;">${targetUser.displayName || targetUser.username} (${targetUser.rank || 'Legend I'})</div>
+                <span class="badge badge-radiant">Online</span>
+              </div>
+              <div class="chat-messages-scroll" id="pm-scroll">
+                ${(!conv || !conv.messages || conv.messages.length === 0) ? `
+                  <div style="padding: 48px; text-align: center; color: var(--text-muted);">
+                    No messages yet with ${targetUser.displayName || targetUser.username}. Say hello!
                   </div>
-                </div>
-              `).join('')}
-            </div>
-            <div class="chat-input-area">
-              <input type="text" class="chat-input-box" id="pm-input" placeholder="Message ${targetUser?.displayName}...">
-              <button class="btn btn-primary btn-icon" id="pm-send">${Icons.send}</button>
-            </div>
+                ` : conv.messages.map(m => `
+                  <div class="chat-message-item ${m.senderId === user.id ? 'is-own-message' : ''}">
+                    <div class="chat-msg-body">
+                      <div class="chat-msg-header"><span class="chat-msg-author">${m.senderId === user.id ? 'You' : (targetUser.displayName || targetUser.username)}</span></div>
+                      <div class="chat-msg-content">${m.text}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="chat-input-area">
+                <input type="text" class="chat-input-box" id="pm-input" placeholder="Message ${targetUser.displayName || targetUser.username}...">
+                <button class="btn btn-primary btn-icon" id="pm-send">${Icons.send}</button>
+              </div>
+            ` : `
+              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); gap: 12px; padding: 48px;">
+                <div style="font-size: 2.8rem;">💬</div>
+                <div style="font-family: var(--font-header); font-size: 1.2rem; color: #fff;">Direct Messaging</div>
+                <p style="font-size: 0.85rem; max-width: 320px; text-align: center;">
+                  Browse the <a href="#members" style="color: var(--accent-primary); font-weight: 700;">Members directory</a> to connect with teammates.
+                </p>
+              </div>
+            `}
           </div>
         </div>
       </div>
     `;
 
-    const pmInput = document.getElementById('pm-input');
-    const sendPM = () => {
-      const txt = pmInput.value.trim();
-      if (txt && targetUser) {
-        Store.sendPM(targetUser.id, txt);
-        renderConversations(targetUser.id);
-      }
-    };
-    document.getElementById('pm-send')?.addEventListener('click', sendPM);
-    pmInput?.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendPM(); });
-    const pmScroll = document.getElementById('pm-scroll');
-    if (pmScroll) pmScroll.scrollTop = pmScroll.scrollHeight;
+    if (targetUser) {
+      const pmInput = document.getElementById('pm-input');
+      const sendPM = () => {
+        const txt = pmInput.value.trim();
+        if (txt && targetUser && user) {
+          Store.sendPM(targetUser.id, txt);
+          renderConversations(targetUser.id);
+        }
+      };
+      document.getElementById('pm-send')?.addEventListener('click', sendPM);
+      pmInput?.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendPM(); });
+      const pmScroll = document.getElementById('pm-scroll');
+      if (pmScroll) pmScroll.scrollTop = pmScroll.scrollHeight;
+    }
   }
 
   /* --- VIEW: MEMBERS --- */
   function renderMembers() {
     renderLayoutShell();
     const container = document.getElementById('view-container');
+    if (!container) return;
     const users = Store.state.users;
 
     container.innerHTML = `
@@ -2287,13 +2523,13 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <div class="player-avatar-frame" style="width: 44px; height: 44px;"><div class="avatar-placeholder">${u.avatar || '🔥'}</div></div>
                   <div>
-                    <div style="font-weight: 700; color: #fff;">${u.displayName}</div>
-                    <div style="font-size: 0.75rem; color: var(--accent-gold); font-family: var(--font-stats);">ID: ${u.dotaId}</div>
+                    <div style="font-weight: 700; color: #fff;">${u.displayName || u.username || 'Hero'}</div>
+                    <div style="font-size: 0.75rem; color: var(--accent-gold); font-family: var(--font-stats);">ID: ${u.dotaId || '109283742'}</div>
                   </div>
                 </div>
-                <div class="rank-badge">${u.rank}</div>
+                <div class="rank-badge">${u.rank || 'Legend I'}</div>
               </div>
-              <p style="font-size: 0.8rem; color: var(--text-secondary);">${u.bio || 'Dota 2 player.'}</p>
+              <p style="font-size: 0.8rem; color: var(--text-secondary);">${u.bio || 'Ready to party on CourierHub!'}</p>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto;">
                 <a href="#conversations/${u.id}" class="btn btn-secondary btn-sm">Message</a>
                 <a href="#profile/${u.id}" class="btn btn-primary btn-sm">View Profile →</a>
@@ -2307,11 +2543,35 @@
 
   /* --- VIEW: PROFILE --- */
   function renderProfile(uid) {
+    const current = Store.state.currentUser;
     renderLayoutShell();
     const container = document.getElementById('view-container');
-    const isMe = !uid || uid === Store.state.currentUser?.id;
-    const user = isMe ? Store.state.currentUser : (Store.state.users.find(u => u.id === uid) || Store.state.currentUser);
-    const stats = user.stats || { matches: 1284, wins: 694, losses: 590, winRate: 54.1, hoursPlayed: 3420 };
+    if (!container) return;
+
+    const isMe = !uid || (current && uid === current.id);
+    const user = isMe ? current : (Store.state.users.find(u => u.id === uid) || null);
+
+    if (!user) {
+      container.innerHTML = `
+        <div class="animate-fade-in content-container">
+          <div class="hud-panel" style="padding: 48px; text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 12px;">⚔️</div>
+            <h2 style="color: #fff; margin-bottom: 8px;">Player Profile Not Found</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">The requested player profile does not exist or has not calibrated yet.</p>
+            <a href="#members" class="btn btn-primary">Browse Members Directory</a>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    const stats = user.stats || {
+      matches: user.gamesPlayed || 120,
+      wins: Math.round((user.gamesPlayed || 120) * 0.54),
+      losses: Math.round((user.gamesPlayed || 120) * 0.46),
+      winRate: user.winRate || 54.1,
+      hoursPlayed: 320
+    };
 
     container.innerHTML = `
       <div class="animate-fade-in content-container">
@@ -2322,16 +2582,16 @@
                 <div class="avatar-placeholder">${user.avatar || '🔥'}</div>
               </div>
               <div>
-                <h1 style="font-size: 1.8rem; font-weight: 900; color: #fff;">${user.displayName}</h1>
+                <h1 style="font-size: 1.8rem; font-weight: 900; color: #fff;">${user.displayName || user.username || 'Hero'}</h1>
                 <div style="font-size: 0.82rem; color: var(--text-secondary);">
-                  Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats);">${user.dotaId}</strong> • 
-                  Rank: <strong style="color: #fff;">${user.rank}</strong> • Region: <strong style="color: #fff;">${user.region}</strong>
+                  Dota ID: <strong style="color: var(--accent-gold); font-family: var(--font-stats);">${user.dotaId || '109283742'}</strong> • 
+                  Rank: <strong style="color: #fff;">${user.rank || 'Legend I'}</strong> • Region: <strong style="color: #fff;">${user.region || 'SEA'}</strong>
                 </div>
               </div>
             </div>
             ${isMe ? `<button class="btn btn-primary" id="edit-prof-btn">${Icons.edit} <span>Edit Profile</span></button>` : ''}
           </div>
-          <p style="margin-top: 14px; font-size: 0.88rem; color: var(--text-secondary);">${user.bio || 'Dota 2 player.'}</p>
+          <p style="margin-top: 14px; font-size: 0.88rem; color: var(--text-secondary);">${user.bio || 'Ready to party on CourierHub!'}</p>
         </div>
 
         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
@@ -2374,39 +2634,46 @@
       </div>
     `;
 
-    document.getElementById('edit-prof-btn')?.addEventListener('click', () => {
-      Modal.open({
-        title: 'Edit Profile',
-        icon: 'edit',
-        contentHtml: `
-          <form id="edit-prof-form">
-            <div class="form-group"><label class="form-label">Display Name</label><input type="text" id="ep-name" class="input-control" value="${user.displayName}"></div>
-            <div class="form-group"><label class="form-label">Dota ID</label><input type="text" id="ep-id" class="input-control" value="${user.dotaId}"></div>
-            <div class="form-group"><label class="form-label">Bio</label><textarea id="ep-bio" class="textarea-control">${user.bio || ''}</textarea></div>
-            <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
-          </form>
-        `,
-        onOpen: (modalEl) => {
-          modalEl.querySelector('#edit-prof-form')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const displayName = modalEl.querySelector('#ep-name').value;
-            const dotaId = modalEl.querySelector('#ep-id').value;
-            const bio = modalEl.querySelector('#ep-bio').value;
-            Store.updateProfile({ displayName, dotaId, bio });
-            Modal.close();
-            Toast.success('Saved', 'Profile updated!');
-            renderProfile();
-          });
-        }
+    if (isMe) {
+      document.getElementById('edit-prof-btn')?.addEventListener('click', () => {
+        Modal.open({
+          title: 'Edit Profile',
+          icon: 'edit',
+          contentHtml: `
+            <form id="edit-prof-form">
+              <div class="form-group"><label class="form-label">Display Name</label><input type="text" id="ep-name" class="input-control" value="${user.displayName || user.username || ''}"></div>
+              <div class="form-group"><label class="form-label">Dota ID</label><input type="text" id="ep-id" class="input-control" value="${user.dotaId || ''}"></div>
+              <div class="form-group"><label class="form-label">Bio</label><textarea id="ep-bio" class="textarea-control">${user.bio || ''}</textarea></div>
+              <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+            </form>
+          `,
+          onOpen: (modalEl) => {
+            modalEl.querySelector('#edit-prof-form')?.addEventListener('submit', (e) => {
+              e.preventDefault();
+              const displayName = modalEl.querySelector('#ep-name').value;
+              const dotaId = modalEl.querySelector('#ep-id').value;
+              const bio = modalEl.querySelector('#ep-bio').value;
+              Store.updateProfile({ displayName, dotaId, bio });
+              Modal.close();
+              Toast.success('Saved', 'Profile updated!');
+              renderProfile();
+            });
+          }
+        });
       });
-    });
+    }
   }
 
   /* --- VIEW: PARTY FINDER --- */
   function renderPartyFinder() {
+    const user = Store.state.currentUser;
+    if (!user) {
+      AppRouter.navigate('login');
+      return;
+    }
     renderLayoutShell();
     const container = document.getElementById('view-container');
-    const user = Store.state.currentUser;
+    if (!container) return;
     const party = Store.state.partyFinder;
 
     container.innerHTML = `
@@ -2422,19 +2689,26 @@
         </div>
 
         <div class="lobbies-grid">
-          ${party.map(p => `
+          ${party.length === 0 ? `
+            <div class="hud-panel" style="padding: 40px 24px; text-align: center; grid-column: 1 / -1;">
+              <div style="font-size: 2.2rem; margin-bottom: 8px;">🎯</div>
+              <div style="font-weight: 700; color: #fff; font-size: 1.1rem; margin-bottom: 6px;">Party Queue is Empty</div>
+              <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Be the first to enter the looking-for-party queue!</div>
+              <button class="btn btn-primary" onclick="document.getElementById('lfp-btn').click()">Find a Party ⚔️</button>
+            </div>
+          ` : party.map(p => `
             <div class="hud-panel" style="padding: 18px; display: flex; flex-direction: column; gap: 12px;">
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                  <div class="player-avatar-frame" style="width: 40px; height: 40px;"><div class="avatar-placeholder">${p.avatar}</div></div>
+                  <div class="player-avatar-frame" style="width: 40px; height: 40px;"><div class="avatar-placeholder">${p.avatar || '🔥'}</div></div>
                   <div>
                     <div style="font-weight: 700; color: #fff;">${p.name}</div>
-                    <div style="font-size: 0.72rem; color: var(--text-muted);">${p.rank} • ${p.region}</div>
+                    <div style="font-size: 0.72rem; color: var(--text-muted);">${p.rank || 'Legend'} • ${p.region || 'SEA'}</div>
                   </div>
                 </div>
                 <span class="badge badge-radiant">READY</span>
               </div>
-              <div style="font-size: 0.8rem; color: var(--accent-gold);">Role: <strong>${p.role}</strong> (${p.mode})</div>
+              <div style="font-size: 0.8rem; color: var(--accent-gold);">Role: <strong>${p.role || 'Core'}</strong> (${p.mode || 'Ranked'})</div>
               <button class="btn btn-primary btn-sm invite-btn" data-name="${p.name}">Invite to Lobby</button>
             </div>
           `).join('')}
@@ -2455,9 +2729,15 @@
 
   /* --- VIEW: HUD SETTINGS --- */
   function renderHudSettings() {
+    const user = Store.state.currentUser;
+    if (!user) {
+      AppRouter.navigate('login');
+      return;
+    }
     renderLayoutShell();
     const container = document.getElementById('view-container');
-    const hud = Store.state.currentUser.hudSettings || { theme: 'classic', bgMode: 'embers' };
+    if (!container) return;
+    const hud = user.hudSettings || { theme: 'classic', bgMode: 'embers' };
 
     container.innerHTML = `
       <div class="animate-fade-in content-container">
@@ -2511,6 +2791,134 @@
   /* ==========================================================================
      8. APP INITIALIZATION
      ========================================================================== */
+
+  // Supabase connection logic — runs whenever the SDK becomes available
+  let supabaseConnected = false;
+  function connectSupabase() {
+    if (supabaseConnected) return;
+    const sb = getSupabase();
+    if (!sb) return;
+    supabaseConnected = true;
+
+    // Background data sync
+    Store.syncFromSupabase().catch(() => {});
+
+    // Session restore with timeout guard
+    let sessionHandled = false;
+    const sessionTimeout = setTimeout(() => {
+      if (!sessionHandled) {
+        sessionHandled = true;
+        if (!Store.state.currentUser) {
+          AppRouter.navigate('login');
+        }
+      }
+    }, 3000);
+
+    sb.auth.getSession().then(async ({ data: { session } }) => {
+      if (sessionHandled) return;
+      sessionHandled = true;
+      clearTimeout(sessionTimeout);
+
+      if (!session?.user) {
+        if (!Store.state.currentUser) {
+          const hash = window.location.hash;
+          if (hash !== '#login' && hash !== '#signup') {
+            AppRouter.navigate('login');
+          }
+        }
+        return;
+      }
+
+      try {
+        const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+        if (profile) {
+          Store.loginUser({
+            id: profile.id,
+            username: profile.username || session.user.email.split('@')[0],
+            displayName: profile.display_name || profile.username || session.user.email.split('@')[0],
+            email: profile.email || session.user.email,
+            dotaId: profile.dota_id || '109283742',
+            rank: profile.rank || 'Legend I',
+            region: profile.region || 'SEA',
+            avatar: profile.avatar || '🔥',
+            avatarFrame: profile.avatar_frame || 'avatar-frame-immortal',
+            bio: profile.bio || 'Ready to party on CourierHub!'
+          });
+          const hash = window.location.hash;
+          if (!hash || hash === '#login' || hash === '#signup' || hash === '#') {
+            AppRouter.navigate('home');
+          } else {
+            AppRouter.handle();
+          }
+        } else {
+          await sb.auth.signOut().catch(() => {});
+          Store.logout();
+          AppRouter.navigate('login');
+        }
+      } catch (e) {
+        console.warn('Session restore notice:', e);
+        if (!Store.state.currentUser) AppRouter.navigate('login');
+      }
+    }).catch(() => {
+      if (!sessionHandled) {
+        sessionHandled = true;
+        clearTimeout(sessionTimeout);
+        AppRouter.navigate('login');
+      }
+    });
+
+    // Realtime community messages
+    try {
+      sb.channel('public:community_messages')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'community_messages' }, payload => {
+          const m = payload.new;
+          if (m && !Store.state.communityMessages.some(x => x.id === m.id)) {
+            Store.state.communityMessages.push({
+              id: m.id, userId: m.user_id, userName: m.author_name,
+              userAvatar: m.author_avatar || '⚔️', userRank: m.author_rank || 'Ancient V',
+              content: m.text, createdAt: m.created_at, reactions: m.reactions || {},
+              replyTo: m.reply_to_id, lobbyEmbed: m.lobby_embed
+            });
+            Store.notify();
+            if (AppRouter.currentRoute === 'community') renderCommunity();
+          }
+        })
+        .subscribe();
+    } catch (e) {}
+
+    // Auth state changes
+    sb.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
+        Store.logout();
+        if (window.location.hash !== '#login' && window.location.hash !== '#signup') {
+          AppRouter.navigate('login');
+        }
+        return;
+      }
+      if (event === 'SIGNED_IN' && session?.user) {
+        const isEmailConfirm = window.location.hash.includes('access_token') || window.location.href.includes('type=signup');
+        if (isEmailConfirm) {
+          let uname = session.user.user_metadata?.username || session.user.user_metadata?.display_name;
+          if (!uname) {
+            try {
+              const { data: p } = await sb.from('profiles').select('username').eq('id', session.user.id).maybeSingle();
+              if (p?.username) uname = p.username;
+            } catch (e) {}
+          }
+          await sb.auth.signOut().catch(() => {});
+          AppRouter.navigate('login');
+          Toast.success('Account Created!', 'Your email has been confirmed. Please sign in to continue!');
+          setTimeout(() => {
+            const inp = document.getElementById('login-username');
+            if (inp && uname) inp.value = uname;
+            document.getElementById('auth-flip-card-inner')?.classList.remove('is-flipped');
+            document.getElementById('login-pw')?.focus();
+          }, 300);
+        }
+      }
+    });
+  }
+
   function initApp() {
     window.nexusBgInstance = new CanvasBackground();
 
@@ -2526,86 +2934,14 @@
     AppRouter.register('party-finder', () => renderPartyFinder());
     AppRouter.register('hud-settings', () => renderHudSettings());
 
-    // Supabase Live Session Validation & Auth State Listener
-    // Supabase Live Session Validation & Auth State Listener
-    const sb = getSupabase();
-    if (sb) {
-      // Check if active session exists in storage
-      sb.auth.getSession().then(async ({ data: { session } }) => {
-        if (!session?.user) {
-          return;
-        }
-
-        try {
-          const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
-          if (profile) {
-            Store.loginUser({
-              id: profile.id,
-              username: profile.username || session.user.email.split('@')[0],
-              displayName: profile.display_name || session.user.email.split('@')[0],
-              email: profile.email || session.user.email,
-              dotaId: profile.dota_id || '109283742',
-              rank: profile.rank || 'Legend I',
-              region: profile.region || 'SEA',
-              avatar: profile.avatar || '🔥',
-              avatarFrame: profile.avatar_frame || 'avatar-frame-immortal',
-              bio: profile.bio || 'Ready to party on CourierHub!'
-            });
-            if (window.location.hash === '#login' || window.location.hash === '#signup' || !window.location.hash) {
-              AppRouter.navigate('home');
-            }
-          } else {
-            // Profile not found in database -> clear session
-            await sb.auth.signOut().catch(() => {});
-            Store.logout();
-          }
-        } catch (e) {
-          console.warn('Profile sync notice:', e);
-        }
-      });
-
-      sb.auth.onAuthStateChange(async (event, session) => {
-        if (event === 'SIGNED_OUT' || !session) {
-          Store.logout();
-          if (window.location.hash !== '#login' && window.location.hash !== '#signup') {
-            AppRouter.navigate('login');
-          }
-          return;
-        }
-
-        if (event === 'SIGNED_IN' && session?.user) {
-          const isEmailConfirmation = window.location.hash.includes('access_token') || window.location.href.includes('type=signup');
-          
-          if (isEmailConfirmation) {
-            let confirmedUsername = session.user.user_metadata?.username || session.user.user_metadata?.display_name;
-            if (!confirmedUsername) {
-              try {
-                const { data: prof } = await sb.from('profiles').select('username').eq('id', session.user.id).maybeSingle();
-                if (prof?.username) confirmedUsername = prof.username;
-              } catch (e) {}
-            }
-            await sb.auth.signOut();
-            AppRouter.navigate('login');
-            Toast.success('Account Created!', 'Your email has been confirmed. Please sign in to continue!');
-            
-            setTimeout(() => {
-              const uInput = document.getElementById('login-username');
-              if (uInput && confirmedUsername) {
-                uInput.value = confirmedUsername;
-              }
-              const innerCard = document.getElementById('auth-flip-card-inner');
-              if (innerCard) {
-                innerCard.classList.remove('is-flipped');
-              }
-              document.getElementById('login-pw')?.focus();
-            }, 300);
-            return;
-          }
-        }
-      });
-    }
-
+    // RENDER THE PAGE IMMEDIATELY — zero network dependency
     AppRouter.handle();
+
+    // Try connecting Supabase now (if CDN already loaded)
+    connectSupabase();
+
+    // If Supabase CDN loads later (async), connect then
+    window.addEventListener('supabase-ready', () => connectSupabase());
   }
 
   if (document.readyState === 'loading') {

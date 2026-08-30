@@ -207,6 +207,34 @@ class SoundEngine {
       osc.stop(now + 0.5);
     } catch (e) {}
   }
+
+  /**
+   * Action error alert
+   */
+  playError() {
+    if (this.muted) return;
+    this.ensureContext();
+    if (!this.ctx) return;
+
+    try {
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(330, now);
+      osc.frequency.setValueAtTime(220, now + 0.08);
+
+      gain.gain.setValueAtTime(this.volume * 0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.3);
+    } catch (e) {}
+  }
 }
 
 export const Sound = new SoundEngine();
