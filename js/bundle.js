@@ -1287,35 +1287,12 @@
                   <span style="font-size: 0.95rem; font-weight: 700; color: var(--accent-gold);">${user.rank || 'Divine V'}</span>
                 </div>
 
-                <!-- then a view bio button: -->
-                <button type="button" id="profile-view-bio-btn" class="btn btn-secondary btn-block" style="
-                  margin-top: 8px;
-                  padding: 10px 16px;
-                  font-size: 0.9rem;
-                  font-weight: 700;
-                  border-color: rgba(217, 119, 6, 0.35);
-                  background: #ffffff;
-                  color: var(--text-primary);
-                  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
-                  cursor: pointer;
-                ">
-                  📄 View Bio
-                </button>
-
-                <!-- Bio Expandable Box (Toggled by View Bio button) -->
-                <div id="profile-bio-box" style="display: none; background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.95); border-radius: var(--radius-md); padding: 14px; margin-top: 2px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); animation: fadeInDown 0.2s ease;">
-                  <div style="font-size: 0.78rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 4px;">Player Biography</div>
-                  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
-                    ${user.bio || 'CourierHub Founder & Dota 2 Captain • Active Competitive Player'}
-                  </p>
-                </div>
-
-                <!-- then a divider line that has the same weight above. -->
+                <!-- Divider line above navigation tabs -->
                 <div class="profile-section-divider" style="
                   width: 100%;
                   height: 1px;
                   background: rgba(217, 119, 6, 0.25);
-                  margin: 16px 0 12px;
+                  margin: 14px 0 10px;
                   border: none;
                 "></div>
 
@@ -2012,18 +1989,6 @@
       Toast.success('Post Published!', 'Your update is now live on the CourierHub community feed.');
       renderCommunityFeedPosts();
     });
-
-    // Interactive View Bio button logic
-    const bioBtn = document.getElementById('profile-view-bio-btn');
-    const bioBox = document.getElementById('profile-bio-box');
-    if (bioBtn && bioBox) {
-      bioBtn.addEventListener('click', () => {
-        const isHidden = bioBox.style.display === 'none';
-        bioBox.style.display = isHidden ? 'block' : 'none';
-        bioBtn.innerHTML = isHidden ? '✕ Hide Bio' : '📄 View Bio';
-        if (window.Sound) window.Sound.playClick();
-      });
-    }
 
     // Privacy Policy and Terms & Conditions button listeners
     document.getElementById('profile-privacy-policy-btn')?.addEventListener('click', () => {
