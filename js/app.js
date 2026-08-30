@@ -838,9 +838,9 @@
                   <span>Edit Profile</span>
                 </button>
 
-                <button type="button" class="dropdown-item-btn" id="dropdown-edit-profile-card-btn">
+                <button type="button" class="dropdown-item-btn" id="dropdown-view-profile-card-btn">
                   <span style="font-size: 1.05rem;">🎴</span>
-                  <span>Edit Profile Card</span>
+                  <span>View Profile Card</span>
                 </button>
 
                 <button type="button" class="dropdown-item-btn dropdown-item-danger" id="dropdown-logout-btn">
@@ -893,10 +893,10 @@
       openEditProfileModal();
     });
 
-    document.getElementById('dropdown-edit-profile-card-btn')?.addEventListener('click', () => {
+    document.getElementById('dropdown-view-profile-card-btn')?.addEventListener('click', () => {
       dropdown?.classList.remove('show');
       trigger?.classList.remove('active');
-      openPlayerProfileCardModal(user, true);
+      openPlayerProfileCardModal(user);
     });
 
     document.getElementById('dropdown-logout-btn')?.addEventListener('click', async () => {
@@ -2356,37 +2356,28 @@
               <div style="display: flex; align-items: center; gap: 8px; color: #cbd5e1;">
                 <span style="color: var(--accent-gold);">🆔</span>
                 <span style="font-weight: 700; color: #94a3b8;">Dota ID:</span>
-                <span style="color: #ffffff; margin-left: auto; font-family: monospace; font-weight: 700;">${target.dotaId || '782910432'}</span>
+                <span style="color: #f8fafc; margin-left: auto; font-family: monospace; font-weight: 800; font-size: 0.88rem; background: rgba(0, 0, 0, 0.55); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(255, 34, 0, 0.35);">${target.dotaId || '782910432'}</span>
               </div>
             </div>
 
             <!-- Quote / Motto Box -->
-            <div style="background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255, 34, 0, 0.25); border-radius: 10px; padding: 9px 11px; font-size: 0.78rem; font-style: italic; color: #cbd5e1; line-height: 1.4; text-align: center;">
+            <div style="background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 34, 0, 0.3); border-radius: 10px; padding: 9px 11px; font-size: 0.78rem; font-style: italic; color: #cbd5e1; line-height: 1.4; text-align: center;">
               “${target.quote || 'The path to victory is paved with courage, patience, and unbreakable teamwork.'}”
             </div>
 
-            <!-- Social Action Buttons -->
+            <!-- Social Action Buttons (Follow, Add Friend, Message) -->
             <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto; padding-top: 6px;">
-              ${isSelf ? `
-                <div style="text-align: center; font-size: 0.76rem; font-weight: 800; color: var(--accent-gold); padding: 5px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px;">
-                  🌟 Your Public Profile Card
-                </div>
-                <button type="button" id="card-self-edit-btn" class="btn btn-primary" style="padding: 9px; font-weight: 800; background: linear-gradient(135deg, #ff2200 0%, #d97706 100%); border: none; box-shadow: 0 4px 14px rgba(255, 34, 0, 0.4);">
-                  ✏️ Edit Profile Info
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button type="button" id="card-follow-toggle-btn" class="${isFollowing ? 'btn-card-following' : 'btn-card-follow'}">
+                  ${isFollowing ? '✓ Following' : '➕ Follow'}
                 </button>
-              ` : `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                  <button type="button" id="card-follow-toggle-btn" class="${isFollowing ? 'btn-card-following' : 'btn-card-follow'}">
-                    ${isFollowing ? '✓ Following' : '➕ Follow'}
-                  </button>
-                  <button type="button" id="card-friend-toggle-btn" class="${isFriend ? 'btn-card-friends-active' : 'btn-card-friend'}">
-                    ${isFriend ? '🤝 Friends' : '➕ Add Friend'}
-                  </button>
-                </div>
-                <button type="button" id="card-direct-message-btn" class="btn btn-secondary" style="padding: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; border-color: rgba(255, 34, 0, 0.4); color: #ffffff;">
-                  💬 Send Message
+                <button type="button" id="card-friend-toggle-btn" class="${isFriend ? 'btn-card-friends-active' : 'btn-card-friend'}">
+                  ${isFriend ? '🤝 Friends' : '➕ Add Friend'}
                 </button>
-              `}
+              </div>
+              <button type="button" id="card-direct-message-btn" class="btn btn-secondary" style="padding: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; border-color: rgba(255, 34, 0, 0.4); color: #ffffff;">
+                💬 Send Message
+              </button>
             </div>
           </div>
 
@@ -2447,12 +2438,6 @@
 
     document.getElementById('close-profile-card-btn')?.addEventListener('click', close);
     modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
-
-    // Self Edit Profile Button Handler
-    document.getElementById('card-self-edit-btn')?.addEventListener('click', () => {
-      close();
-      openEditProfileModal();
-    });
 
     // Follow Toggle Button Handler
     const followBtn = document.getElementById('card-follow-toggle-btn');

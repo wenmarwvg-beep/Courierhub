@@ -1000,7 +1000,7 @@
    Two-Column Player Profile Card (Shadow Fiend Theme Bundle Design)
    ========================================================================== */
 .player-profile-card-dialog {
-  width: 940px;
+  width: 960px;
   max-width: 95vw;
   max-height: 88vh;
   display: flex;
@@ -1009,8 +1009,8 @@
   background: radial-gradient(circle at 15% 20%, rgba(35, 10, 15, 0.96) 0%, rgba(10, 4, 7, 0.98) 100%), url('../assets/sf-container-bg.jpg');
   background-size: cover;
   background-position: center;
-  border: 1.5px solid rgba(255, 34, 0, 0.45);
-  box-shadow: 0 35px 85px rgba(0, 0, 0, 0.88), 0 0 35px rgba(255, 34, 0, 0.28);
+  border: 1.5px solid rgba(255, 34, 0, 0.55);
+  box-shadow: 0 35px 85px rgba(0, 0, 0, 0.92), 0 0 45px rgba(255, 34, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   overflow: hidden;
   position: relative;
   animation: fadeInDown 0.25s ease;
@@ -1018,18 +1018,22 @@
 
 .profile-card-left-col {
   width: 30%;
-  min-width: 270px;
-  max-width: 310px;
-  background: rgba(14, 5, 8, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1.5px solid rgba(255, 34, 0, 0.35);
-  padding: 26px 22px;
+  min-width: 280px;
+  max-width: 320px;
+  background: linear-gradient(180deg, rgba(14, 5, 8, 0.72) 0%, rgba(10, 4, 7, 0.88) 60%, rgba(8, 2, 5, 0.97) 100%), url('../assets/sf-card-left-bg.jpg');
+  background-size: cover;
+  background-position: center top;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-right: 1.5px solid rgba(255, 34, 0, 0.45);
+  padding: 26px 20px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   overflow-y: auto;
   flex-shrink: 0;
+  box-shadow: inset -5px 0 25px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 34, 0, 0.15);
+  position: relative;
 }
 
 .profile-card-right-col {
